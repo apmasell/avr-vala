@@ -8,6 +8,7 @@ bin_PROGRAMS = \
 vapidir = $(datadir)/vala-avr/vapi
 dist_vapi_DATA = \
 	avr.vapi \
+	atmega32u4.vapi \
 	$(NULL)
 
 avr_valac_VALAFLAGS = \

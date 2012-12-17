@@ -219,6 +219,7 @@ class Avr.Compiler {
 		context.save_temps = save_temps;
 		context.profile = Profile.POSIX;
 		context.add_define ("AVR");
+		context.add_define (@"MCU_$(mcu.up())");
 		context.nostdpkg = true;
 		context.entry_point_name = entry_point;
 
