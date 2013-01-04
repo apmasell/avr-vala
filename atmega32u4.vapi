@@ -1,112 +1,83 @@
 [CCode(cheader_filename = "avr/io.h", cprefix = "")]
-namespace Avr {
-	public uint8 PINB;
-	public const uint8 PINB0;
-	public const uint8 PINB1;
-	public const uint8 PINB2;
-	public const uint8 PINB3;
-	public const uint8 PINB4;
-	public const uint8 PINB5;
-	public const uint8 PINB6;
-	public const uint8 PINB7;
-
-	public uint8 DDRB;
-	public const uint8 DDB0;
-	public const uint8 DDB1;
-	public const uint8 DDB2;
-	public const uint8 DDB3;
-	public const uint8 DDB4;
-	public const uint8 DDB5;
-	public const uint8 DDB6;
-	public const uint8 DDB7;
-
-	public uint8 PORTB;
-	public const uint8 PORTB0;
-	public const uint8 PORTB1;
-	public const uint8 PORTB2;
-	public const uint8 PORTB3;
-	public const uint8 PORTB4;
-	public const uint8 PORTB5;
-	public const uint8 PORTB6;
-	public const uint8 PORTB7;
-
-	public uint8 PINC;
-	public const uint8 PINC6;
-	public const uint8 PINC7;
-
-	public const uint8 DDRC;
-	public const uint8 DDC6;
-	public const uint8 DDC7;
-
-	public const uint8 PORTC;
-	public const uint8 PORTC6;
-	public const uint8 PORTC7;
-
-	public const uint8 PIND;
-	public const uint8 PIND0;
-	public const uint8 PIND1;
-	public const uint8 PIND2;
-	public const uint8 PIND3;
-	public const uint8 PIND4;
-	public const uint8 PIND5;
-	public const uint8 PIND6;
-	public const uint8 PIND7;
-
-	public uint8 DDRD;
-	public const uint8 DDD0;
-	public const uint8 DDD1;
-	public const uint8 DDD2;
-	public const uint8 DDD3;
-	public const uint8 DDD4;
-	public const uint8 DDD5;
-	public const uint8 DDD6;
-	public const uint8 DDD7;
-
-	public uint8 PORTD;
-	public const uint8 PORTD0;
-	public const uint8 PORTD1;
-	public const uint8 PORTD2;
-	public const uint8 PORTD3;
-	public const uint8 PORTD4;
-	public const uint8 PORTD5;
-	public const uint8 PORTD6;
-	public const uint8 PORTD7;
-
-	public uint8 PINE;
-	public const uint8 PINE2;
-	public const uint8 PINE6;
-
-	public uint8 DDRE;
-	public const uint8 DDE2;
-	public const uint8 DDE6;
-
-	public uint8 PORTE;
-	public const uint8 PORTE2;
-	public const uint8 PORTE6;
-
-	public uint8 PINF;
-	public const uint8 PINF0;
-	public const uint8 PINF1;
-	public const uint8 PINF4;
-	public const uint8 PINF5;
-	public const uint8 PINF6;
-	public const uint8 PINF7;
-
-	public uint8 DDRF;
-	public const uint8 DDF0;
-	public const uint8 DDF1;
-	public const uint8 DDF4;
-	public const uint8 DDF5;
-	public const uint8 DDF6;
-	public const uint8 DDF7;
-
-	public uint8 PORTF;
-	public const uint8 PORTF0;
-	public const uint8 PORTF1;
-	public const uint8 PORTF4;
-	public const uint8 PORTF5;
-	public const uint8 PORTF6;
-	public const uint8 PORTF7;
+namespace Posix {
+	namespace Pin {
+		[CCode(cname = "PINA")]
+		public uint8 a;
+		[CCode(cname = "PINB")]
+		public uint8 b;
+		[CCode(cname = "PINC")]
+		public uint8 c;
+		[CCode(cname = "PIND")]
+		public uint8 d;
+		[CCode(cname = "PINE")]
+		public uint8 e;
+		[CCode(cname = "PINF")]
+		public uint8 f;
+		[CCode(cname = "PING")]
+		public uint8 g;
+		[CCode(cname = "PINH")]
+		public uint8 h;
+		[CCode(cname = "PINI")]
+		public uint8 i;
+		[CCode(cname = "PINJ")]
+		public uint8 j;
+		[CCode(cname = "PINK")]
+		public uint8 k;
+		[CCode(cname = "PINL")]
+		public uint8 l;
+	}
+	namespace Port {
+		[CCode(cname = "PORTA")]
+		public uint8 a;
+		[CCode(cname = "PORTB")]
+		public uint8 b;
+		[CCode(cname = "PORTC")]
+		public uint8 c;
+		[CCode(cname = "PORTD")]
+		public uint8 d;
+		[CCode(cname = "PORTE")]
+		public uint8 e;
+		[CCode(cname = "PORTF")]
+		public uint8 f;
+		[CCode(cname = "PORTG")]
+		public uint8 g;
+		[CCode(cname = "PORTH")]
+		public uint8 h;
+		[CCode(cname = "PORTI")]
+		public uint8 i;
+		[CCode(cname = "PORTJ")]
+		public uint8 j;
+		[CCode(cname = "PORTK")]
+		public uint8 k;
+		[CCode(cname = "PORTL")]
+		public uint8 l;
+	}
+	namespace DDR {
+		[CCode(cname = "DDRA")]
+		public uint8 a;
+		[CCode(cname = "DDRB")]
+		public uint8 b;
+		[CCode(cname = "DDRC")]
+		public uint8 c;
+		[CCode(cname = "DDRD")]
+		public uint8 d;
+		[CCode(cname = "DDRE")]
+		public uint8 e;
+		[CCode(cname = "DDRF")]
+		public uint8 f;
+		[CCode(cname = "DDRG")]
+		public uint8 g;
+		[CCode(cname = "DDRH")]
+		public uint8 h;
+		[CCode(cname = "DDRI")]
+		public uint8 i;
+		[CCode(cname = "DDRJ")]
+		public uint8 j;
+		[CCode(cname = "DDRK")]
+		public uint8 k;
+		[CCode(cname = "DDRL")]
+		public uint8 l;
+	}
 
 	public uint8 TIFR0;
 	public const uint8 TOV0;
