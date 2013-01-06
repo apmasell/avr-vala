@@ -1,0 +1,51 @@
+.TH avr-valac 1 "04 Jan 2013" "vala-0.18" "AVR Vala"
+.SH NAME
+avr-valac \- compiler that translates Vala source code into C source and header files for AVR microcontrollers
+.SH SYNOPSIS
+.B valac
+[\fIOPTION\fR]... [\fIFILE\fR]...
+.SH DESCRIPTION
+Vala is a new programming language that aims to bring modern programming
+language features to GNOME developers without imposing any additional runtime
+requirements and without using a different ABI compared to applications and
+libraries written in C.
+
+avr-valac is a modified Vala compiler that generates code for AVR
+microcontrollers. It provides a binding of the AVR libc and per-controller
+settings. It also capable of generating interrupt handlers. Most of the options
+are the same as
+.BR valac (1).
+Only the differences are discussed in this manpage.
+
+.SH OPTIONS
+.TP
+.B \--mcu=\fIcontroller\fR
+The microcontroller to target. This is the same format as the \fB-mmcu\fR option to
+.BR avr-gcc (1).
+.SH FEATURES
+Typically, Vala is quite dependent on the GLib, which is obviously not
+available on the AVR microcontroller. Instead, AVR-Vala forces use of the POSIX
+profile in Vala to produce code that will run on the microcontroller, though
+this looses some of the higher-level features of the language. Also, while 
+.BR malloc (3)
+is available on the microcontroller, there are many reasons not to use it. The
+programmer must take care not to allocate memory using \fBnew\fR or using array
+copying (which is admittedly difficult) if \fBmalloc\fR is to be avoided.
+
+A new attribute, \fB[Interrupt(vector = "\fIvector\fB", block = \fIbool\fB]\fR
+that can be attached to methods to turn them into interrupt handlers (ISRs).
+The methods must be static (i.e., not instance methods), take no arguments,
+return no value, and do not throw errors. The \fIvector\fR is the vector name
+defined in the controllers header file (e.g., \fBUSB_COM_vect\fR,
+\fBTWI_vect\fR). If \fBblock\fR is true, the default, interrupts are disabled
+when the handler is activated. If not, the compiler will allow nested
+interrupts. This runs the risk of stack overflows or reentry of the same ISR
+where the hardware does not clear the interrupt flag. Naked ISRs are not
+supported. The function is still emitted as regular code, so normal code may
+call a function decorated with an \fBInterrupt\fR attribute with no
+ill-effects.
+
+.SH HOMEPAGE AND BUG REPORT
+http://github.com/apmasell/avr-vala
+.SH AUTHORS
+Andre Masella.
