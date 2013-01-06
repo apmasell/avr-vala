@@ -60,6 +60,8 @@ class Avr.CodeGen : CCodeDelegateModule {
 				Report.error (m.source_reference, "Interrupts must return void.");
 			if (m.get_parameters ().size > 0)
 				Report.error (m.source_reference, "Interrupts must take no parameters.");
+			if (m.get_error_types ().size > 0)
+				Report.error (m.source_reference, "Interrupts must not throw error domains.");
 			if (m.access != SymbolAccessibility.PUBLIC) {
 				Report.warning (m.source_reference, "Interrupts should be public.");
 			}
