@@ -1197,104 +1197,305 @@ namespace Posix {
 
 	public uint8 UDTST;
 
-	public uint8 UEINTX;
-	public const uint8 TXINI;
-	public const uint8 STALLEDI;
-	public const uint8 RXOUTI;
-	public const uint8 RXSTPI;
-	public const uint8 NAKOUTI;
-	public const uint8 RWAL;
-	public const uint8 NAKINI;
-	public const uint8 FIFOCON;
+	namespace Usb {
+		[CCode(cname = "UEINTX")]
+		public Status status;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Status {
+			/**
+			 * Set by the hardwher whena NAK hankdshake has ben sent inrepsonse of the in request from the host.
+			 *
+			 * Shall be cleared by software. Setting by software has no effect.
+			 */
+			[CCode(cname = "(1 << NAKINI)")]
+			NAK_IN,
+			/**
+			 * Set by hardware to signal that the current bank is free and can be filled.
+			 *
+			 * This bis is cleared if the endpoint is an out endpoint.
+			 */
+			[CCode(cname = "(1 << TXINI)")]
+			TX_IN,
+			/**
+			 * Set by hardware to signal that a stall hankshake has been sent or that a CRC error has been detected in an out isochronous endpoint.
+			 *
+			 * Shall be cleared by software. Setting by software has no effect.
+			 */
+			[CCode(cname = "(1 << STALLEDI)")]
+			STALLED,
+			/**
+			 * Set to kill the last written bank.
+			 *
+			 * Cleared by hardware when the bank is killed. Clearing by software has no effect.
+			 */
+			[CCode(cname = "(1 << RXOUTI)")]
+			KILL_BK,
+			/**
+			 * Set by hardware to signal that the current bank contains a new packet.
+			 *
+			 * Shall be cleared by software to handshake the interrupt. Setting by software has no effect.
+			 */
+			[CCode(cname = "(1 << RXOUTI)")]
+			RX_OUT,
+			/**
+			 * Set by hardware to signal that the current bank contains a new valid setup packet.
+			 *
+			 * Shall be cleared by software to hankshake the interript. Setting by software has no effect.
+			 *
+			 * This is never set if the endpoint is an in endpoint.
+			 */
+			[CCode(cname = "(1 << RXSTPI)")]
+			RX_SETUP,
+			/**
+			 * Set by hardware when a NAK handshake has been sent in response of a out/ping request from the host..
+			 *
+			 * Shall be cleared by software. Setting by sofware has no effect.
+			 */
+			[CCode(cname = "(1 << NAKOUTI)")]
+			NAK_OUT,
+			/**
+			 * Set by hardware to indicate that, for an in endpoint, the current bank is not full, the software can push data into the FIFO, or, for an out endpoint, the current bank is not empty, that is, the software can read data from the FIFO.
+			 *
+			 * This bit is never set if {@link Connection.STALLRQ} is set, or in case of error.
+			 *
+			 * Cleared by the hardware otherwise.
+			 *
+			 * This bit shall not be used for the control endpoint.
+			 */
+			[CCode(cname = "(1 << RWAL)")]
+			RW_ALLOW,
+			/**
+			 * FIFO control bit
+			 *
+			 * For out and setup endpoints, set by the hardware when a new out message is stored in the current bank, at the same time than {@link RX_OUT} or {@link RX_SETUP}.
+			 *
+			 * Clear to free the current bank and switch to the following bank. Setting by software has no effect.
+			 *
+			 * For in endpoints, set by hardware when the current bank is free, at the same time than {@link TX_IN}.
+			 *
+			 * Clear to send the FIFO data and switch the bank. Setting by software has no effect.
+			 */
+			[CCode(cname = "(1 << FIFOCON)")]
+			FIFOCON
+		}
 
-	public uint8 UENUM;
-	public const uint8 UENUM_0;
-	public const uint8 UENUM_1;
-	public const uint8 UENUM_2;
+		[CCode(cname = "UENUM")]
+		public uint8 endpoint;
 
-	public uint8 UERST;
-	public const uint8 EPRST0;
-	public const uint8 EPRST1;
-	public const uint8 EPRST2;
-	public const uint8 EPRST3;
-	public const uint8 EPRST4;
-	public const uint8 EPRST5;
-	public const uint8 EPRST6;
+		[CCode(cname = "UERST")]
+		public uint8 endpoint_fifo;
 
-	public uint8 UECONX;
-	public const uint8 EPEN;
-	public const uint8 RSTDT;
-	public const uint8 STALLRQC;
-	public const uint8 STALLRQ;
+		[CCode(cname = "UECONX")]
+		public Connection connection;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Connection {
+			/**
+			 * Enable the endpoint according to the device configuration.
+			 *
+			 * Endpoint 0 shall always be enabled after a hardware or USB reset and
+			 * participate in the device configuration.
+			 */
+			[CCode(cname = "(1 << EPEN)")]
+			EP_ENABLE,
+			/**
+			 * Automatically clear the data toggle sequence.
+			 *
+			 * For the out endpoint, the next received packet wil have the data
+			 * toggle 0. For the in endpoint, the next packet to be sent will have
+			 * the data toggle 0.
+			 *
+			 * Cleared by hardware instantaneously. The firmware does not have to
+			 * wait that the bit is cleared. Clearing by software as no effect.
+			 */
+			[CCode(cname = "(1 << RSTDT)")]
+			RSTDT,
+			/**
+			 * Disable the stall mechanism.
+			 *
+			 * Cleared by hardware immediately after the set. Clearing by software as no effect.
+			 */
+			[CCode(cname = "(1 << STALLRQC)")]
+			STALLRQC,
+			/**
+			 * Request a stall answer to the host for the next handshake.
+			 *
+			 * Cleared when a new setup is received. Clearing by software as no effect.
+			 */
+			[CCode(cname = "(1 << STALLRQ)")]
+			STALLRQ
+		}
 
-	public uint8 UECFG0X;
-	public const uint8 EPDIR;
-	public const uint8 EPTYPE0;
-	public const uint8 EPTYPE1;
+		[CCode(cname = "UECFG0X")]
+		public EndpointConfig endpont_config;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointConfig {
+			/**
+			 * Configure an in direction. Otherwies, output.
+			 */
+			[CCode(cname = "(1 << EPDIR)")]
+			INPUT,
+			[CCode(cname = "0")]
+			CONTROL,
+			[CCode(cname = "(1 << ETYPE1)")]
+			BULK,
+			[CCode(cname = "(1 << ETYPE0)")]
+			ISOCHRONOUS,
+			[CCode(cname = "((1 << ETYPE1) | (1 << ETYPE0))")]
+			INTERRUPT
+		}
 
-	public uint8 UECFG1X;
-	public const uint8 ALLOC;
-	public const uint8 EPBK0;
-	public const uint8 EPBK1;
-	public const uint8 EPSIZE0;
-	public const uint8 EPSIZE1;
-	public const uint8 EPSIZE2;
+		[CCode(cname = "UECFG1X")]
+		public EndpointSetup endpoint_setup;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointSetup {
+			/**
+			 * Allocate memory for the endpoint.
+			 *
+			 * Clear to free the memory.
+			 */
+			[CCode(cname = "ALLOC")]
+			ALLOC,
+			[CCode(cname = "(1 << EPBK0)")]
+			DOUBLE_BANK,
+			[CCode(cname = "0")]
+			SIZE8,
+			[CCode(cname = "(1 << EPSIZE0)")]
+			SIZE16,
+			[CCode(cname = "(1 << EPSIZE1)")]
+			SIZE32,
+			[CCode(cname = "((1 << EPSIZE1) | (1 << EPSIZE0))")]
+			SIZE64,
+			[CCode(cname = "(1 << EPSIZE2)")]
+			SIZE128,
+			[CCode(cname = "((1 << EPSIZE2) | (1 << EPSIZE0))")]
+			SIZE256
+		}
 
-	public uint8 UESTA0X;
-	public const uint8 NBUSYBK0;
-	public const uint8 NBUSYBK1;
-	public const uint8 DTSEQ0;
-	public const uint8 DTSEQ1;
-	public const uint8 UNDERFI;
-	public const uint8 OVERFI;
-	public const uint8 CFGOK;
+		[CCode(cname = "UESTA0X")]
+		public EndpointStatus endpoint_status;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointStatus {
+			/**
+			 * Set by the hardware when the endpoint size and bank parameter in
+			 * {@link endpoint_setup} are correct.
+			 *
+			 * This is updated when {@link EndpointSetup.ALLOC} is set. If this bit
+			 * is cleared, {@link endpoint_setup} should be reprogrammed with the
+			 * correct size and bank.
+			 */
+			[CCode(cname = "(1 << CFGOK)")]
+			CFGOK,
+			/**
+			 * Set by the hardware when underflow occurs in an isochronous endpoint.
+			 */
+			[CCode(cname = "(1 << UNDERFI)")]
+			UNDERFI,
+			/**
+			 * Set by the hardware when overflow occurs in an isochronous endpoint.
+			 */
+			[CCode(cname = "(1 << OVERFI)")]
+			OVERFI,
+			/**
+			 * Set by the hardware to indicate the PID of the current is Data1.
+			 *
+			 * For out transfer, this value indicates the last data toggle received
+			 * on the current bank.  For in transfer, this value indicates the toggle
+			 * that will be used for the next packet sent. This is not relative to
+			 * the current bank.
+			 */
+			[CCode(cname = "(1 << DTSEQ0)")]
+			DATA1,
+			/**
+			 * Set by the hardware to indicate the number of busy bank.
+			 *
+			 * For in endpoint, it indicates sthe number of busy banks, filled by the
+			 * user, ready for in transfer. For out endpoint, it indicates the number
+			 * of busy banks filled by out transaction from the host.
+			 */
+			[CCode(cname = "0")]
+			ZERO_BANKS_BUSY,
+			[CCode(cname = "(1 << NBUSYBK0)")]
+			ONE_BANK_BUSY,
+			[CCode(cname = "(1 << NBUSYBK1)")]
+			TWO_BANKS_BUSY
+		}
 
-	public uint8 UESTA1X;
-	public const uint8 CURRBK0;
-	public const uint8 CURRBK1;
-	public const uint8 CTRLDIR;
+		[CCode(cname = "UESTA1X")]
+		public EndpointStatus2 endpoint_status2;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointStatus2 {
+			/**
+			 * Set by hardware after a setup packet and gives the direction of the following packet.
+			 */
+			[CCode(cname = "CTRLDIR")]
+			INPUT,
+			/**
+			 * Set by hardware to indicate the number of the current bank.
+			 */
+			[CCode(cname = "(1 << CURRBK0)")]
+			BANK1
+		}
 
-	public uint8 UEIENX;
-	public const uint8 TXINE;
-	public const uint8 STALLEDE;
-	public const uint8 RXOUTE;
-	public const uint8 RXSTPE;
-	public const uint8 NAKOUTE;
-	public const uint8 NAKINE;
-	public const uint8 FLERRE;
+		[CCode(cname = "UEIENX")]
+		public Interrupt interrupt_enable;
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Interrupt {
+			/**
+			 * Enable an interrupt when {@link Status.TX_IN} is set.
+			 */
+			[CCode(cname = "(1 << TXINE)")]
+			TX_IN,
+			/**
+			 * Enable an interrupt when {@link Status.STALLED} is set.
+			 */
+			[CCode(cname = "(1 << STALLEDE)")]
+			STALLED,
+			/**
+			 * Enable an interrupt when {@link Status.RX_OUT} is set.
+			 */
+			[CCode(cname = "(1 << RXOUTE)")]
+			RX_OUT,
+			/**
+			 * Enable an interrupt when {@link Status.RX_SETUP} is set.
+			 */
+			[CCode(cname = "(1 << RXSTPE)")]
+			RX_SETUP,
+			/**
+			 * Enable an interrupt when {@link Status.NAK_OUT} is set.
+			 */
+			[CCode(cname = "(1 << NAKOUTE)")]
+			NAK_OUT,
+			/**
+			 * Enable an interrupt when {@link Status.NAK_IN} is set.
+			 */
+			[CCode(cname = "NAKINE")]
+			NAK_IN,
+			/**
+			 * Enable an interrupt when {@link Status.OVERFI} or {@link Status.UNDERFI} is set.
+			 */
+			[CCode(cname = "FLERRE")]
+			FL_ERR
+		}
 
-	public uint8 UEDATX;
-	public const uint8 DAT0;
-	public const uint8 DAT1;
-	public const uint8 DAT2;
-	public const uint8 DAT3;
-	public const uint8 DAT4;
-	public const uint8 DAT5;
-	public const uint8 DAT6;
-	public const uint8 DAT7;
+		[CCode(cname = "UEDATX")]
+		public uint8 data;
 
-	public uint8 UEBCX;
+		[CCode(cname = "UEBCX")]
+		public uint16 byte_count;
+		[CCode(cname = "UEBCLX")]
+		public uint8 byte_count_low;
+		[CCode(cname = "UEBCHX")]
+		public uint8 byte_count_high;
 
-	public uint8 UEBCLX;
-	public const uint8 BYCT0;
-	public const uint8 BYCT1;
-	public const uint8 BYCT2;
-	public const uint8 BYCT3;
-	public const uint8 BYCT4;
-	public const uint8 BYCT5;
-	public const uint8 BYCT6;
-	public const uint8 BYCT7;
-
-	public uint8 UEBCHX;
-
-	public uint8 UEINT;
-	public const uint8 EPINT0;
-	public const uint8 EPINT1;
-	public const uint8 EPINT2;
-	public const uint8 EPINT3;
-	public const uint8 EPINT4;
-	public const uint8 EPINT5;
-	public const uint8 EPINT6;
+		[CCode(cname = "UEINT")]
+		public uint8 interrupt_endpoint;
 
 	public uint8 UPERRX;
 
@@ -1303,9 +1504,9 @@ namespace Posix {
 	public uint8 UPBCHX;
 
 	public uint8 UPINT;
+	}
 
 	public uint8 OTGTCON;
-
 	public const int SPM_PAGESIZE;
 	public const size_t RAMSTART;
 	public const size_t RAMSIZE;
