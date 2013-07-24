@@ -179,6 +179,7 @@ class Avr.Compiler {
 
 		if (mcu == null) {
 			Report.error (null, "A microcontroller architecture must be supplied with --mcu.");
+			return quit();
 		}
 
 		context.assert = false;
@@ -312,8 +313,12 @@ class Avr.Compiler {
 			if (cc_command == null && Environment.get_variable ("CC") != null) {
 				cc_command = Environment.get_variable ("CC");
 			}
+			context.thread = false;
 			var options = cc_options ?? new string[] { };
 			options += @"-mmcu=$(mcu)";
+			options += "--std=c99";
+			unowned string? pkg_config = Environment.get_variable("AVR_PKG_CONFIG_PATH");
+			Environment.set_variable("PKG_CONFIG_PATH", pkg_config == null ? Package.PKG_CONFIG_DIR : @"$(pkg_config):$(Package.PKG_CONFIG_DIR)", true);
 			ccompiler.compile (context, cc_command ?? "avr-gcc", options);
 		}
 

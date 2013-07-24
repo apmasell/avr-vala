@@ -1,0 +1,7 @@
+prefix=@prefix@
+includedir=${prefix}/lib/avr/include
+
+Name: GLib AVR Compatibility Library
+Description: Provides GLib definitions for Vala on AVR microcontrollers
+Version: 1.0
+Cflags: -I${includedir}

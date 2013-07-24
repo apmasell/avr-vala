@@ -5,10 +5,25 @@ bin_PROGRAMS = \
 	avr-valac \
 	$(NULL)
 
-vapidir = $(datadir)/vala-avr/vapi
-dist_vapi_DATA = \
+avrvapidir = $(datadir)/vala-avr/vapi
+avrlibdir = $(libdir)/avr/lib
+avrincludedir = $(libdir)/avr/include
+avrpkgconfigdir = $(avrlibdir)/pkgconfig
+
+dist_avrvapi_DATA = \
 	avr.vapi \
 	atmega32u4.vapi \
+	$(NULL)
+
+dist_avrinclude_HEADERS = \
+	avr-glib.h \
+	$(NULL)
+
+dist_avrlib_DATA = \
+	$(NULL)
+
+dist_avrpkgconfig_DATA = \
+	avr.pc \
 	$(NULL)
 
 avr_valac_VALAFLAGS = \
@@ -18,7 +33,8 @@ avr_valac_VALAFLAGS = \
 avr_valac_CPPFLAGS = \
 	$(LIBVALA_CFLAGS) \
 	$(GLIB_CFLAGS) \
-	-DAVR_VAPI_DIR="\"$(vapidir)\"" \
+	-DAVR_VAPI_DIR="\"$(avrvapidir)\"" \
+	-DAVR_PKG_CONFIG_DIR="\"$(avrpkgconfigdir)\"" \
 	$(NULL)
 
 avr_valac_LDFLAGS = \

@@ -32,5 +32,6 @@ AC_SUBST(LIBVALA_LIBS)
 
 AC_CONFIG_FILES([
 	Makefile
+	avr.pc
 ])
 AC_OUTPUT
