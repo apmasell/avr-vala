@@ -1,0 +1,9 @@
+prefix=@prefix@
+libdir=${prefix}/lib/avr/lib
+includedir=${prefix}/lib/avr/include
+
+Name: Vala Asynchronous Library
+Description: Allows GLib/Vala-style coroutine on AVR microcontrollers
+Version: 1.0
+Requires: avr
+Cflags: -I${includedir} ${libdir}/aavr.c

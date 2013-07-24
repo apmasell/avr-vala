@@ -13,17 +13,21 @@ avrpkgconfigdir = $(avrlibdir)/pkgconfig
 dist_avrvapi_DATA = \
 	avr.vapi \
 	atmega32u4.vapi \
+	gio-2.0.vapi \
 	$(NULL)
 
 dist_avrinclude_HEADERS = \
 	avr-glib.h \
+	aavr.h \
 	$(NULL)
 
 dist_avrlib_DATA = \
+	aavr.c \
 	$(NULL)
 
 dist_avrpkgconfig_DATA = \
 	avr.pc \
+	gio-2.0.pc \
 	$(NULL)
 
 avr_valac_VALAFLAGS = \

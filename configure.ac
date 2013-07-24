@@ -33,5 +33,6 @@ AC_SUBST(LIBVALA_LIBS)
 AC_CONFIG_FILES([
 	Makefile
 	avr.pc
+	gio-2.0.pc
 ])
 AC_OUTPUT
