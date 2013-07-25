@@ -799,6 +799,7 @@ class Avr.Compiler {
 	static bool experimental;
 	static bool experimental_non_null;
 	static bool fatal_warnings;
+	static int f_cpu = 0;
 	static string header_filename;
 	static string includedir;
 	static string internal_header_filename;
@@ -838,6 +839,7 @@ class Avr.Compiler {
 		{ "enable-experimental-non-null", 0, 0, OptionArg.NONE, ref experimental_non_null, "Enable experimental enhancements for non-null types", null },
 		{ "enable-version-header", 0, 0, OptionArg.NONE, ref enable_version_header, "Write vala build version in generated files", null },
 		{ "fatal-warnings", 0, 0, OptionArg.NONE, ref fatal_warnings, "Treat warnings as fatal", null },
+		{ "freq", 0, 0, OptionArg.INT, ref f_cpu, "The CPU frequence (F_CPU)", "NUM" },
 		{ "header", 'H', 0, OptionArg.FILENAME, ref header_filename, "Output C header file", "FILE" },
 		{ "includedir", 0, 0, OptionArg.FILENAME, ref includedir, "Directory used to include the C header file", "DIRECTORY" },
 		{ "main", 0, 0, OptionArg.STRING, ref entry_point, "Use SYMBOL as entry point", "SYMBOL..." },
@@ -1026,6 +1028,9 @@ class Avr.Compiler {
 			var options = cc_options ?? new string[] { };
 			options += @"-mmcu=$(mcu)";
 			options += "--std=c99";
+			options += "-O2";
+			if (f_cpu > 0)
+				options += @"-DF_CPU=$(f_cpu)";
 			unowned string? pkg_config = Environment.get_variable("AVR_PKG_CONFIG_PATH");
 			Environment.set_variable("PKG_CONFIG_PATH", pkg_config == null ? Package.PKG_CONFIG_DIR : @"$(pkg_config):$(Package.PKG_CONFIG_DIR)", true);
 			ccompiler.compile (context, cc_command ?? "avr-gcc", options);
