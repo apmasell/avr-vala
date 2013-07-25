@@ -162,7 +162,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 		cfile.add_include ("avr-glib.h");
 		if (m.coroutine) {
 			if (!Compiler.allow_async) {
-				Report.error(expr.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
+				Report.error(m.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
 			}
 			if (m.is_abstract || m.is_virtual || is_variadic (m) || m is CreationMethod || m is DynamicMethod) {
 				Report.error(m.source_reference, "Asynchronous methods cannot be abstract, virtual, constructor or dynamic methods.");
