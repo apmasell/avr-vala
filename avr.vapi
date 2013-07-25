@@ -2285,13 +2285,13 @@ namespace Posix {
 	 * Disables all interrupts by clearing the global interrupt mask.
 	 * @see atomic
 	 */
-	[CCode(cname = "cli", cheader_filename = "interrupt.h")]
+	[CCode(cname = "cli", cheader_filename = "avr/interrupt.h")]
 	public void disable_interrupts();
 	/**
 	 * Enables interrupts by setting the global interrupt mask.
 	 * @see atomic
 	 */
-	[CCode(cname = "sei", cheader_filename = "interrupt.h")]
+	[CCode(cname = "sei", cheader_filename = "avr/interrupt.h")]
 	public void enable_interrupts();
 	/**
 	 * Terminates the application.
