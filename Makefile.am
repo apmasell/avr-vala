@@ -11,6 +11,8 @@ avrincludedir = $(libdir)/avr/include
 avrpkgconfigdir = $(avrlibdir)/pkgconfig
 
 dist_avrvapi_DATA = \
+	aavr-semaphore.deps \
+	aavr-semaphore.vapi \
 	avr.vapi \
 	atmega32u4.vapi \
 	gio-2.0.vapi \
@@ -19,13 +21,16 @@ dist_avrvapi_DATA = \
 dist_avrinclude_HEADERS = \
 	avr-glib.h \
 	aavr.h \
+	aavr-semaphore.h \
 	$(NULL)
 
 dist_avrlib_DATA = \
 	aavr.c \
+	aavr-semaphore.c \
 	$(NULL)
 
 dist_avrpkgconfig_DATA = \
+	aavr-semaphore.pc \
 	avr.pc \
 	gio-2.0.pc \
 	$(NULL)

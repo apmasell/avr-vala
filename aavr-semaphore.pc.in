@@ -1,0 +1,9 @@
+prefix=@prefix@
+libdir=${prefix}/lib/avr/lib
+includedir=${prefix}/lib/avr/include
+
+Name: Vala Semaphore Library
+Description: Basic semaphore library for Vala on AVR microcontrollers
+Version: 1.0
+Requires: gio-2.0
+Cflags: -I${includedir} ${libdir}/aavr-semaphore.c
