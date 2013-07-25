@@ -54,12 +54,6 @@ class Avr.CodeGen : CCodeDelegateModule {
 	 * Wrangle the cast from a method.callback to a SoureFunc delegate by inserting a NULL in the finished_context parameter.
 	 */
 	public override CCodeExpression get_implicit_cast_expression (CCodeExpression source_cexpr, DataType? expression_type, DataType? target_type, CodeNode? node) {
-		if (expression_type != null)
-		stderr.printf("expression_type != null %s\n", expression_type.to_string());
-		if (expression_type != null && expression_type is MethodType)
-		stderr.printf("expression_type != null && expression_type is MethodType\n");
-		if (expression_type != null && expression_type is MethodType && ((MethodType) expression_type).method_symbol.is_async_callback)
-		stderr.printf("expression_type != null && expression_type is MethodType && ((MethodType) expression_type).method_symbol.is_async_callback)");
 		if (expression_type != null && expression_type is MethodType && ((MethodType) expression_type).method_symbol.is_async_callback) {
 
 			var method = ((MethodType) expression_type).method_symbol;
