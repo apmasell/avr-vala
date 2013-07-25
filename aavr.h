@@ -42,6 +42,14 @@ void aavr_run(
 	AavrPoll idle,
 	void *idle_context);
 /**
+ * Update the clock.
+ *
+ * This function should be called from an interrupt to increment the elapsed
+ * time in all the queued events.
+ */
+void aavr_tick(
+	void);
+/**
  * Wait for an event or timeout asynchronously.
  *
  * @poll: (closure poll_context) (allow-none): the callback to wake up the child.

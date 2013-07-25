@@ -39,9 +39,8 @@ namespace AsyncAvr {
 	 * This may be called only from main code, not inside coroutines, poll or
 	 * interrupts.
 	 *
-	 * For the timeouts to function correctly, //TIMER0// must be initialised and
-	 * the overflow interrupt enabled. Ever overflow of this timer signals one
-	 * tick to the main loop, so the units of time are always in timer overflows.
+	 * For the timeouts to function correctly, {@link tick} must be called from a
+	 * timer interrupt.
 	 *
 	 * @param idle a function to run when no work is scheduled. Depending on work
 	 * flow, this might be an opportunity to put the processor to sleep.
@@ -50,24 +49,32 @@ namespace AsyncAvr {
 	public void run(Poll? idle = null);
 
 	/**
+	 * Update the clock.
+	 *
+	 * This function should be called from an interrupt to increment the elapsed
+	 * time in all the queued events.
+	 */
+	[CCode(cname = "aavr_tick")]
+	public void tick();
+
+	/**
 	 * Add an event to main loop and wait asynchronously for it to finish.
 	 *
 	 * This will cause a coroutine to wait for a particular event to happen.
 	 * There are three reasons for control to be returned the controller:
-	 * * the event the user was waiting for occured
+	 * * the event the user was waiting for occurred
 	 * * a specified amount of time has elapsed
-	 * * the {@link quit} method has ben called.
+	 * * the {@link quit} method has been called.
 	 *
 	 * @param poll the delegate that can cause {@link wait} to return. This
 	 * delegate will be called every pass of the main loop to determine if it is
 	 * indeed time for this coroutine to continue.
 	 *
 	 * @param timeout the maximum amount of time before control should be
-	 * returned even if the specified event has not occured. This is in units of
-	 * //TIMER0// overflows.
+	 * returned even if the specified event has not occurred.
 	 *
-	 * @param time_elapsed the number of //TIMER0// overflows that have occured
-	 * since the coroutine called this method.
+	 * @param time_elapsed the number of ticks that have occurred since the
+	 * coroutine called this method.
 	 *
 	 * @return the reason the wait was finished. This can be a combination of
 	 * reasons as all reasons are tested every time.

@@ -71,6 +71,15 @@ void aavr_run(
 	in_main_loop = false;
 }
 
+/* Update all the elapsed time values every clock tick. */
+void aavr_tick(
+	void) {
+	AavrMonitor it;
+	for (it = to_poll; it != NULL; it = it->next) {
+		it->elapsed++;
+	}
+}
+
 void aavr_wait(
 	AavrPoll poll,
 	void *poll_context,
@@ -123,12 +132,4 @@ int aavr_wait_finish(
 		*time_elapsed = self->elapsed;
 	free(self);
 	return status;
-}
-
-/* Update all the elapsed time values every clock tick. */
-ISR(TIMER0_OVF_vect) {
-	AavrMonitor it;
-	for (it = to_poll; it != NULL; it = it->next) {
-		it->elapsed++;
-	}
 }
