@@ -34,4 +34,7 @@ static inline int g_atomic_int_dec_and_test(
 	}
 	return result;
 }
+
+#define BIT_GET(reg, bit) (reg & _BV(bit))
+#define BIT_SET(reg, bit, value) ((value) ? (reg |= _BV(bit)) :  (reg &= ~(_BV(bit))))
 #endif

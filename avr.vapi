@@ -133,6 +133,11 @@ public struct int {
 [CCode (cname = "unsigned int", default_value = "0U")]
 [IntegerType (rank = 7)]
 public struct uint {
+	[CCode(cname = "BIT_GET", cheader_filename = "avr-glib.h")]
+	public bool get(int bit);
+	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void set(int x, bool @value);
 }
 [CCode (cname = "short", default_value = "0")]
 [IntegerType (rank = 4, min = -32768, max = 32767)]
@@ -234,6 +239,11 @@ public struct uint8 {
 	 */
 	[CCode(cname = "__builtin_avr_fmul", cheader_filename = "avr/builtins.h")]
 	public uint8 fmul(uint8 b);
+	[CCode(cname = "BIT_GET", cheader_filename = "avr-glib.h")]
+	public bool get(int bit);
+	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void set(int x, bool @value);
 }
 /**
  * A {@link uint8} located in flash ROM.
@@ -286,6 +296,12 @@ public struct uint16 {
 	 */
 	[CCode(cname = "pgm_read_word_far", cheader_filename = "avr/io.h,avr/pgmspace.h")]
 	public static uint16 read_far(uint32 address);
+
+	[CCode(cname = "BIT_GET", cheader_filename = "avr-glib.h")]
+	public bool get(int bit);
+	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void set(int x, bool @value);
 }
 /**
  * A {@link uint16} located in flash ROM.
@@ -328,6 +344,12 @@ public struct uint32 {
 	 */
 	[CCode(cname = "pgm_read_dword_far", cheader_filename = "avr/io.h,avr/pgmspace.h")]
 	public static uint32 read_far(uint32 address);
+
+	[CCode(cname = "BIT_GET", cheader_filename = "avr-glib.h")]
+	public bool get(int bit);
+	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void set(int x, bool @value);
 }
 /**
  * A {@link int32} located in flash ROM.
@@ -352,6 +374,12 @@ public struct prog_int64 {
 public struct uint64 {
 	[CCode(cname = "ffsll")]
 	public int ffs();
+
+	[CCode(cname = "BIT_GET", cheader_filename = "avr-glib.h")]
+	public bool get(int bit);
+	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void set(int x, bool @value);
 }
 /**
  * A {@link uint64} located in flash ROM.
