@@ -38,7 +38,7 @@ class Avr.CCodeInterrupt : CCodeNode {
 	}
 
 	public override void write (CCodeWriter writer) {
-		writer.write_string ("__ISR(");
+		writer.write_string ("ISR(");
 		writer.write_string (vector);
 		writer.write_string (", ");
 		writer.write_string (block ? "ISR_BLOCK" : "ISR_NOBLOCK");
