@@ -99,6 +99,6 @@ namespace GLib {
 
 	[CCode(cname = "AavrAsyncCallback", scope = "async")]
 	public delegate void AsyncReadyCallback(owned AsyncResult finish_context);
-	[CCode(cname = "GSourceFunc")]
+	[CCode(cname = "GSourceFunc", scope = "async")]
 	public delegate bool SourceFunc();
 }
