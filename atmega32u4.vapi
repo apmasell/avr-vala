@@ -1,8 +1,382 @@
 [CCode(cheader_filename = "avr/io.h", cprefix = "")]
 namespace Posix {
-	namespace Pin {
-		[CCode(cname = "PINA")]
+	namespace Analog {
+		[CCode(cname = "uint8_t")]
+		public enum Channel {
+			[CCode(cname = "0b000000")]
+			ADC0,
+			[CCode(cname = "0b000001")]
+			ADC1,
+			[CCode(cname = "0b000100")]
+			ADC4,
+			[CCode(cname = "0b000101")]
+			ADC5,
+			[CCode(cname = "0b000110")]
+			ADC6,
+			[CCode(cname = "0b000111")]
+			ADC7,
+			[CCode(cname = "0b001001")]
+			ADC1_ADC0_10X,
+			[CCode(cname = "0b001011")]
+			ADC1_ADC0_200X,
+			[CCode(cname = "0b010000")]
+			ADC0_ADC1_1X,
+			[CCode(cname = "0b010100")]
+			ADC4_ADC1_1X,
+			[CCode(cname = "0b010101")]
+			ADC5_ADC1_1X,
+			[CCode(cname = "0b010110")]
+			ADC6_ADC1_1X,
+			[CCode(cname = "0b010111")]
+			ADC7_ADC1_1X,
+			[CCode(cname = "0b011110")]
+			BAND_GAP,
+			[CCode(cname = "0b011111")]
+			GROUND,
+			[CCode(cname = "0b100000")]
+			ADC8,
+			[CCode(cname = "0b100001")]
+			ADC9,
+			[CCode(cname = "0b100010")]
+			ADC10,
+			[CCode(cname = "0b100011")]
+			ADC11,
+			[CCode(cname = "0b100100")]
+			ADC12,
+			[CCode(cname = "0b100101")]
+			ADC13,
+			[CCode(cname = "0b100110")]
+			ADC1_ADC0_40X,
+			[CCode(cname = "0b100111")]
+			TEMPERATURE,
+			[CCode(cname = "0b101000")]
+			ADC4_ADC0_10X,
+			[CCode(cname = "0b101001")]
+			ADC5_ADC0_10X,
+			[CCode(cname = "0b101010")]
+			ADC6_ADC0_10X,
+			[CCode(cname = "0b101011")]
+			ADC7_ADC0_10X,
+			[CCode(cname = "0b101100")]
+			ADC4_ADC1_10X,
+			[CCode(cname = "0b101101")]
+			ADC5_ADC1_10X,
+			[CCode(cname = "0b101110")]
+			ADC6_ADC1_10X,
+			[CCode(cname = "0b101111")]
+			ADC7_ADC1_10X,
+			[CCode(cname = "0b110000")]
+			ADC4_ADC0_40X,
+			[CCode(cname = "0b110001")]
+			ADC5_ADC0_40X,
+			[CCode(cname = "0b110010")]
+			ADC6_ADC0_40X,
+			[CCode(cname = "0b110011")]
+			ADC7_ADC0_40X,
+			[CCode(cname = "0b110100")]
+			ADC4_ADC1_40X,
+			[CCode(cname = "0b110101")]
+			ADC5_ADC1_40X,
+			[CCode(cname = "0b110110")]
+			ADC6_ADC1_40X,
+			[CCode(cname = "0b110111")]
+			ADC7_ADC1_40X,
+			[CCode(cname = "0b111000")]
+			ADC4_ADC0_200X,
+			[CCode(cname = "0b111001")]
+			ADC5_ADC0_200X,
+			[CCode(cname = "0b111010")]
+			ADC6_ADC0_200X,
+			[CCode(cname = "0b111011")]
+			ADC7_ADC0_200X,
+			[CCode(cname = "0b111100")]
+			ADC4_ADC1_200X,
+			[CCode(cname = "0b111101")]
+			ADC5_ADC1_200X,
+			[CCode(cname = "0b111110")]
+			ADC6_ADC1_200X,
+			[CCode(cname = "0b111111")]
+			ADC7_ADC1_200X;
+			[CCode(cname = "ADC_SELECT")]
+			public void select();
+		}
+		[CCode(cname = "uint8")]
+		public enum Digitial0 {
+			[CCode(cname = "_BV(ADC0D)")]
+			P0,
+			[CCode(cname = "_BV(ADC1D)")]
+			P1,
+			[CCode(cname = "_BV(ADC2D)")]
+			P2,
+			[CCode(cname = "_BV(ADC3D)")]
+			P3,
+			[CCode(cname = "_BV(ADC4D)")]
+			P4,
+			[CCode(cname = "_BV(ADC5D)")]
+			P5,
+			[CCode(cname = "_BV(ADC6D)")]
+			P6,
+			[CCode(cname = "_BV(ADC7D)")]
+			P7
+		}
+		[CCode(cname = "uint8")]
+		public enum Digitial1 {
+			[CCode(cname = "_BV(AIN0D)")]
+			AIN0,
+			[CCode(cname = "_BV(AIN1D)")]
+			AIN1
+		}
+		[CCode(cname = "uint8")]
+		public enum Digital2 {
+			[CCode(cname = "_BV(ADC8D)")]
+			P8,
+			[CCode(cname = "_BV(ADC9D)")]
+			P9,
+			[CCode(cname = "_BV(ADC10D)")]
+			P10,
+			[CCode(cname = "_BV(ADC11D)")]
+			P11,
+			[CCode(cname = "_BV(ADC12D)")]
+			P12,
+			[CCode(cname = "_BV(ADC13D)")]
+			P13
+		}
+		[CCode(cname = "uint8_t")]
+		public enum Reference {
+			[CCode(cname = "0")]
+			AREF,
+			[CCode(cname = "_BV(REFS0)")]
+			AV_CC,
+			[CCode(cname = "(_BV(REFS0) | _BV(REFS1))")]
+			INTERNAL;
+			[CCode(cname = "ADMUX & (_BV(REFS0) | _BV(REFS1));")]
+			public static void get();
+			[CCode(cname = "BIT_MASK_SET(ADMUX, _BV(REFS0) | _BV(REFS1))")]
+			public void set();
+		}
+		[CCode(cname = "uint8_t")]
+		public enum Status {
+			[CCode(cname = "0")]
+			INTERRUPT_ON_TOGGLE,
+			[CCode(cname = "(_BV(ACIS1) | _BV(ACIS0))")]
+			INTERRUPT_ON_RISING,
+			[CCode(cname = "_BV(ACIS1)")]
+			INTERRUPT_ON_FALLING,
+			[CCode(cname = "_BV(ACIC)")]
+			CAPTURE_ENABLE,
+			[CCode(cname = "_BV(ACIE)")]
+			INTERRUPT_ENABLE,
+			[CCode(cname = "_BV(ACI)")]
+			INTERRUPT_FLAG,
+			[CCode(cname = "_BV(ACO)")]
+			SYNC_OUTPUT,
+			[CCode(cname = "_BV(ACBG)")]
+			BANDGAP_REF,
+			[CCode(cname = "_BV(ACD)")]
+			DISABLE
+		}
+		[CCode(cname = "uint8")]
+		[Flags]
+		public enum StatusA {
+			[CCode(cname = "_BV(ADPS0)")]
+			DIV_BY_2,
+			[CCode(cname = "_BV(ADPS1)")]
+			DIV_BY_4,
+			[CCode(cname = "(_BV(ADPS1) | _BV(ADPS0))")]
+			DIV_BY_8,
+			[CCode(cname = "_BV(ADPS2)")]
+			DIV_BY_16,
+			[CCode(cname = "(_BV(ADPS2) | _BV(ADPS0))")]
+			DIV_BY_32,
+			[CCode(cname = "(_BV(ADPS2) | _BV(ADPS1))")]
+			DIV_BY_64,
+			[CCode(cname = "(_BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0))")]
+			DIV_BY_128,
+			[CCode(cname = "_BV(ADIE)")]
+			INTERRUPT_ENABLE,
+			[CCode(cname = "_BV(ADIF)")]
+			INTERRUPT_FLAG,
+			[CCode(cname = "_BV(ADATE)")]
+			AUTO_TRIGGER_ENABLE,
+			[CCode(cname = "_BV(ADSC)")]
+			START_CONVERSTION,
+			[CCode(cname = "_BV(ADEN)")]
+			ENABLE
+		}
+		[CCode(cname = "uint8")]
+		public enum TriggerSource {
+			[CCode(cname = "0")]
+			FREE_RUN,
+			[CCode(cname = "_BV(ADTS0)")]
+			ANALOG_COMPARATOR,
+			[CCode(cname = "_BV(ADTS1)")]
+			EXTERNAL_INTERRUPT,
+			[CCode(cname = "(_BV(ADTS1) | _BV(ADTS0))")]
+			TIMER0_COMPARATOR,
+			[CCode(cname = "_BV(ADTS2)")]
+			TIMER0_OVERFLOW,
+			[CCode(cname = "(_BV(ADTS2) | _BV(ADTS0))")]
+			TIMER1_COMPARATOR,
+			[CCode(cname = "(_BV(ADTS2) | _BV(ADTS1))")]
+			TIMER1_OVERFLOW,
+			[CCode(cname = "(_BV(ADTS2) | _BV(ADTS1) | _BV(ADTS0))")]
+			TIMER1_CAPTURE,
+			[CCode(cname = "_BV(ADTS3)")]
+			TIMER4_OVERFLOW,
+			[CCode(cname = "(_BV(ADTS3) | _BV(ADTS0))")]
+			TIMER4_MATCH_A,
+			[CCode(cname = "(_BV(ADTS3) | _BV(ADTS1))")]
+			TIMER4_MATCH_B,
+			[CCode(cname = "(_BV(ADTS3) | _BV(ADTS1) | _BV(ADTS0))")]
+			TIMER4_MATCH_C;
+			[CCode(cname = "ADCSRB & (_BV(ADTS3) | _BV(ADTS2) | _BV(ADTS1) | _BV(ADTS0))")]
+			public static void get();
+			[CCode(cname = "BIT_MASK_SET(ADCSRB, _BV(ADTS3) | _BV(ADTS2) | _BV(ADTS1) | _BV(ADTS0))")]
+			public void set();
+		}
+		[CCode(cname = "BIT_GET(ADMUX, ADLAR)")]
+		public bool get_adjust_left();
+		[CCode(cname = "BIT_GET(ADCSRB, ADHSM)")]
+		public bool get_comparator_enable();
+		[CCode(cname = "BIT_GET(ADCSRB, ADHSM)")]
+		public bool get_high_speed();
+		[CCode(cname = "BIT_COND(ADMUX, ADLAR)")]
+		public void set_adjust_left(bool @value);
+		[CCode(cname = "BIT_COND(ADCSRB, ACME)")]
+		public void set_comparator_enable(bool @value);
+		[CCode(cname = "BIT_COND(ADCSRB, ADHSM)")]
+		public void set_high_speed(bool @value);
+
+		[CCode(cname = "ADC")]
+		public uint16 data;
+		[CCode(cname = "DIDR0")]
+		public Digitial0 digital_disable_0;
+		[CCode(cname = "DIDR1")]
+		public Digital1 digital_disable_1;
+		[CCode(cname = "DIDR2")]
+		public Digital2 digital_disable_2;
+		[CCode(cname = "ACSR")]
+		public Status status;
+		[CCode(cname = "ADCSRA")]
+		public StatusA status_a;
+	}
+	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
+	namespace Direction {
+		[CCode(cname = "DDRA")]
 		public uint8 a;
+		[CCode(cname = "DDRB")]
+		public uint8 b;
+		[CCode(cname = "DDRC")]
+		public uint8 c;
+		[CCode(cname = "DDRD")]
+		public uint8 d;
+		[CCode(cname = "DDRE")]
+		public uint8 e;
+		[CCode(cname = "DDRF")]
+		public uint8 f;
+		[CCode(cname = "DDRG")]
+		public uint8 g;
+		[CCode(cname = "DDRH")]
+		public uint8 h;
+		[CCode(cname = "DDRI")]
+		public uint8 i;
+		[CCode(cname = "DDRJ")]
+		public uint8 j;
+		[CCode(cname = "DDRK")]
+		public uint8 k;
+		[CCode(cname = "DDRL")]
+		public uint8 l;
+	}
+	namespace Interrupts {
+		[CCode(cname = "uint8")]
+		[Flags]
+		public enum ExternalA {
+			[CCode(cname = "0")]
+			LOW_0,
+			[CCode(cname = "_BV(ISC00)")]
+			EDGE_0,
+			[CCode(cname = "_BV(ISC01)")]
+			FALL_0,
+			[CCode(cname = "(_BV(ISC00) | _BV(ISC01))")]
+			RISING_0,
+			[CCode(cname = "0")]
+			LOW_1,
+			[CCode(cname = "_BV(ISC10)")]
+			EDGE_1,
+			[CCode(cname = "_BV(ISC11)")]
+			FALL_1,
+			[CCode(cname = "(_BV(ISC10) | _BV(ISC11))")]
+			RISING_1,
+			[CCode(cname = "0")]
+			LOW_2,
+			[CCode(cname = "_BV(ISC20)")]
+			EDGE_2,
+			[CCode(cname = "_BV(ISC21)")]
+			FALL_2,
+			[CCode(cname = "(_BV(ISC20) | _BV(ISC21))")]
+			RISING_2,
+			[CCode(cname = "0")]
+			LOW_3,
+			[CCode(cname = "_BV(ISC30)")]
+			EDGE_3,
+			[CCode(cname = "_BV(ISC31)")]
+			FALL_3,
+			[CCode(cname = "(_BV(ISC30) | _BV(ISC31))")]
+			RISING_3
+		}
+		[CCode(cname = "uint8")]
+		[Flags]
+		public enum ExternalB {
+			[CCode(cname = "0")]
+			LOW_4,
+			[CCode(cname = "_BV(ISC40)")]
+			EDGE_4,
+			[CCode(cname = "_BV(ISC41)")]
+			FALL_4,
+			[CCode(cname = "(_BV(ISC40) | _BV(ISC41))")]
+			RISING_4,
+			[CCode(cname = "0")]
+			LOW_5,
+			[CCode(cname = "_BV(ISC50)")]
+			EDGE_5,
+			[CCode(cname = "_BV(ISC51)")]
+			FALL_5,
+			[CCode(cname = "(_BV(ISC50) | _BV(ISC51))")]
+			RISING_5,
+			[CCode(cname = "0")]
+			LOW_6,
+			[CCode(cname = "_BV(ISC60)")]
+			EDGE_6,
+			[CCode(cname = "_BV(ISC61)")]
+			FALL_6,
+			[CCode(cname = "(_BV(ISC60) | _BV(ISC61))")]
+			RISING_6,
+			[CCode(cname = "0")]
+			LOW_7,
+			[CCode(cname = "_BV(ISC70)")]
+			EDGE_7,
+			[CCode(cname = "_BV(ISC71)")]
+			FALL_7,
+			[CCode(cname = "(_BV(ISC70) | _BV(ISC71))")]
+			RISING_7
+		}
+		[CCode(cname = "EICRA")]
+		public ExternalA enable_a;
+		[CCode(cname = "EICRB")]
+		public ExternalB enable_b;
+		[CCode(cname = "EIFR")]
+		public uint8 flags;
+		[CCode(cname = "EIMSK")]
+		public uint8 mask;
+		[CCode(cname = "PCICR")]
+		public bool pin_change_enable;
+		[CCode(cname = "PCIFR")]
+		public bool pin_change_flag;
+		[CCode(cname = "PCMSK0")]
+		public uint8 pin_change_mask;
+	}
+	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
+	namespace Pin {
 		[CCode(cname = "PINB")]
 		public uint8 b;
 		[CCode(cname = "PINC")]
@@ -26,6 +400,7 @@ namespace Posix {
 		[CCode(cname = "PINL")]
 		public uint8 l;
 	}
+	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
 	namespace Port {
 		[CCode(cname = "PORTA")]
 		public uint8 a;
@@ -52,56 +427,640 @@ namespace Posix {
 		[CCode(cname = "PORTL")]
 		public uint8 l;
 	}
-	namespace DDR {
-		[CCode(cname = "DDRA")]
-		public uint8 a;
-		[CCode(cname = "DDRB")]
-		public uint8 b;
-		[CCode(cname = "DDRC")]
-		public uint8 c;
-		[CCode(cname = "DDRD")]
-		public uint8 d;
-		[CCode(cname = "DDRE")]
-		public uint8 e;
-		[CCode(cname = "DDRF")]
-		public uint8 f;
-		[CCode(cname = "DDRG")]
-		public uint8 g;
-		[CCode(cname = "DDRH")]
-		public uint8 h;
-		[CCode(cname = "DDRI")]
-		public uint8 i;
-		[CCode(cname = "DDRJ")]
-		public uint8 j;
-		[CCode(cname = "DDRK")]
-		public uint8 k;
-		[CCode(cname = "DDRL")]
-		public uint8 l;
+	namespace Spi {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "0")]
+			SPEED_QUARTER,
+			[CCode(cname = "_BV(SPR0)")]
+			SPEED_SIXTEENTH,
+			[CCode(cname = "_BV(SPR1)")]
+			SPEED_SIXTY_FOURTH,
+			[CCode(cname = "(_BV(SPR1) | _BV(SPR1))")]
+			SPEED_ONE_TWENTY_EIGTH,
+			[CCode(cname = "_BV(CPHA)")]
+			SAMPLE_ON_TRAILING_EDGE,
+			[CCode(cname = "_BV(CPOL)")]
+			CLOCK_IDLE_HIGH,
+			[CCode(cname = "_BV(MSTR)")]
+			MASTER_SELECT,
+			[CCode(cname = "_BV(DORD)")]
+			LSB_FIRST,
+			[CCode(cname = "_BV(SPE)")]
+			ENABLE,
+			[CCode(cname = "_BV(SPIE)")]
+			INTERRUPT_ENABLE
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Status {
+			[CCode(cname = "_BV(SPI2X)")]
+			DOUBLE_SPEED,
+			[CCode(cname = "_BV(WCOL)")]
+			WRITE_COLLISION,
+			[CCode(cname = "_BV(SPIF)")]
+			INTERRUPT
+		}
+		[CCode(cname = "SPCR")]
+		public Control control;
+		[CCode(cname = "SPDR")]
+		public uint8 data;
+		[CCode(cname = "SPSR")]
+		public Status status;
+	}
+	namespace Timer {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "_BV(FOC0B)")]
+				FORCE_OUTPUT_COMPARE_A,
+				[CCode(cname = "_BV(FOC0A)")]
+				FORCE_OUTPUT_COMPARE_B,
+				[CCode(cname = "_BV(WGM02)")]
+				PHASE_CORRECTING,
+				[CCode(cname = "0")]
+				SOURCE_STOP,
+				[CCode(cname = "_BV(CS00)")]
+				SOURCE_IO,
+				[CCode(cname = "_BV(CS01)")]
+				SOURCE_IO_DIV_8,
+				[CCode(cname = "(_BV(CS01) | _BV(CS00))")]
+				SOURCE_IO_DIV_64,
+				[CCode(cname = "_BV(CS02)")]
+				SOURCE_IO_DIV_128,
+				[CCode(cname = "(_BV(CS02) | _BV(CS00))")]
+				SOURCE_IO_DIV_1024,
+				[CCode(cname = "(_BV(CS02) | _BV(CS01))")]
+				SOURCE_EXT_FALLING,
+				[CCode(cname = "(_BV(CS02) | _BV(CS01) | _BV(CS00))")]
+				SOURCE_EXT_RISING
+		}
+		[CCode(cname = "uint8_t")]
+		public enum CounterMode {
+			[CCode(cname = "0")]
+			NORMAL,
+			[CCode(cname = "1")]
+			TOGGLE_ON_COMPARE,
+			[CCode(cname = "2")]
+			CLEAR_ON_COMPARE,
+			[CCode(cname = "3")]
+			SET_ON_COMPARE
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Interrupt {
+			[CCode(cname = "_BV(TOIE0)")]
+			OVERLOW,
+			[CCode(cname = "_BV(OCIE0A)")]
+			COMPARE_A,
+			[CCode(cname = "_BV(OCIE0B)")]
+			COMPARE_B,
+			[CCode(cname = "_BV(OCIE1C)")]
+			COMPARE_C,
+			[CCode(cname = "_BV(ICIE1)")]
+			CAPTURE
+		}
+
+		/**
+		 * Eight bit counter
+		 */
+		namespace zero {
+			[CCode(cname = "TCCR0A = TIMER0_MODE")]
+			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b);
+
+			[CCode(cname = "TCCR0B")]
+			public Control control;
+			[CCode(cname = "OCR0A")]
+			public uint8 compare_a;
+			[CCode(cname = "OCR0B")]
+			public uint8 compare_b;
+			[CCode(cname = "TCNT0")]
+			public uint8 counter;
+			[CCode(cname = "TIMSK0")]
+			public Interrupt interrupt_enable;
+			[CCode(cname = "TIFR0")]
+			public Interrupt interrupt_flag;
+		}
+		/**
+		 * Sixteen bit counter
+		 */
+		namespace one {
+			[CCode(cname = "TCCR1A = TIMER_MODE")]
+			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b,  CounterMode compare_c);
+
+			[CCode(cname = "TCCR1B")]
+			public Control control;
+			[CCode(cname = "OCR1A")]
+			public uint16 compare_a;
+			[CCode(cname = "OCR1B")]
+			public uint16 compare_b;
+			[CCode(cname = "OCR1C")]
+			public uint16 compare_c;
+			[CCode(cname = "TCNT1")]
+			public uint16 counter;
+			[CCode(cname = "TIMSK1")]
+			public Interrupt interrupt_enable;
+			[CCode(cname = "TIFR1")]
+			public Interrupt interrupt_flag;
+		}
+		/**
+		 * Sixteen bit counter
+		 */
+		namespace three {
+			[CCode(cname = "TCCR3A = TIMER_MODE")]
+			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b, CounterMode compare_c);
+
+			[CCode(cname = "TCCR3B")]
+			public Control control;
+			[CCode(cname = "OCR3A")]
+			public uint16 compare_a;
+			[CCode(cname = "OCR3B")]
+			public uint16 compare_b;
+			[CCode(cname = "OCR3C")]
+			public uint16 compare_c;
+			[CCode(cname = "TCNT3")]
+			public uint16 counter;
+			[CCode(cname = "TIMSK3")]
+			public Interrupt interrupt_enable;
+			[CCode(cname = "TIFR3")]
+			public Interrupt interrupt_flag;
+		}
+		/**
+		 * Ten bit counter
+		 */
+		namespace four {
+				[CCode(cname = "TCCR4A = TIMER_MODE")]
+				public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b, /*TODO*/ void*x = null);
+				[CCode(cname = "TCCR4B")]
+				public Control control;
+				[CCode(cname = "OCR4A")]
+				public uint16 compare_a;
+				[CCode(cname = "OCR4B")]
+				public uint16 compare_b;
+				[CCode(cname = "OCR4C")]
+				public uint16 compare_c;
+				[CCode(cname = "TCNT4")]
+				public uint16 counter;
+				[CCode(cname = "TIMSK4")]
+				public Interrupt interrupt_enable;
+				[CCode(cname = "TIFR4")]
+				public Interrupt interrupt_flag;
+		}
+	}
+	namespace Twi {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Prescaler {
+			[CCode(cname = "0")]
+			ONE,
+			[CCode(cname = "_BV(TWPS0)")]
+			FOUR,
+			[CCode(cname = "_BV(TWPS1)")]
+			SIXTEEN,
+			[CCode(cname = "(_BV(TWPS1) | _BV(TWPS0))")]
+			SIXTY_FOUR
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "_BV(TWIE)")]
+			INTERRUPT_ENABLE,
+			[CCode(cname = "_BV(TWEN)")]
+			ENABLE,
+			[CCode(cname = "_BV(TWWC)")]
+			WRITE_COLLISION,
+			[CCode(cname = "_BV(TWSTO)")]
+			STOP_CONDITION,
+			[CCode(cname = "_BV(TWSTA)")]
+			START_CONDITION,
+			[CCode(cname = "_BV(TWEA)")]
+			ENABLE_ACK,
+			[CCode(cname = "_BV(TWINT)")]
+			INTERRUPT
+		}
+
+		[CCode(cname = "TWAR")]
+		public uint8 address;
+		[CCode(cname = "TWAMR")]
+		public uint8 address_mask;
+		[CCode(cname = "TWBR")]
+		public uint8 bit_rate;
+		[CCode(cname = "TWCR")]
+		public Control control;
+		[CCode(cname = "TWDR")]
+		public uint8 data;
+		[CCode(cname = "TWSR")]
+		public Prescaler prescaler;
+	}
+	namespace Usart {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum ControlA {
+			[CCode(cname = "_BV(MPCM1)")]
+			MULTI_PROCESSOR_COMMUNICATION,
+			[CCode(cname = "_BV(U2X1)")]
+			DOUBLE_SPEED,
+			[CCode(cname = "_BV(UPE1)")]
+			PARITY_ERROR,
+			[CCode(cname = "_BV(DOR1)")]
+			DATA_OVERRUN,
+			[CCode(cname = "_BV(FE1)")]
+			FRAME_ERROR,
+			[CCode(cname = "_BV(UDRE1)")]
+			DATA_REG_EMPTY,
+			[CCode(cname = "_BV(TXC1)")]
+			TRANSMIT_COMPLETE,
+			[CCode(cname = "_BV(RXC1)")]
+			RECEIVE_COMPLETE
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum ControlB {
+			[CCode(cname = "_BV(TXB81)")]
+			TRANSMIT_BIT_8,
+			[CCode(cname = "_BV(RXB81)")]
+			RECEIVE_BIT_8,
+			[CCode(cname = "_BV(UCSZ12)")]
+			CHAR_SIZE_9,
+			[CCode(cname = "_BV(TXEN1)")]
+			TRANSMIT_ENABLE,
+			[CCode(cname = "_BV(RXEN1)")]
+			RECEIVE_ENABLE,
+			[CCode(cname = "_BV(UDRIE1)")]
+			DATA_REG_EMPTY_INTERRUPT,
+			[CCode(cname = "_BV(TXCIE1)")]
+			TRANSMIT_COMPLETE_INTERRUPT,
+			[CCode(cname = "_BV(RXCIE1)")]
+			RECEIVE_COMPLETE_INTERRUPT
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum ControlC {
+			[CCode(cname = "_BV(UCPOL1)")]
+			RISING_CLOCK_EDGE,
+			[CCode(cname = "0")]
+			CHAR_SIZE_5,
+			[CCode(cname = "_BV(UCSZ10)")]
+			CHAR_SIZE_6,
+			[CCode(cname = "_BV(UCSZ11)")]
+			CHAR_SIZE_7,
+			[CCode(cname = "(_BV(UCSZ10) | _BV(UCSZ11))")]
+			CHAR_SIZE_8,
+			[CCode(cname = "_BV(USBS1)")]
+			TWO_STOP_BITS,
+			[CCode(cname = "0")]
+			PARITY_NONE,
+			[CCode(cname = "(_BV(UPM11) | _BV(UPM10))")]
+			PARITY_ODD,
+			[CCode(cname = "_BV(UPM11)")]
+			PARITY_EVEN,
+			[CCode(cname = "0")]
+			ASYNC_USART,
+			[CCode(cname = "_BV(UMSEL10)")]
+			SYNC_USAR,
+			[CCode(cname = "(_BV(UMSEL10) | _BV(UMSEL11))")]
+			MASTER_SPI
+		}
+		[CCode(cname = "UBRR1")]
+		public uint16 baud_rate;
+		[CCode(cname = "UCSR1A")]
+		public ControlA control_a;
+		[CCode(cname = "UCSR1B")]
+		public ControlB control_b;
+		[CCode(cname = "UCSR1C")]
+		public ControlC control_c;
+		[CCode(cname = "UDR1")]
+		public uint8 data1;
+	}
+	namespace Usb {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Connection {
+			/**
+			 * Enable the endpoint according to the device configuration.
+			 *
+			 * Endpoint 0 shall always be enabled after a hardware or USB reset and
+			 * participate in the device configuration.
+			 */
+			[CCode(cname = "_BV(EPEN)")]
+			EP_ENABLE,
+			/**
+			 * Automatically clear the data toggle sequence.
+			 *
+			 * For the out endpoint, the next received packet wil have the data
+			 * toggle 0. For the in endpoint, the next packet to be sent will have
+			 * the data toggle 0.
+			 *
+			 * Cleared by hardware instantaneously. The firmware does not have to
+			 * wait that the bit is cleared. Clearing by software as no effect.
+			 */
+			[CCode(cname = "_BV(RSTDT)")]
+			RSTDT,
+			/**
+			 * Disable the stall mechanism.
+			 *
+			 * Cleared by hardware immediately after the set. Clearing by software as no effect.
+			 */
+			[CCode(cname = "_BV(STALLRQC)")]
+			STALLRQC,
+			/**
+			 * Request a stall answer to the host for the next handshake.
+			 *
+			 * Cleared when a new setup is received. Clearing by software as no effect.
+			 */
+			[CCode(cname = "_BV(STALLRQ)")]
+			STALLRQ
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointConfig {
+			/**
+			 * Configure an in direction. Otherwies, output.
+			 */
+			[CCode(cname = "_BV(EPDIR)")]
+			INPUT,
+			[CCode(cname = "0")]
+			CONTROL,
+			[CCode(cname = "_BV(ETYPE1)")]
+			BULK,
+			[CCode(cname = "_BV(ETYPE0)")]
+			ISOCHRONOUS,
+			[CCode(cname = "(_BV(ETYPE1) | _BV(ETYPE0))")]
+			INTERRUPT
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointSetup {
+			/**
+			 * Allocate memory for the endpoint.
+			 *
+			 * Clear to free the memory.
+			 */
+			[CCode(cname = "ALLOC")]
+			ALLOC,
+			[CCode(cname = "_BV(EPBK0)")]
+			DOUBLE_BANK,
+			[CCode(cname = "0")]
+			SIZE8,
+			[CCode(cname = "_BV(EPSIZE0)")]
+			SIZE16,
+			[CCode(cname = "_BV(EPSIZE1)")]
+			SIZE32,
+			[CCode(cname = "(_BV(EPSIZE1) | _BV(EPSIZE0))")]
+			SIZE64,
+			[CCode(cname = "_BV(EPSIZE2)")]
+			SIZE128,
+			[CCode(cname = "(_BV(EPSIZE2) | _BV(EPSIZE0))")]
+			SIZE256
+		}		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointStatus {
+			/**
+			 * Set by the hardware when the endpoint size and bank parameter in
+			 * {@link endpoint_setup} are correct.
+			 *
+			 * This is updated when {@link EndpointSetup.ALLOC} is set. If this bit
+			 * is cleared, {@link endpoint_setup} should be reprogrammed with the
+			 * correct size and bank.
+			 */
+			[CCode(cname = "_BV(CFGOK)")]
+			CFGOK,
+			/**
+			 * Set by the hardware when underflow occurs in an isochronous endpoint.
+			 */
+			[CCode(cname = "_BV(UNDERFI)")]
+			UNDERFI,
+			/**
+			 * Set by the hardware when overflow occurs in an isochronous endpoint.
+			 */
+			[CCode(cname = "_BV(OVERFI)")]
+			OVERFI,
+			/**
+			 * Set by the hardware to indicate the PID of the current is Data1.
+			 *
+			 * For out transfer, this value indicates the last data toggle received
+			 * on the current bank.  For in transfer, this value indicates the toggle
+			 * that will be used for the next packet sent. This is not relative to
+			 * the current bank.
+			 */
+			[CCode(cname = "_BV(DTSEQ0)")]
+			DATA1,
+			/**
+			 * Set by the hardware to indicate the number of busy bank.
+			 *
+			 * For in endpoint, it indicates sthe number of busy banks, filled by the
+			 * user, ready for in transfer. For out endpoint, it indicates the number
+			 * of busy banks filled by out transaction from the host.
+			 */
+			[CCode(cname = "0")]
+			ZERO_BANKS_BUSY,
+			[CCode(cname = "_BV(NBUSYBK0)")]
+			ONE_BANK_BUSY,
+			[CCode(cname = "_BV(NBUSYBK1)")]
+			TWO_BANKS_BUSY
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Interrupt {
+			/**
+			 * Enable an interrupt when {@link Status.TX_IN} is set.
+			 */
+			[CCode(cname = "_BV(TXINE)")]
+			TX_IN,
+			/**
+			 * Enable an interrupt when {@link Status.STALLED} is set.
+			 */
+			[CCode(cname = "_BV(STALLEDE)")]
+			STALLED,
+			/**
+			 * Enable an interrupt when {@link Status.RX_OUT} is set.
+			 */
+			[CCode(cname = "_BV(RXOUTE)")]
+			RX_OUT,
+			/**
+			 * Enable an interrupt when {@link Status.RX_SETUP} is set.
+			 */
+			[CCode(cname = "_BV(RXSTPE)")]
+			RX_SETUP,
+			/**
+			 * Enable an interrupt when {@link Status.NAK_OUT} is set.
+			 */
+			[CCode(cname = "_BV(NAKOUTE)")]
+			NAK_OUT,
+			/**
+			 * Enable an interrupt when {@link Status.NAK_IN} is set.
+			 */
+			[CCode(cname = "_BV(NAKINE)")]
+			NAK_IN,
+			/**
+			 * Enable an interrupt when {@link Status.OVERFI} or {@link Status.UNDERFI} is set.
+			 */
+			[CCode(cname = "_BV(FLERRE)")]
+			FL_ERR
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum EndpointStatus2 {
+			/**
+			 * Set by hardware after a setup packet and gives the direction of the following packet.
+			 */
+			[CCode(cname = "CTRLDIR")]
+			INPUT,
+			/**
+			 * Set by hardware to indicate the number of the current bank.
+			 */
+			[CCode(cname = "_BV(CURRBK0)")]
+			BANK1
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Status {
+			/**
+			 * Set by the hardwher whena NAK hankdshake has ben sent inrepsonse of the in request from the host.
+			 *
+			 * Shall be cleared by software. Setting by software has no effect.
+			 */
+			[CCode(cname = "_BV(NAKINI)")]
+			NAK_IN,
+			/**
+			 * Set by hardware to signal that the current bank is free and can be filled.
+			 *
+			 * This bis is cleared if the endpoint is an out endpoint.
+			 */
+			[CCode(cname = "_BV(TXINI)")]
+			TX_IN,
+			/**
+			 * Set by hardware to signal that a stall hankshake has been sent or that a CRC error has been detected in an out isochronous endpoint.
+			 *
+			 * Shall be cleared by software. Setting by software has no effect.
+			 */
+			[CCode(cname = "_BV(STALLEDI)")]
+			STALLED,
+			/**
+			 * Set to kill the last written bank.
+			 *
+			 * Cleared by hardware when the bank is killed. Clearing by software has no effect.
+			 */
+			[CCode(cname = "_BV(RXOUTI)")]
+			KILL_BK,
+			/**
+			 * Set by hardware to signal that the current bank contains a new packet.
+			 *
+			 * Shall be cleared by software to handshake the interrupt. Setting by software has no effect.
+			 */
+			[CCode(cname = "_BV(RXOUTI)")]
+			RX_OUT,
+			/**
+			 * Set by hardware to signal that the current bank contains a new valid setup packet.
+			 *
+			 * Shall be cleared by software to hankshake the interript. Setting by software has no effect.
+			 *
+			 * This is never set if the endpoint is an in endpoint.
+			 */
+			[CCode(cname = "_BV(RXSTPI)")]
+			RX_SETUP,
+			/**
+			 * Set by hardware when a NAK handshake has been sent in response of a out/ping request from the host..
+			 *
+			 * Shall be cleared by software. Setting by sofware has no effect.
+			 */
+			[CCode(cname = "_BV(NAKOUTI)")]
+			NAK_OUT,
+			/**
+			 * Set by hardware to indicate that, for an in endpoint, the current bank is not full, the software can push data into the FIFO, or, for an out endpoint, the current bank is not empty, that is, the software can read data from the FIFO.
+			 *
+			 * This bit is never set if {@link Connection.STALLRQ} is set, or in case of error.
+			 *
+			 * Cleared by the hardware otherwise.
+			 *
+			 * This bit shall not be used for the control endpoint.
+			 */
+			[CCode(cname = "_BV(RWAL)")]
+			RW_ALLOW,
+			/**
+			 * FIFO control bit
+			 *
+			 * For out and setup endpoints, set by the hardware when a new out message is stored in the current bank, at the same time than {@link RX_OUT} or {@link RX_SETUP}.
+			 *
+			 * Clear to free the current bank and switch to the following bank. Setting by software has no effect.
+			 *
+			 * For in endpoints, set by hardware when the current bank is free, at the same time than {@link TX_IN}.
+			 *
+			 * Clear to send the FIFO data and switch the bank. Setting by software has no effect.
+			 */
+			[CCode(cname = "_BV(FIFOCON)")]
+			FIFOCON
+		}
+		[CCode(cname = "UEBCX")]
+		public uint16 byte_count;
+		[CCode(cname = "UECONX")]
+		public Connection connection;
+		[CCode(cname = "UEDATX")]
+		public uint8 data;
+		[CCode(cname = "UENUM")]
+		public uint8 endpoint;
+		[CCode(cname = "UECFG0X")]
+		public EndpointConfig endpont_config;
+		[CCode(cname = "UECFG1X")]
+		public EndpointSetup endpoint_setup;
+		[CCode(cname = "UESTA0X")]
+		public EndpointStatus endpoint_status;
+		[CCode(cname = "UESTA1X")]
+		public EndpointStatus2 endpoint_status2;
+		[CCode(cname = "UEIENX")]
+		public Interrupt interrupt_enable;
+		[CCode(cname = "UEINT")]
+		public uint8 interrupt_endpoint;
+		[CCode(cname = "UERST")]
+		public uint8 endpoint_fifo;
+		[CCode(cname = "UEINTX")]
+		public Status status;
+	public uint8 UPERRX;
+	public uint8 UPBCLX;
+	public uint8 UPBCHX;
+	public uint8 UPINT;
+	}
+	namespace WatchDog {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "_BV(WDP0)")]
+			PRESCALER_0,
+			[CCode(cname = "_BV(WDP1)")]
+			PRESCALER_1,
+			[CCode(cname = "_BV(WDP2)")]
+			PRESCALER_2,
+			[CCode(cname = "_BV(WDE)")]
+			SYS_RESET_ENABLE,
+			[CCode(cname = "_BV(WDCE)")]
+			CHANGE_ENABLE,
+			[CCode(cname = "_BV(WDP3)")]
+			PRESCALER_3,
+			/**
+			 * Puts the timer in Interrupt and System Reset mode.
+			 */
+			[CCode(cname = "_BV(WDIE)")]
+			ENABLE_INTERRUPT,
+			/**
+			 * Set when a time-out occurs.
+			 *
+			 * Cleared by hardware when the handing vector is activated or set in the register.
+			 */
+			[CCode(cname = "_BV(WDIF)")]
+			INTERRUPT;
+		}
+		[CCode(cname = "WDTCSR")]
+		public Control control;
 	}
 
-	public uint8 TIFR0;
-	public const uint8 TOV0;
-	public const uint8 OCF0A;
-	public const uint8 OCF0B;
-
-	public uint8 TIFR1;
-	public const uint8 TOV1;
-	public const uint8 OCF1A;
-	public const uint8 OCF1B;
-	public const uint8 OCF1C;
-	public const uint8 ICF1;
+	[CCode(cname = "OCDR")]
+	public uint8 debug_data;
 
 	public uint8 TIFR2;
 	public const uint8 TOV2;
 	public const uint8 OCF2A;
 	public const uint8 OCF2B;
-
-	public uint8 TIFR3;
-	public const uint8 TOV3;
-	public const uint8 OCF3A;
-	public const uint8 OCF3B;
-	public const uint8 OCF3C;
-	public const uint8 ICF3;
 
 	public uint8 TIFR4;
 	public const uint8 TOV4;
@@ -111,28 +1070,6 @@ namespace Posix {
 
 	public uint8 TIFR5;
 
-	public uint8 PCIFR;
-	public const uint8 PCIF0;
-
-	public uint8 EIFR;
-	public const uint8 INTF0;
-	public const uint8 INTF1;
-	public const uint8 INTF2;
-	public const uint8 INTF3;
-	public const uint8 INTF4;
-	public const uint8 INTF5;
-	public const uint8 INTF6;
-	public const uint8 INTF7;
-
-	public uint8 EIMSK;
-	public const uint8 INT0;
-	public const uint8 INT1;
-	public const uint8 INT2;
-	public const uint8 INT3;
-	public const uint8 INT4;
-	public const uint8 INT5;
-	public const uint8 INT6;
-	public const uint8 INT7;
 
 	public uint8 GPIOR0;
 	public const uint8 GPIOR00;
@@ -144,92 +1081,10 @@ namespace Posix {
 	public const uint8 GPIOR06;
 	public const uint8 GPIOR07;
 
-	public uint8 EECR;
-	public const uint8 EERE;
-	public const uint8 EEPE;
-	public const uint8 EEMPE;
-	public const uint8 EERIE;
-	public const uint8 EEPM0;
-	public const uint8 EEPM1;
-
-	public uint8 EEDR;
-	public const uint8 EEDR0;
-	public const uint8 EEDR1;
-	public const uint8 EEDR2;
-	public const uint8 EEDR3;
-	public const uint8 EEDR4;
-	public const uint8 EEDR5;
-	public const uint8 EEDR6;
-	public const uint8 EEDR7;
-
-	public uint8 EEAR;
-
-	public uint8 EEARL;
-	public const uint8 EEAR0;
-	public const uint8 EEAR1;
-	public const uint8 EEAR2;
-	public const uint8 EEAR3;
-	public const uint8 EEAR4;
-	public const uint8 EEAR5;
-	public const uint8 EEAR6;
-	public const uint8 EEAR7;
-
-	public uint8 EEARH;
-	public const uint8 EEAR8;
-	public const uint8 EEAR9;
-	public const uint8 EEAR10;
-	public const uint8 EEAR11;
-
 	public uint8 GTCCR;
 	public const uint8 PSRSYNC;
 	public const uint8 PSRASY;
 	public const uint8 TSM;
-
-	public uint8 TCCR0A;
-	public const uint8 WGM00;
-	public const uint8 WGM01;
-	public const uint8 COM0B0;
-	public const uint8 COM0B1;
-	public const uint8 COM0A0;
-	public const uint8 COM0A1;
-
-	public uint8 TCCR0B;
-	public const uint8 CS00;
-	public const uint8 CS01;
-	public const uint8 CS02;
-	public const uint8 WGM02;
-	public const uint8 FOC0B;
-	public const uint8 FOC0A;
-
-	public uint8 TCNT0;
-	public const uint8 TCNT0_0;
-	public const uint8 TCNT0_1;
-	public const uint8 TCNT0_2;
-	public const uint8 TCNT0_3;
-	public const uint8 TCNT0_4;
-	public const uint8 TCNT0_5;
-	public const uint8 TCNT0_6;
-	public const uint8 TCNT0_7;
-
-	public uint8 OCR0A;
-	public const uint8 OCR0A_0;
-	public const uint8 OCR0A_1;
-	public const uint8 OCR0A_2;
-	public const uint8 OCR0A_3;
-	public const uint8 OCR0A_4;
-	public const uint8 OCR0A_5;
-	public const uint8 OCR0A_6;
-	public const uint8 OCR0A_7;
-
-	public uint8 OCR0B;
-	public const uint8 OCR0B_0;
-	public const uint8 OCR0B_1;
-	public const uint8 OCR0B_2;
-	public const uint8 OCR0B_3;
-	public const uint8 OCR0B_4;
-	public const uint8 OCR0B_5;
-	public const uint8 OCR0B_6;
-	public const uint8 OCR0B_7;
 
 	public uint8 PLLCSR;
 	public const uint8 PLOCK;
@@ -256,50 +1111,6 @@ namespace Posix {
 	public const uint8 GPIOR26;
 	public const uint8 GPIOR27;
 
-	public uint8 SPCR;
-	public const uint8 SPR0;
-	public const uint8 SPR1;
-	public const uint8 CPHA;
-	public const uint8 CPOL;
-	public const uint8 MSTR;
-	public const uint8 DORD;
-	public const uint8 SPE;
-	public const uint8 SPIE;
-
-	public uint8 SPSR;
-	public const uint8 SPI2X;
-	public const uint8 WCOL;
-	public const uint8 SPIF;
-
-	public uint8 SPDR;
-	public const uint8 SPDR0;
-	public const uint8 SPDR1;
-	public const uint8 SPDR2;
-	public const uint8 SPDR3;
-	public const uint8 SPDR4;
-	public const uint8 SPDR5;
-	public const uint8 SPDR6;
-	public const uint8 SPDR7;
-
-	public uint8 ACSR;
-	public const uint8 ACIS0;
-	public const uint8 ACIS1;
-	public const uint8 ACIC;
-	public const uint8 ACIE;
-	public const uint8 ACI;
-	public const uint8 ACO;
-	public const uint8 ACBG;
-	public const uint8 ACD;
-
-	public uint8 OCDR;
-	public const uint8 OCDR0;
-	public const uint8 OCDR1;
-	public const uint8 OCDR2;
-	public const uint8 OCDR3;
-	public const uint8 OCDR4;
-	public const uint8 OCDR5;
-	public const uint8 OCDR6;
-	public const uint8 OCDR7;
 
 	public uint8 PLLFRQ;
 	public const uint8 PDIV0;
@@ -330,38 +1141,9 @@ namespace Posix {
 	public const uint8 PUD;
 	public const uint8 JTD;
 
-	public uint8 SPMCSR;
-	public const uint8 SPMEN;
-	public const uint8 PGERS;
-	public const uint8 PGWRT;
-	public const uint8 BLBSET;
-	public const uint8 RWWSRE;
-	public const uint8 SIGRD;
-	public const uint8 RWWSB;
-	public const uint8 SPMIE;
-
-	public uint8 RAMPZ;
-	public const uint8 RAMPZ0;
-
 	public uint8 EIND;
 	public const uint8 EIND0;
 
-	public uint8 WDTCSR;
-	public const uint8 WDP0;
-	public const uint8 WDP1;
-	public const uint8 WDP2;
-	public const uint8 WDE;
-	public const uint8 WDCE;
-	public const uint8 WDP3;
-	public const uint8 WDIE;
-	public const uint8 WDIF;
-
-	public uint8 CLKPR;
-	public const uint8 CLKPS0;
-	public const uint8 CLKPS1;
-	public const uint8 CLKPS2;
-	public const uint8 CLKPS3;
-	public const uint8 CLKPCE;
 
 	public uint8 PRR0;
 	public const uint8 PRADC;
@@ -390,292 +1172,11 @@ namespace Posix {
 	public uint8 RCCTRL;
 	public const uint8 RCFREQ;
 
-	public uint8 PCICR;
-	public const uint8 PCIE0;
-
-	public uint8 EICRA;
-	public const uint8 ISC00;
-	public const uint8 ISC01;
-	public const uint8 ISC10;
-	public const uint8 ISC11;
-	public const uint8 ISC20;
-	public const uint8 ISC21;
-	public const uint8 ISC30;
-	public const uint8 ISC31;
-
-	public uint8 EICRB;
-	public const uint8 ISC40;
-	public const uint8 ISC41;
-	public const uint8 ISC50;
-	public const uint8 ISC51;
-	public const uint8 ISC60;
-	public const uint8 ISC61;
-	public const uint8 ISC70;
-	public const uint8 ISC71;
-
-	public uint8 PCMSK0;
-	public const uint8 PCINT0;
-	public const uint8 PCINT1;
-	public const uint8 PCINT2;
-	public const uint8 PCINT3;
-	public const uint8 PCINT4;
-	public const uint8 PCINT5;
-	public const uint8 PCINT6;
-	public const uint8 PCINT7;
-
-	public uint8 PCMSK1;
-
-	public uint8 PCMSK2;
-
-	public uint8 TIMSK0;
-	public const uint8 TOIE0;
-	public const uint8 OCIE0A;
-	public const uint8 OCIE0B;
-
-	public uint8 TIMSK1;
-	public const uint8 TOIE1;
-	public const uint8 OCIE1A;
-	public const uint8 OCIE1B;
-	public const uint8 OCIE1C;
-	public const uint8 ICIE1;
-
-	public uint8 TIMSK2;
-	public const uint8 TOIE2;
-	public const uint8 OCIE2A;
-	public const uint8 OCIE2B;
-
-	public uint8 TIMSK3;
-	public const uint8 TOIE3;
-	public const uint8 OCIE3A;
-	public const uint8 OCIE3B;
-	public const uint8 OCIE3C;
-	public const uint8 ICIE3;
-
-	public uint8 TIMSK4;
-	public const uint8 TOIE4;
-	public const uint8 OCIE4B;
-	public const uint8 OCIE4A;
-	public const uint8 OCIE4D;
-
-	public uint8 TIMSK5;
-
-	public uint8 ADC;
-	public uint8 ADCW;
-
-	public uint8 ADCL;
-	public const uint8 ADCL0;
-	public const uint8 ADCL1;
-	public const uint8 ADCL2;
-	public const uint8 ADCL3;
-	public const uint8 ADCL4;
-	public const uint8 ADCL5;
-	public const uint8 ADCL6;
-	public const uint8 ADCL7;
-
-	public uint8 ADCH;
-	public const uint8 ADCH0;
-	public const uint8 ADCH1;
-	public const uint8 ADCH2;
-	public const uint8 ADCH3;
-	public const uint8 ADCH4;
-	public const uint8 ADCH5;
-	public const uint8 ADCH6;
-	public const uint8 ADCH7;
-
-	public uint8 ADCSRA;
-	public const uint8 ADPS0;
-	public const uint8 ADPS1;
-	public const uint8 ADPS2;
-	public const uint8 ADIE;
-	public const uint8 ADIF;
-	public const uint8 ADATE;
-	public const uint8 ADSC;
-	public const uint8 ADEN;
-
-	public uint8 ADCSRB;
-	public const uint8 ADTS0;
-	public const uint8 ADTS1;
-	public const uint8 ADTS2;
-	public const uint8 ADTS3;
-	public const uint8 MUX5;
-	public const uint8 ACME;
-	public const uint8 ADHSM;
-
-	public uint8 ADMUX;
-	public const uint8 MUX0;
-	public const uint8 MUX1;
-	public const uint8 MUX2;
-	public const uint8 MUX3;
-	public const uint8 MUX4;
-	public const uint8 ADLAR;
-	public const uint8 REFS0;
-	public const uint8 REFS1;
-
-	public uint8 DIDR2;
-	public const uint8 ADC8D;
-	public const uint8 ADC9D;
-	public const uint8 ADC10D;
-	public const uint8 ADC11D;
-	public const uint8 ADC12D;
-	public const uint8 ADC13D;
-
-	public uint8 DIDR0;
-	public const uint8 ADC0D;
-	public const uint8 ADC1D;
-	public const uint8 ADC2D;
-	public const uint8 ADC3D;
-	public const uint8 ADC4D;
-	public const uint8 ADC5D;
-	public const uint8 ADC6D;
-	public const uint8 ADC7D;
-
-	public uint8 DIDR1;
-	public const uint8 AIN0D;
-	public const uint8 AIN1D;
-
-	public uint8 TCCR1A;
-	public const uint8 WGM10;
-	public const uint8 WGM11;
-	public const uint8 COM1C0;
-	public const uint8 COM1C1;
-	public const uint8 COM1B0;
-	public const uint8 COM1B1;
-	public const uint8 COM1A0;
-	public const uint8 COM1A1;
-
-	public uint8 TCCR1B;
-	public const uint8 CS10;
-	public const uint8 CS11;
-	public const uint8 CS12;
-	public const uint8 WGM12;
-	public const uint8 WGM13;
-	public const uint8 ICES1;
-	public const uint8 ICNC1;
-
-	public uint8 TCCR1C;
-	public const uint8 FOC1C;
-	public const uint8 FOC1B;
-	public const uint8 FOC1A;
-
-	public uint8 TCNT1;
-
-	public uint8 TCNT1L;
-	public const uint8 TCNT1L0;
-	public const uint8 TCNT1L1;
-	public const uint8 TCNT1L2;
-	public const uint8 TCNT1L3;
-	public const uint8 TCNT1L4;
-	public const uint8 TCNT1L5;
-	public const uint8 TCNT1L6;
-	public const uint8 TCNT1L7;
-
-	public uint8 TCNT1H;
-	public const uint8 TCNT1H0;
-	public const uint8 TCNT1H1;
-	public const uint8 TCNT1H2;
-	public const uint8 TCNT1H3;
-	public const uint8 TCNT1H4;
-	public const uint8 TCNT1H5;
-	public const uint8 TCNT1H6;
-	public const uint8 TCNT1H7;
-
-	public uint8 ICR1;
-
-	public uint8 ICR1L;
-	public const uint8 ICR1L0;
-	public const uint8 ICR1L1;
-	public const uint8 ICR1L2;
-	public const uint8 ICR1L3;
-	public const uint8 ICR1L4;
-	public const uint8 ICR1L5;
-	public const uint8 ICR1L6;
-	public const uint8 ICR1L7;
-
-	public uint8 ICR1H;
-	public const uint8 ICR1H0;
-	public const uint8 ICR1H1;
-	public const uint8 ICR1H2;
-	public const uint8 ICR1H3;
-	public const uint8 ICR1H4;
-	public const uint8 ICR1H5;
-	public const uint8 ICR1H6;
-	public const uint8 ICR1H7;
-
-	public uint8 OCR1A;
-
-	public uint8 OCR1AL;
-	public const uint8 OCR1AL0;
-	public const uint8 OCR1AL1;
-	public const uint8 OCR1AL2;
-	public const uint8 OCR1AL3;
-	public const uint8 OCR1AL4;
-	public const uint8 OCR1AL5;
-	public const uint8 OCR1AL6;
-	public const uint8 OCR1AL7;
-
-	public uint8 OCR1AH;
-	public const uint8 OCR1AH0;
-	public const uint8 OCR1AH1;
-	public const uint8 OCR1AH2;
-	public const uint8 OCR1AH3;
-	public const uint8 OCR1AH4;
-	public const uint8 OCR1AH5;
-	public const uint8 OCR1AH6;
-	public const uint8 OCR1AH7;
-
-	public uint8 OCR1B;
-
-	public uint8 OCR1BL;
-	public const uint8 OCR1BL0;
-	public const uint8 OCR1BL1;
-	public const uint8 OCR1BL2;
-	public const uint8 OCR1BL3;
-	public const uint8 OCR1BL4;
-	public const uint8 OCR1BL5;
-	public const uint8 OCR1BL6;
-	public const uint8 OCR1BL7;
-
-	public uint8 OCR1BH;
-	public const uint8 OCR1BH0;
-	public const uint8 OCR1BH1;
-	public const uint8 OCR1BH2;
-	public const uint8 OCR1BH3;
-	public const uint8 OCR1BH4;
-	public const uint8 OCR1BH5;
-	public const uint8 OCR1BH6;
-	public const uint8 OCR1BH7;
-
-	public uint8 OCR1C;
-
-	public uint8 OCR1CL;
-	public const uint8 OCR1CL0;
-	public const uint8 OCR1CL1;
-	public const uint8 OCR1CL2;
-	public const uint8 OCR1CL3;
-	public const uint8 OCR1CL4;
-	public const uint8 OCR1CL5;
-	public const uint8 OCR1CL6;
-	public const uint8 OCR1CL7;
-
-	public uint8 OCR1CH;
-	public const uint8 OCR1CH0;
-	public const uint8 OCR1CH1;
-	public const uint8 OCR1CH2;
-	public const uint8 OCR1CH3;
-	public const uint8 OCR1CH4;
-	public const uint8 OCR1CH5;
-	public const uint8 OCR1CH6;
-	public const uint8 OCR1CH7;
-
-	public uint8 TCCR3A;
-	public const uint8 WGM30;
-	public const uint8 WGM31;
-	public const uint8 COM3C0;
-	public const uint8 COM3C1;
-	public const uint8 COM3B0;
-	public const uint8 COM3B1;
-	public const uint8 COM3A0;
-	public const uint8 COM3A1;
+	[CCode(cname = "ICR1")]
+	public uint16 ICR1;
+	public uint16 OCR1A;
+	public uint16 OCR1B;
+	public uint16 OCR1C;
 
 	public uint8 TCCR3B;
 	public const uint8 CS30;
@@ -691,152 +1192,29 @@ namespace Posix {
 	public const uint8 FOC3B;
 	public const uint8 FOC3A;
 
-	public uint8 TCNT3;
-
-	public uint8 TCNT3L;
-	public const uint8 TCNT3L0;
-	public const uint8 TCNT3L1;
-	public const uint8 TCNT3L2;
-	public const uint8 TCNT3L3;
-	public const uint8 TCNT3L4;
-	public const uint8 TCNT3L5;
-	public const uint8 TCNT3L6;
-	public const uint8 TCNT3L7;
-
-	public uint8 TCNT3H;
-	public const uint8 TCNT3H0;
-	public const uint8 TCNT3H1;
-	public const uint8 TCNT3H2;
-	public const uint8 TCNT3H3;
-	public const uint8 TCNT3H4;
-	public const uint8 TCNT3H5;
-	public const uint8 TCNT3H6;
-	public const uint8 TCNT3H7;
 
 	public uint8 ICR3;
-
-	public uint8 ICR3L;
-	public const uint8 ICR3L0;
-	public const uint8 ICR3L1;
-	public const uint8 ICR3L2;
-	public const uint8 ICR3L3;
-	public const uint8 ICR3L4;
-	public const uint8 ICR3L5;
-	public const uint8 ICR3L6;
-	public const uint8 ICR3L7;
-
-	public uint8 ICR3H;
-	public const uint8 ICR3H0;
-	public const uint8 ICR3H1;
-	public const uint8 ICR3H2;
-	public const uint8 ICR3H3;
-	public const uint8 ICR3H4;
-	public const uint8 ICR3H5;
-	public const uint8 ICR3H6;
-	public const uint8 ICR3H7;
-
 	public uint8 OCR3A;
-
-	public uint8 OCR3AL;
-	public const uint8 OCR3AL0;
-	public const uint8 OCR3AL1;
-	public const uint8 OCR3AL2;
-	public const uint8 OCR3AL3;
-	public const uint8 OCR3AL4;
-	public const uint8 OCR3AL5;
-	public const uint8 OCR3AL6;
-	public const uint8 OCR3AL7;
-
-	public uint8 OCR3AH;
-	public const uint8 OCR3AH0;
-	public const uint8 OCR3AH1;
-	public const uint8 OCR3AH2;
-	public const uint8 OCR3AH3;
-	public const uint8 OCR3AH4;
-	public const uint8 OCR3AH5;
-	public const uint8 OCR3AH6;
-	public const uint8 OCR3AH7;
-
 	public uint8 OCR3B;
-
-	public uint8 OCR3BL;
-	public const uint8 OCR3BL0;
-	public const uint8 OCR3BL1;
-	public const uint8 OCR3BL2;
-	public const uint8 OCR3BL3;
-	public const uint8 OCR3BL4;
-	public const uint8 OCR3BL5;
-	public const uint8 OCR3BL6;
-	public const uint8 OCR3BL7;
-
-	public uint8 OCR3BH;
-	public const uint8 OCR3BH0;
-	public const uint8 OCR3BH1;
-	public const uint8 OCR3BH2;
-	public const uint8 OCR3BH3;
-	public const uint8 OCR3BH4;
-	public const uint8 OCR3BH5;
-	public const uint8 OCR3BH6;
-	public const uint8 OCR3BH7;
-
 	public uint8 OCR3C;
-
-	public uint8 OCR3CL;
-	public const uint8 OCR3CL0;
-	public const uint8 OCR3CL1;
-	public const uint8 OCR3CL2;
-	public const uint8 OCR3CL3;
-	public const uint8 OCR3CL4;
-	public const uint8 OCR3CL5;
-	public const uint8 OCR3CL6;
-	public const uint8 OCR3CL7;
-
-	public uint8 OCR3CH;
-	public const uint8 OCR3CH0;
-	public const uint8 OCR3CH1;
-	public const uint8 OCR3CH2;
-	public const uint8 OCR3CH3;
-	public const uint8 OCR3CH4;
-	public const uint8 OCR3CH5;
-	public const uint8 OCR3CH6;
-	public const uint8 OCR3CH7;
-
 	public uint8 UHCON;
-
 	public uint8 UHINT;
-
 	public uint8 UHIEN;
-
 	public uint8 UHADDR;
-
 	public uint8 UHFNUM;
-
 	public uint8 UHFNUML;
-
 	public uint8 UHFNUMH;
-
 	public uint8 UHFLEN;
-
 	public uint8 UPINRQX;
-
 	public uint8 UPINTX;
-
 	public uint8 UPNUM;
-
 	public uint8 UPRST;
-
 	public uint8 UPCONX;
-
 	public uint8 UPCFG0X;
-
 	public uint8 UPCFG1X;
-
 	public uint8 UPSTAX;
-
 	public uint8 UPCFG2X;
-
 	public uint8 UPIENX;
-
 	public uint8 UPDATX;
 
 	public uint8 TCCR2A;
@@ -856,101 +1234,9 @@ namespace Posix {
 	public const uint8 FOC2A;
 
 	public uint8 TCNT2;
-	public const uint8 TCNT2_0;
-	public const uint8 TCNT2_1;
-	public const uint8 TCNT2_2;
-	public const uint8 TCNT2_3;
-	public const uint8 TCNT2_4;
-	public const uint8 TCNT2_5;
-	public const uint8 TCNT2_6;
-	public const uint8 TCNT2_7;
 
 	public uint8 OCR2A;
-	public const uint8 OCR2_0;
-	public const uint8 OCR2_1;
-	public const uint8 OCR2_2;
-	public const uint8 OCR2_3;
-	public const uint8 OCR2_4;
-	public const uint8 OCR2_5;
-	public const uint8 OCR2_6;
-	public const uint8 OCR2_7;
-
 	public uint8 OCR2B;
-
-	public uint8 TWBR;
-	public const uint8 TWBR0;
-	public const uint8 TWBR1;
-	public const uint8 TWBR2;
-	public const uint8 TWBR3;
-	public const uint8 TWBR4;
-	public const uint8 TWBR5;
-	public const uint8 TWBR6;
-	public const uint8 TWBR7;
-
-	public uint8 TWSR;
-	public const uint8 TWPS0;
-	public const uint8 TWPS1;
-	public const uint8 TWS3;
-	public const uint8 TWS4;
-	public const uint8 TWS5;
-	public const uint8 TWS6;
-	public const uint8 TWS7;
-
-	public uint8 TWAR;
-	public const uint8 TWGCE;
-	public const uint8 TWA0;
-	public const uint8 TWA1;
-	public const uint8 TWA2;
-	public const uint8 TWA3;
-	public const uint8 TWA4;
-	public const uint8 TWA5;
-	public const uint8 TWA6;
-
-	public uint8 TWDR;
-	public const uint8 TWD0;
-	public const uint8 TWD1;
-	public const uint8 TWD2;
-	public const uint8 TWD3;
-	public const uint8 TWD4;
-	public const uint8 TWD5;
-	public const uint8 TWD6;
-	public const uint8 TWD7;
-
-	public uint8 TWCR;
-	public const uint8 TWIE;
-	public const uint8 TWEN;
-	public const uint8 TWWC;
-	public const uint8 TWSTO;
-	public const uint8 TWSTA;
-	public const uint8 TWEA;
-	public const uint8 TWINT;
-
-	public uint8 TWAMR;
-	public const uint8 TWAM0;
-	public const uint8 TWAM1;
-	public const uint8 TWAM2;
-	public const uint8 TWAM3;
-	public const uint8 TWAM4;
-	public const uint8 TWAM5;
-	public const uint8 TWAM6;
-
-	public uint8 TCNT4;
-
-	public uint8 TCNT4L;
-	public const uint8 TC40;
-	public const uint8 TC41;
-	public const uint8 TC42;
-	public const uint8 TC43;
-	public const uint8 TC44;
-	public const uint8 TC45;
-	public const uint8 TC46;
-	public const uint8 TC47;
-
-	public uint8 TCNT4H;
-	public uint8 TC4H;
-	public const uint8 TC48;
-	public const uint8 TC49;
-	public const uint8 TC410;
 
 	public uint8 TCCR4A;
 	public const uint8 PWM4B;
@@ -1025,102 +1311,12 @@ namespace Posix {
 	public const uint8 EXTON;
 	public const uint8 RCON;
 
-	public uint8 UCSR1A;
-	public const uint8 MPCM1;
-	public const uint8 U2X1;
-	public const uint8 UPE1;
-	public const uint8 DOR1;
-	public const uint8 FE1;
-	public const uint8 UDRE1;
-	public const uint8 TXC1;
-	public const uint8 RXC1;
-
-	public uint8 UCSR1B;
-	public const uint8 TXB81;
-	public const uint8 RXB81;
-	public const uint8 UCSZ12;
-	public const uint8 TXEN1;
-	public const uint8 RXEN1;
-	public const uint8 UDRIE1;
-	public const uint8 TXCIE1;
-	public const uint8 RXCIE1;
-
-	public uint8 UCSR1C;
-	public const uint8 UCPOL1;
-	public const uint8 UCSZ10;
-	public const uint8 UCSZ11;
-	public const uint8 USBS1;
-	public const uint8 UPM10;
-	public const uint8 UPM11;
-	public const uint8 UMSEL10;
-	public const uint8 UMSEL11;
-
-	public uint8 UBRR1;
-
-	public uint8 UBRR1L;
-
-	public uint8 UBRR1H;
-
-	public uint8 UDR1;
-	public const uint8 UDR1_0;
-	public const uint8 UDR1_1;
-	public const uint8 UDR1_2;
-	public const uint8 UDR1_3;
-	public const uint8 UDR1_4;
-	public const uint8 UDR1_5;
-	public const uint8 UDR1_6;
-	public const uint8 UDR1_7;
 
 	public uint8 OCR4A;
-	public const uint8 OCR4A0;
-	public const uint8 OCR4A1;
-	public const uint8 OCR4A2;
-	public const uint8 OCR4A3;
-	public const uint8 OCR4A4;
-	public const uint8 OCR4A5;
-	public const uint8 OCR4A6;
-	public const uint8 OCR4A7;
-
 	public uint8 OCR4B;
-	public const uint8 OCR4B0;
-	public const uint8 OCR4B1;
-	public const uint8 OCR4B2;
-	public const uint8 OCR4B3;
-	public const uint8 OCR4B4;
-	public const uint8 OCR4B5;
-	public const uint8 OCR4B6;
-	public const uint8 OCR4B7;
-
 	public uint8 OCR4C;
-	public const uint8 OCR4C0;
-	public const uint8 OCR4C1;
-	public const uint8 OCR4C2;
-	public const uint8 OCR4C3;
-	public const uint8 OCR4C4;
-	public const uint8 OCR4C5;
-	public const uint8 OCR4C6;
-	public const uint8 OCR4C7;
-
 	public uint8 OCR4D;
-	public const uint8 OCR4D0;
-	public const uint8 OCR4D1;
-	public const uint8 OCR4D2;
-	public const uint8 OCR4D3;
-	public const uint8 OCR4D4;
-	public const uint8 OCR4D5;
-	public const uint8 OCR4D6;
-	public const uint8 OCR4D7;
-
 	public uint8 DT4;
-	public const uint8 DT4L0;
-	public const uint8 DT4L1;
-	public const uint8 DT4L2;
-	public const uint8 DT4L3;
-	public const uint8 DT4L4;
-	public const uint8 DT4L5;
-	public const uint8 DT4L6;
-	public const uint8 DT4L7;
-
 	public uint8 UHWCON;
 	public const uint8 UVREGE;
 
@@ -1197,314 +1393,6 @@ namespace Posix {
 
 	public uint8 UDTST;
 
-	namespace Usb {
-		[CCode(cname = "UEINTX")]
-		public Status status;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum Status {
-			/**
-			 * Set by the hardwher whena NAK hankdshake has ben sent inrepsonse of the in request from the host.
-			 *
-			 * Shall be cleared by software. Setting by software has no effect.
-			 */
-			[CCode(cname = "(1 << NAKINI)")]
-			NAK_IN,
-			/**
-			 * Set by hardware to signal that the current bank is free and can be filled.
-			 *
-			 * This bis is cleared if the endpoint is an out endpoint.
-			 */
-			[CCode(cname = "(1 << TXINI)")]
-			TX_IN,
-			/**
-			 * Set by hardware to signal that a stall hankshake has been sent or that a CRC error has been detected in an out isochronous endpoint.
-			 *
-			 * Shall be cleared by software. Setting by software has no effect.
-			 */
-			[CCode(cname = "(1 << STALLEDI)")]
-			STALLED,
-			/**
-			 * Set to kill the last written bank.
-			 *
-			 * Cleared by hardware when the bank is killed. Clearing by software has no effect.
-			 */
-			[CCode(cname = "(1 << RXOUTI)")]
-			KILL_BK,
-			/**
-			 * Set by hardware to signal that the current bank contains a new packet.
-			 *
-			 * Shall be cleared by software to handshake the interrupt. Setting by software has no effect.
-			 */
-			[CCode(cname = "(1 << RXOUTI)")]
-			RX_OUT,
-			/**
-			 * Set by hardware to signal that the current bank contains a new valid setup packet.
-			 *
-			 * Shall be cleared by software to hankshake the interript. Setting by software has no effect.
-			 *
-			 * This is never set if the endpoint is an in endpoint.
-			 */
-			[CCode(cname = "(1 << RXSTPI)")]
-			RX_SETUP,
-			/**
-			 * Set by hardware when a NAK handshake has been sent in response of a out/ping request from the host..
-			 *
-			 * Shall be cleared by software. Setting by sofware has no effect.
-			 */
-			[CCode(cname = "(1 << NAKOUTI)")]
-			NAK_OUT,
-			/**
-			 * Set by hardware to indicate that, for an in endpoint, the current bank is not full, the software can push data into the FIFO, or, for an out endpoint, the current bank is not empty, that is, the software can read data from the FIFO.
-			 *
-			 * This bit is never set if {@link Connection.STALLRQ} is set, or in case of error.
-			 *
-			 * Cleared by the hardware otherwise.
-			 *
-			 * This bit shall not be used for the control endpoint.
-			 */
-			[CCode(cname = "(1 << RWAL)")]
-			RW_ALLOW,
-			/**
-			 * FIFO control bit
-			 *
-			 * For out and setup endpoints, set by the hardware when a new out message is stored in the current bank, at the same time than {@link RX_OUT} or {@link RX_SETUP}.
-			 *
-			 * Clear to free the current bank and switch to the following bank. Setting by software has no effect.
-			 *
-			 * For in endpoints, set by hardware when the current bank is free, at the same time than {@link TX_IN}.
-			 *
-			 * Clear to send the FIFO data and switch the bank. Setting by software has no effect.
-			 */
-			[CCode(cname = "(1 << FIFOCON)")]
-			FIFOCON
-		}
-
-		[CCode(cname = "UENUM")]
-		public uint8 endpoint;
-
-		[CCode(cname = "UERST")]
-		public uint8 endpoint_fifo;
-
-		[CCode(cname = "UECONX")]
-		public Connection connection;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum Connection {
-			/**
-			 * Enable the endpoint according to the device configuration.
-			 *
-			 * Endpoint 0 shall always be enabled after a hardware or USB reset and
-			 * participate in the device configuration.
-			 */
-			[CCode(cname = "(1 << EPEN)")]
-			EP_ENABLE,
-			/**
-			 * Automatically clear the data toggle sequence.
-			 *
-			 * For the out endpoint, the next received packet wil have the data
-			 * toggle 0. For the in endpoint, the next packet to be sent will have
-			 * the data toggle 0.
-			 *
-			 * Cleared by hardware instantaneously. The firmware does not have to
-			 * wait that the bit is cleared. Clearing by software as no effect.
-			 */
-			[CCode(cname = "(1 << RSTDT)")]
-			RSTDT,
-			/**
-			 * Disable the stall mechanism.
-			 *
-			 * Cleared by hardware immediately after the set. Clearing by software as no effect.
-			 */
-			[CCode(cname = "(1 << STALLRQC)")]
-			STALLRQC,
-			/**
-			 * Request a stall answer to the host for the next handshake.
-			 *
-			 * Cleared when a new setup is received. Clearing by software as no effect.
-			 */
-			[CCode(cname = "(1 << STALLRQ)")]
-			STALLRQ
-		}
-
-		[CCode(cname = "UECFG0X")]
-		public EndpointConfig endpont_config;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointConfig {
-			/**
-			 * Configure an in direction. Otherwies, output.
-			 */
-			[CCode(cname = "(1 << EPDIR)")]
-			INPUT,
-			[CCode(cname = "0")]
-			CONTROL,
-			[CCode(cname = "(1 << ETYPE1)")]
-			BULK,
-			[CCode(cname = "(1 << ETYPE0)")]
-			ISOCHRONOUS,
-			[CCode(cname = "((1 << ETYPE1) | (1 << ETYPE0))")]
-			INTERRUPT
-		}
-
-		[CCode(cname = "UECFG1X")]
-		public EndpointSetup endpoint_setup;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointSetup {
-			/**
-			 * Allocate memory for the endpoint.
-			 *
-			 * Clear to free the memory.
-			 */
-			[CCode(cname = "ALLOC")]
-			ALLOC,
-			[CCode(cname = "(1 << EPBK0)")]
-			DOUBLE_BANK,
-			[CCode(cname = "0")]
-			SIZE8,
-			[CCode(cname = "(1 << EPSIZE0)")]
-			SIZE16,
-			[CCode(cname = "(1 << EPSIZE1)")]
-			SIZE32,
-			[CCode(cname = "((1 << EPSIZE1) | (1 << EPSIZE0))")]
-			SIZE64,
-			[CCode(cname = "(1 << EPSIZE2)")]
-			SIZE128,
-			[CCode(cname = "((1 << EPSIZE2) | (1 << EPSIZE0))")]
-			SIZE256
-		}
-
-		[CCode(cname = "UESTA0X")]
-		public EndpointStatus endpoint_status;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointStatus {
-			/**
-			 * Set by the hardware when the endpoint size and bank parameter in
-			 * {@link endpoint_setup} are correct.
-			 *
-			 * This is updated when {@link EndpointSetup.ALLOC} is set. If this bit
-			 * is cleared, {@link endpoint_setup} should be reprogrammed with the
-			 * correct size and bank.
-			 */
-			[CCode(cname = "(1 << CFGOK)")]
-			CFGOK,
-			/**
-			 * Set by the hardware when underflow occurs in an isochronous endpoint.
-			 */
-			[CCode(cname = "(1 << UNDERFI)")]
-			UNDERFI,
-			/**
-			 * Set by the hardware when overflow occurs in an isochronous endpoint.
-			 */
-			[CCode(cname = "(1 << OVERFI)")]
-			OVERFI,
-			/**
-			 * Set by the hardware to indicate the PID of the current is Data1.
-			 *
-			 * For out transfer, this value indicates the last data toggle received
-			 * on the current bank.  For in transfer, this value indicates the toggle
-			 * that will be used for the next packet sent. This is not relative to
-			 * the current bank.
-			 */
-			[CCode(cname = "(1 << DTSEQ0)")]
-			DATA1,
-			/**
-			 * Set by the hardware to indicate the number of busy bank.
-			 *
-			 * For in endpoint, it indicates sthe number of busy banks, filled by the
-			 * user, ready for in transfer. For out endpoint, it indicates the number
-			 * of busy banks filled by out transaction from the host.
-			 */
-			[CCode(cname = "0")]
-			ZERO_BANKS_BUSY,
-			[CCode(cname = "(1 << NBUSYBK0)")]
-			ONE_BANK_BUSY,
-			[CCode(cname = "(1 << NBUSYBK1)")]
-			TWO_BANKS_BUSY
-		}
-
-		[CCode(cname = "UESTA1X")]
-		public EndpointStatus2 endpoint_status2;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointStatus2 {
-			/**
-			 * Set by hardware after a setup packet and gives the direction of the following packet.
-			 */
-			[CCode(cname = "CTRLDIR")]
-			INPUT,
-			/**
-			 * Set by hardware to indicate the number of the current bank.
-			 */
-			[CCode(cname = "(1 << CURRBK0)")]
-			BANK1
-		}
-
-		[CCode(cname = "UEIENX")]
-		public Interrupt interrupt_enable;
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum Interrupt {
-			/**
-			 * Enable an interrupt when {@link Status.TX_IN} is set.
-			 */
-			[CCode(cname = "(1 << TXINE)")]
-			TX_IN,
-			/**
-			 * Enable an interrupt when {@link Status.STALLED} is set.
-			 */
-			[CCode(cname = "(1 << STALLEDE)")]
-			STALLED,
-			/**
-			 * Enable an interrupt when {@link Status.RX_OUT} is set.
-			 */
-			[CCode(cname = "(1 << RXOUTE)")]
-			RX_OUT,
-			/**
-			 * Enable an interrupt when {@link Status.RX_SETUP} is set.
-			 */
-			[CCode(cname = "(1 << RXSTPE)")]
-			RX_SETUP,
-			/**
-			 * Enable an interrupt when {@link Status.NAK_OUT} is set.
-			 */
-			[CCode(cname = "(1 << NAKOUTE)")]
-			NAK_OUT,
-			/**
-			 * Enable an interrupt when {@link Status.NAK_IN} is set.
-			 */
-			[CCode(cname = "NAKINE")]
-			NAK_IN,
-			/**
-			 * Enable an interrupt when {@link Status.OVERFI} or {@link Status.UNDERFI} is set.
-			 */
-			[CCode(cname = "FLERRE")]
-			FL_ERR
-		}
-
-		[CCode(cname = "UEDATX")]
-		public uint8 data;
-
-		[CCode(cname = "UEBCX")]
-		public uint16 byte_count;
-		[CCode(cname = "UEBCLX")]
-		public uint8 byte_count_low;
-		[CCode(cname = "UEBCHX")]
-		public uint8 byte_count_high;
-
-		[CCode(cname = "UEINT")]
-		public uint8 interrupt_endpoint;
-
-	public uint8 UPERRX;
-
-	public uint8 UPBCLX;
-
-	public uint8 UPBCHX;
-
-	public uint8 UPINT;
-	}
 
 	public uint8 OTGTCON;
 	public const int SPM_PAGESIZE;

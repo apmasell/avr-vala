@@ -1037,12 +1037,21 @@ namespace Posix {
 	 */
 	[CCode(cheader_filename = "avr/eeprom.h")]
 	namespace Eeprom {
-		[CCode(cname = "uint8_t", cprefix = "EE")]
+		[CCode(cname = "uint8_t")]
+		[Flags]
 		public enum Control {
-			RE,
-			WE,
-			MWE,
-			RIE
+			[CCode(cname = "_BV(EEPE)")]
+			PROGRAM_ENABLE,
+			[CCode(cname = "_BV(EEMPE)")]
+			MASTER_PROGRAM_ENABLE,
+			[CCode(cname = "_BV(EEIE)")]
+			READY_INTERRUPT_ENABLE
+			[CCode(cname = "0")]
+			WRITE_AND_ERASE,
+			[CCode(cname = "_BV(EEPM0)")]
+			ERASE_ONLY,
+			[CCode(cname = "_BV(EEPM1)")]
+			WRITE_ONLY
 		}
 		/**
 		 * Control Register
@@ -1059,10 +1068,6 @@ namespace Posix {
 		 */
 		[CCode(cname = "EEAR")]
 		public uint16 address;
-		[CCode(cname = "EEARH")]
-		public uint8 address_high;
-		[CCode(cname = "EEARL")]
-		public uint8 address_low;
 		/**
 		 * Loops until the eeprom is no longer busy.
 		 */
