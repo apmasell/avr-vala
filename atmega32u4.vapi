@@ -101,7 +101,7 @@ namespace Posix {
 			public void select();
 		}
 		[CCode(cname = "uint8")]
-		public enum Digitial0 {
+		public enum Digital0 {
 			[CCode(cname = "_BV(ADC0D)")]
 			P0,
 			[CCode(cname = "_BV(ADC1D)")]
@@ -120,7 +120,7 @@ namespace Posix {
 			P7
 		}
 		[CCode(cname = "uint8")]
-		public enum Digitial1 {
+		public enum Digital1 {
 			[CCode(cname = "_BV(AIN0D)")]
 			AIN0,
 			[CCode(cname = "_BV(AIN1D)")]
@@ -250,7 +250,7 @@ namespace Posix {
 		[CCode(cname = "ADC")]
 		public uint16 data;
 		[CCode(cname = "DIDR0")]
-		public Digitial0 digital_disable_0;
+		public Digital0 digital_disable_0;
 		[CCode(cname = "DIDR1")]
 		public Digital1 digital_disable_1;
 		[CCode(cname = "DIDR2")]
