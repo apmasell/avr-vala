@@ -35,6 +35,10 @@ static inline int g_atomic_int_dec_and_test(
 	return result;
 }
 
-#define BIT_GET(reg, bit) (reg & _BV(bit))
-#define BIT_SET(reg, bit, value) ((value) ? (reg |= _BV(bit)) :  (reg &= ~(_BV(bit))))
+#        define BIT_GET(reg, bit) (reg & _BV(bit))
+#        define BIT_SET(reg, bit, value) ((value) ? (reg | _BV(bit)) :  (reg & ~(_BV(bit))))
+#        define BIT_TOGGLE(reg, bit) (reg ^ _BV(bit))
+
+#        define BIT_COND(reg, bit) reg = (reg & ~_BV(bit)) | _BV(bit) & -!!
+#        define BIT_MASKED_SET(reg, mask) reg = (reg & ~(mask)) |
 #endif

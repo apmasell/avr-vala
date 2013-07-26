@@ -138,6 +138,9 @@ public struct uint {
 	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
 	[ReturnsModifiedPointer]
 	public void set(int x, bool @value);
+	[CCode(cname = "BIT_TOGGLE", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void toggle(int x);
 }
 [CCode (cname = "short", default_value = "0")]
 [IntegerType (rank = 4, min = -32768, max = 32767)]
@@ -244,6 +247,9 @@ public struct uint8 {
 	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
 	[ReturnsModifiedPointer]
 	public void set(int x, bool @value);
+	[CCode(cname = "BIT_TOGGLE", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void toggle(int x);
 }
 /**
  * A {@link uint8} located in flash ROM.
@@ -302,6 +308,9 @@ public struct uint16 {
 	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
 	[ReturnsModifiedPointer]
 	public void set(int x, bool @value);
+	[CCode(cname = "BIT_TOGGLE", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void toggle(int x);
 }
 /**
  * A {@link uint16} located in flash ROM.
@@ -350,6 +359,9 @@ public struct uint32 {
 	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
 	[ReturnsModifiedPointer]
 	public void set(int x, bool @value);
+	[CCode(cname = "BIT_TOGGLE", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void toggle(int x);
 }
 /**
  * A {@link int32} located in flash ROM.
@@ -380,6 +392,9 @@ public struct uint64 {
 	[CCode(cname = "BIT_SET", cheader_filename = "avr-glib.h")]
 	[ReturnsModifiedPointer]
 	public void set(int x, bool @value);
+	[CCode(cname = "BIT_TOGGLE", cheader_filename = "avr-glib.h")]
+	[ReturnsModifiedPointer]
+	public void toggle(int x);
 }
 /**
  * A {@link uint64} located in flash ROM.
