@@ -32,6 +32,7 @@ AC_SUBST(LIBVALA_LIBS)
 
 AC_CONFIG_FILES([
 	Makefile
+	aavr-interrupt.pc
 	aavr-semaphore.pc
 	avr.pc
 	gio-2.0.pc
