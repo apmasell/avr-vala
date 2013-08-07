@@ -7,14 +7,14 @@ typedef struct aavr_semaphore AavrSemaphore;
 AavrSemaphore *aavr_semaphore_new(
 	);
 void aavr_semaphore_ref(
-	AavrSemaphore * self);
+	AavrSemaphore *self);
 void aavr_semaphore_unref(
-	AavrSemaphore * self);
+	AavrSemaphore *self);
 void aavr_semaphore_signal(
-	AavrSemaphore * self,
+	AavrSemaphore *self,
 	int i);
 void aavr_semaphore_wait(
-	AavrSemaphore * self,
+	AavrSemaphore *self,
 	int timeout,
 	int i,
 	AavrAsyncCallback callback,

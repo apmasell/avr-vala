@@ -24,19 +24,20 @@ AavrSemaphore *aavr_semaphore_new(
 }
 
 void aavr_semaphore_ref(
-	AavrSemaphore * self) {
+	AavrSemaphore *self) {
 	g_atomic_int_inc(&self->ref_cnt);
 }
 
 void aavr_semaphore_unref(
-	AavrSemaphore * self) {
+	AavrSemaphore *self) {
 	if (g_atomic_int_dec_and_test(&self->ref_cnt) == 0) {
-		g_slice_free(AavrSemaphore, self);
+		g_slice_free(AavrSemaphore,
+			self);
 	}
 }
 
 void aavr_semaphore_signal(
-	AavrSemaphore * self,
+	AavrSemaphore *self,
 	int i) {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		self->i += i;
@@ -66,7 +67,7 @@ void aavr_semaphore_callback(
 }
 
 void aavr_semaphore_wait(
-	AavrSemaphore * self,
+	AavrSemaphore *self,
 	int timeout,
 	int i,
 	AavrAsyncCallback callback,
