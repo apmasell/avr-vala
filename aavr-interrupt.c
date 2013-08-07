@@ -1,27 +1,29 @@
 #include <aavr-interrupt.h>
 #include <avr-glib.h>
 
-struct aavr_interrupt {
-	size_t ref_cnt;
-	int epoch;
-	int waiters;
-};
-
 struct aavr_interrupt_data {
 	AavrInterrupt *self;
-	int start_epoch;
+
 	AavrAsyncCallback callback;
 	void *callback_context;
+
 	AavrStatus result;
 	int time_elapsed;
+
+	struct aavr_interrupt_data *next;
+	bool awake;
+};
+
+struct aavr_interrupt {
+	size_t ref_cnt;
+	struct aavr_interrupt_data *waiter;
 };
 
 AavrInterrupt *aavr_interrupt_new(
 	) {
 	AavrInterrupt *self = g_slice_new0(AavrInterrupt);
 	self->ref_cnt = 1;
-	self->epoch = 0;
-	self->waiters = 0;
+	self->waiter = NULL;
 	return self;
 }
 
@@ -40,12 +42,13 @@ void aavr_interrupt_unref(
 
 void aavr_interrupt_wake(
 	AavrInterrupt *self) {
+	struct aavr_interrupt_data *waiter = NULL;
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		if (self->waiters == 0) {
-			self->epoch = 0;
-		} else {
-			self->epoch++;
-		}
+		waiter = self->waiter;
+		self->waiter = NULL;
+	}
+	for (; waiter != NULL; waiter = waiter->next) {
+		waiter->awake = true;
 	}
 }
 
@@ -53,7 +56,7 @@ bool aavr_interrupt_poll(
 	void *_data) {
 	struct aavr_interrupt_data *data = (struct aavr_interrupt_data *) _data;
 
-	return data->self->epoch >= data->start_epoch;
+	return data->awake;
 }
 
 void aavr_interrupt_callback(
@@ -74,10 +77,13 @@ void aavr_interrupt_wait(
 		callback(NULL, callback_context);
 	}
 	data->self = self;
-	data->start_epoch = self->epoch;
+	data->awake = false;
 	data->callback = callback;
 	data->callback_context = callback_context;
-	g_atomic_int_inc(&self->waiters);
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+		data->next = self->waiter;
+		self->waiter = data;
+	}
 	aavr_wait(aavr_interrupt_poll, data, timeout, aavr_interrupt_callback, data);
 }
 
@@ -90,12 +96,6 @@ AavrStatus aavr_interrupt_wait_finish(
 		if (time_elapsed != NULL)
 			*time_elapsed = 0;
 		return AAVR_STATUS_FAILED;
-	}
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		data->self->waiters--;
-		if (data->self->waiters == 0) {
-			data->self->epoch = 0;
-		}
 	}
 	if (time_elapsed != NULL)
 		*time_elapsed = data->time_elapsed;
