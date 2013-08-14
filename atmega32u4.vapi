@@ -100,7 +100,7 @@ namespace Posix {
 			[CCode(cname = "ADC_SELECT")]
 			public void select();
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		public enum Digital0 {
 			[CCode(cname = "_BV(ADC0D)")]
 			P0,
@@ -119,14 +119,14 @@ namespace Posix {
 			[CCode(cname = "_BV(ADC7D)")]
 			P7
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		public enum Digital1 {
 			[CCode(cname = "_BV(AIN0D)")]
 			AIN0,
 			[CCode(cname = "_BV(AIN1D)")]
 			AIN1
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		public enum Digital2 {
 			[CCode(cname = "_BV(ADC8D)")]
 			P8,
@@ -175,7 +175,7 @@ namespace Posix {
 			[CCode(cname = "_BV(ACD)")]
 			DISABLE
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum StatusA {
 			[CCode(cname = "_BV(ADPS0)")]
@@ -203,7 +203,7 @@ namespace Posix {
 			[CCode(cname = "_BV(ADEN)")]
 			ENABLE
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		public enum TriggerSource {
 			[CCode(cname = "0")]
 			FREE_RUN,
@@ -260,6 +260,60 @@ namespace Posix {
 		[CCode(cname = "ADCSRA")]
 		public StatusA status_a;
 	}
+	namespace ClockSel {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control0 {
+			[CCode(cname = "_BV(CLKS)")]
+			CLOCK_SELECTOR,
+			[CCode(cname = "_BV(EXTE)")]
+			ENABLE_EXTERNAL_OR_LOW_POWER,
+			[CCode(cname = "_BV(RCE)")]
+			ENABLE_RC_OSCILLATOR,
+			[CCode(cname = "_BV(EXSUT0)")]
+			EXTERNAL_SUT_0,
+			[CCode(cname = "_BV(EXSUT1)")]
+			EXTERNAL_SUT_1,
+			[CCode(cname = "_BV(RCSUT0)")]
+			RC_SUT_0,
+			[CCode(cname = "_BV(RCSUT1)")]
+			RC_SUT_1
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control1 {
+			[CCode(cname = "_BV(EXCKSEL0)")]
+			EXTERNAL_0,
+			[CCode(cname = "_BV(EXCKSEL1)")]
+			EXTERNAL_1,
+			[CCode(cname = "_BV(EXCKSEL2)")]
+			EXTERNAL_2,
+			[CCode(cname = "_BV(EXCKSEL3)")]
+			EXTERNAL_3,
+			[CCode(cname = "_BV(RCCKSEL0)")]
+			RC_0,
+			[CCode(cname = "_BV(RCCKSEL1)")]
+			RC_1,
+			[CCode(cname = "_BV(RCCKSEL2)")]
+			RC_2,
+			[CCode(cname = "_BV(RCCKSEL3)")]
+			RC_3
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Status {
+			[CCode(cname = "_BV(EXTON)")]
+			EXTERNAL_ON,
+			[CCode(cname = "_BV(RCON)")]
+			RC_ON,
+		}
+		[CCode(cname = "CLKSEL0")]
+		public Control0 control_0;
+		[CCode(cname = "CLKSEL1")]
+		public Control1 control_1;
+		[CCode(cname = "CLKSTA")]
+		public Status status;
+	}
 	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
 	namespace Direction {
 		[CCode(cname = "DDRA")]
@@ -288,7 +342,7 @@ namespace Posix {
 		public uint8 l;
 	}
 	namespace Interrupts {
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum ExternalA {
 			[CCode(cname = "0")]
@@ -324,7 +378,7 @@ namespace Posix {
 			[CCode(cname = "(_BV(ISC30) | _BV(ISC31))")]
 			RISING_3
 		}
-		[CCode(cname = "uint8")]
+		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum ExternalB {
 			[CCode(cname = "0")]
@@ -375,6 +429,40 @@ namespace Posix {
 		[CCode(cname = "PCMSK0")]
 		public uint8 pin_change_mask;
 	}
+	namespace Mcu {
+		[CCode(cname = "uint8_t")]
+		public enum InterruptVector {
+			[CCode(cname = "_BV(IVCE)")]
+			CHANGE_ENABLE,
+			[CCode(cname = "_BV(IVSEL)")]
+			SELECT
+		}
+		[CCode(cname = "uint8_t")]
+		public enum Status {
+			[CCode(cname = "_BV(5)")]
+			USB_RESET,
+			[CCode(cname = "_BV(PORF)")]
+			POWER_ON_RESET,
+			[CCode(cname = "_BV(EXTRF)")]
+			EXTERNAL_RESET,
+			[CCode(cname = "_BV(BORF)")]
+			BROWN_OUT_RESET,
+			[CCode(cname = "_BV(WDRF)")]
+			WATCHDOG_RESET,
+			[CCode(cname = "_BV(JTRF)")]
+			JTAG_RESET
+		}
+		[CCode(cname = "MCUCR")]
+		public InterruptVector control;
+		[CCode(cname = "MCUSR")]
+		public Status status;
+	}
+	namespace Oscillator {
+		[CCode(cname = "OSCCAL")]
+		public uint8 calibration;
+		[CCode(cname = "RCCTRL")]
+		public bool frequency_select;
+	}
 	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
 	namespace Pin {
 		[CCode(cname = "PINB")]
@@ -399,6 +487,52 @@ namespace Posix {
 		public uint8 k;
 		[CCode(cname = "PINL")]
 		public uint8 l;
+	}
+	namespace PhaseLock {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "_BV(PLOCK)")]
+			DETECTED,
+			[CCode(cname = "_BV(PLLE)")]
+			ENABLE,
+			[CCode(cname = "_BV(PINDIV)")]
+			PRESCALE_BY_2
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Frequency {
+			[CCode(cname = "(_BV(PDIV1) | _BV(PDIV0))")]
+			FREQ_40_MHZ,
+			[CCode(cname = "_BV(PDIV2)")]
+			FREQ_48_MHZ,
+			[CCode(cname = "(_BV(PDIV2) | _BV(PDIV0))")]
+			FREQ_56_MHZ,
+			[CCode(cname = "(_BV(PDIV2) | _BV(PDIV1) | _BV(PDIV0))")]
+			FREQ_72_MHZ,
+			[CCode(cname = "_BV(PDIV3)")]
+			FREQ_80_MHZ,
+			[CCode(cname = "(_BV(PDIV3) | _BV(PDIV0))")]
+			FREQ_88_MHZ,
+			[CCode(cname = "(_BV(PDIV3) | _BV(PDIV1))")]
+			FREQ_96_MHZ,
+			[CCode(cname = "0")]
+			HIGH_SPEED_POSTSCALER_DISABLE,
+			[CCode(cname = "_BV(PLLTM0)")]
+			HIGH_SPEED_POSTSCALER_1,
+			[CCode(cname = "_BV(PLLTM1)")]
+			HIGH_SPEED_POSTSCALER_1_5,
+			[CCode(cname = "(_BV(PLLTM1) | _BV(PLLTM0))")]
+			HIGH_SPEED_POSTSCALER_2,
+			[CCode(cname = "_BV(PLLUSB)")]
+			POSTSCALE_USB,
+			[CCode(cname = "_BV(PINMUX)")]
+			INPUT_MULTIPLEX
+		}
+		[CCode(cname = "PLLCSR")]
+		public Control control;
+		[CCode(cname = "PLLFRQ")]
+		public Frequency frequency;
 	}
 	[CCode(cheader_filename = "avr/io.h", cprefix = "")]
 	namespace Port {
@@ -426,6 +560,62 @@ namespace Posix {
 		public uint8 k;
 		[CCode(cname = "PORTL")]
 		public uint8 l;
+	}
+	namespace Power {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Reduction0 {
+			[CCode(cname = "_BV(PRADC)")]
+			ANALOG,
+			[CCode(cname = "_BV(PRUSART0)")]
+			USART_0,
+			[CCode(cname = "_BV(PRSPI)")]
+			SPI,
+			[CCode(cname = "_BV(PRTIM1)")]
+			TIMER_1,
+			[CCode(cname = "_BV(PRTIM0)")]
+			TIMER_0,
+			[CCode(cname = "_BV(PRTWI)")]
+			TWI
+		}
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Reduction1 {
+			[CCode(cname = "_BV(PRUSART1)")]
+			USART_0,
+			[CCode(cname = "_BV(PRTIM4)")]
+			TIMER_4,
+			[CCode(cname = "_BV(PRTIM3)")]
+			TIMER_3,
+			[CCode(cname = "_BV(PRUSB)")]
+			USB
+		}
+		[CCode(cname = "PRR0")]
+		public Reduction0 reduction_0;
+		[CCode(cname = "PRR1")]
+		public Reduction1 reduction_1;
+	}
+	namespace Sleep {
+		[CCode(cname = "uint8_t")]
+		[Flags]
+		public enum Control {
+			[CCode(cname = "_BV(SE)")]
+			ENABLE,
+			[CCode(cname = "0")]
+			IDLE,
+			[CCode(cname = "_BV(SM0)")]
+			ADC_NOISE_REDUCTION,
+			[CCode(cname = "_BV(SM1)")]
+			POWER_DOWN,
+			[CCode(cname = "(_BV(SM0) | _BV(SM1))")]
+			POWER_SAVE,
+			[CCode(cname = "(_BV(SM2) | _BV(SM1))")]
+			STANDBY,
+			[CCode(cname = "(_BV(SM2) | _BV(SM1) | _BV(SM0))")]
+			EXTENDED_STANDBY
+		}
+		[CCode(cname = "SMCR")]
+		public Control control;
 	}
 	namespace Spi {
 		[CCode(cname = "uint8_t")]
@@ -471,32 +661,6 @@ namespace Posix {
 	}
 	namespace Timer {
 		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum Control {
-			[CCode(cname = "_BV(FOC0B)")]
-				FORCE_OUTPUT_COMPARE_A,
-				[CCode(cname = "_BV(FOC0A)")]
-				FORCE_OUTPUT_COMPARE_B,
-				[CCode(cname = "_BV(WGM02)")]
-				PHASE_CORRECTING,
-				[CCode(cname = "0")]
-				SOURCE_STOP,
-				[CCode(cname = "_BV(CS00)")]
-				SOURCE_IO,
-				[CCode(cname = "_BV(CS01)")]
-				SOURCE_IO_DIV_8,
-				[CCode(cname = "(_BV(CS01) | _BV(CS00))")]
-				SOURCE_IO_DIV_64,
-				[CCode(cname = "_BV(CS02)")]
-				SOURCE_IO_DIV_128,
-				[CCode(cname = "(_BV(CS02) | _BV(CS00))")]
-				SOURCE_IO_DIV_1024,
-				[CCode(cname = "(_BV(CS02) | _BV(CS01))")]
-				SOURCE_EXT_FALLING,
-				[CCode(cname = "(_BV(CS02) | _BV(CS01) | _BV(CS00))")]
-				SOURCE_EXT_RISING
-		}
-		[CCode(cname = "uint8_t")]
 		public enum CounterMode {
 			[CCode(cname = "0")]
 			NORMAL,
@@ -509,25 +673,57 @@ namespace Posix {
 		}
 		[CCode(cname = "uint8_t")]
 		[Flags]
-		public enum Interrupt {
-			[CCode(cname = "_BV(TOIE0)")]
-			OVERLOW,
-			[CCode(cname = "_BV(OCIE0A)")]
-			COMPARE_A,
-			[CCode(cname = "_BV(OCIE0B)")]
-			COMPARE_B,
-			[CCode(cname = "_BV(OCIE1C)")]
-			COMPARE_C,
-			[CCode(cname = "_BV(ICIE1)")]
-			CAPTURE
+		public enum GeneralControl {
+			[CCode(cname = "_BV(PSRSYNC)")]
+			PRESCALER_RESET,
+			[CCode(cname = "TSM")]
+			TIMER_SYNC
 		}
+		[CCode(cname = "GTCCR")]
+		public GeneralControl control;
 
 		/**
 		 * Eight bit counter
 		 */
 		namespace zero {
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Control {
+				[CCode(cname = "_BV(FOC0B)")]
+					FORCE_OUTPUT_COMPARE_A,
+					[CCode(cname = "_BV(FOC0A)")]
+					FORCE_OUTPUT_COMPARE_B,
+					[CCode(cname = "_BV(WGM02)")]
+					WGM_2,
+					[CCode(cname = "0")]
+					SOURCE_STOP,
+					[CCode(cname = "_BV(CS00)")]
+					SOURCE_IO,
+					[CCode(cname = "_BV(CS01)")]
+					SOURCE_IO_DIV_8,
+					[CCode(cname = "(_BV(CS01) | _BV(CS00))")]
+					SOURCE_IO_DIV_64,
+					[CCode(cname = "_BV(CS02)")]
+					SOURCE_IO_DIV_128,
+					[CCode(cname = "(_BV(CS02) | _BV(CS00))")]
+					SOURCE_IO_DIV_1024,
+					[CCode(cname = "(_BV(CS02) | _BV(CS01))")]
+					SOURCE_EXT_FALLING,
+					[CCode(cname = "(_BV(CS02) | _BV(CS01) | _BV(CS00))")]
+					SOURCE_EXT_RISING
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Interrupt {
+				[CCode(cname = "_BV(TOIE0)")]
+				OVERLOW,
+				[CCode(cname = "_BV(OCIE0A)")]
+				COMPARE_A,
+				[CCode(cname = "_BV(OCIE0B)")]
+				COMPARE_B
+			}
 			[CCode(cname = "TCCR0A = TIMER0_MODE")]
-			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b);
+			public void set_mode(bool wgm_0, bool wgm_1, CounterMode compare_a, CounterMode compare_b);
 
 			[CCode(cname = "TCCR0B")]
 			public Control control;
@@ -546,8 +742,60 @@ namespace Posix {
 		 * Sixteen bit counter
 		 */
 		namespace one {
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Control {
+				[CCode(cname = "_BV(ICNC1)")]
+					CAPTURE_NOISE_CANCEL,
+					[CCode(cname = "_BV(ICES1)")]
+					CAPTURE_EDGE_SELECT,
+					[CCode(cname = "_BV(WGM12)")]
+					WGM_2,
+					[CCode(cname = "_BV(WGM13)")]
+					WGM_3,
+					[CCode(cname = "0")]
+					SOURCE_STOP,
+					[CCode(cname = "_BV(CS00)")]
+					SOURCE_IO,
+					[CCode(cname = "_BV(CS01)")]
+					SOURCE_IO_DIV_8,
+					[CCode(cname = "(_BV(CS01) | _BV(CS00))")]
+					SOURCE_IO_DIV_64,
+					[CCode(cname = "_BV(CS02)")]
+					SOURCE_IO_DIV_128,
+					[CCode(cname = "(_BV(CS12) | _BV(CS10))")]
+					SOURCE_IO_DIV_1024,
+					[CCode(cname = "(_BV(CS12) | _BV(CS11))")]
+					SOURCE_EXT_FALLING,
+					[CCode(cname = "(_BV(CS12) | _BV(CS11) | _BV(CS10))")]
+					SOURCE_EXT_RISING
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Interrupt {
+				[CCode(cname = "_BV(TOIE1)")]
+				OVERLOW,
+				[CCode(cname = "_BV(OCIE1A)")]
+				COMPARE_A,
+				[CCode(cname = "_BV(OCIE1B)")]
+				COMPARE_B,
+				[CCode(cname = "_BV(OCIE1C)")]
+				COMPARE_C,
+				[CCode(cname = "_BV(ICIE1)")]
+				CAPTURE
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum OutputCompare {
+				[CCode(cname = "_BV(FOC1A)")]
+				OVERLOW,
+				[CCode(cname = "_BV(FOC1B)")]
+				COMPARE_A,
+				[CCode(cname = "_BV(FOC1C)")]
+				COMPARE_B
+			}
 			[CCode(cname = "TCCR1A = TIMER_MODE")]
-			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b,  CounterMode compare_c);
+			public void set_mode(bool wgm_0, bool wgm_1, CounterMode compare_a, CounterMode compare_b, CounterMode compare_c);
 
 			[CCode(cname = "TCCR1B")]
 			public Control control;
@@ -563,13 +811,63 @@ namespace Posix {
 			public Interrupt interrupt_enable;
 			[CCode(cname = "TIFR1")]
 			public Interrupt interrupt_flag;
+			[CCode(cname = "TCCR1C")]
+			public OutputCompare output_compare;
 		}
 		/**
 		 * Sixteen bit counter
 		 */
 		namespace three {
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Control {
+				[CCode(cname = "_BV(ICNC3)")]
+					CAPTURE_NOISE_CANCEL,
+					[CCode(cname = "_BV(ICES3)")]
+					CAPTURE_EDGE_SELECT,
+					[CCode(cname = "_BV(WGM32)")]
+					WGM_2,
+					[CCode(cname = "_BV(WGM33)")]
+					WGM_3,
+					[CCode(cname = "0")]
+					SOURCE_STOP,
+					[CCode(cname = "_BV(CS00)")]
+					SOURCE_IO,
+					[CCode(cname = "_BV(CS01)")]
+					SOURCE_IO_DIV_8,
+					[CCode(cname = "(_BV(CS01) | _BV(CS00))")]
+					SOURCE_IO_DIV_64,
+					[CCode(cname = "_BV(CS02)")]
+					SOURCE_IO_DIV_128,
+					[CCode(cname = "(_BV(CS12) | _BV(CS10))")]
+					SOURCE_IO_DIV_1024,
+					[CCode(cname = "(_BV(CS12) | _BV(CS11))")]
+					SOURCE_EXT_FALLING,
+					[CCode(cname = "(_BV(CS12) | _BV(CS11) | _BV(CS10))")]
+					SOURCE_EXT_RISING
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Interrupt {
+				[CCode(cname = "_BV(TOIE3)")]
+				OVERLOW,
+				[CCode(cname = "_BV(OCIE3A)")]
+				COMPARE_A,
+				[CCode(cname = "_BV(OCIE3B)")]
+				COMPARE_B,
+				[CCode(cname = "_BV(OCIE3C)")]
+				COMPARE_C,
+				[CCode(cname = "_BV(ICIE3)")]
+				CAPTURE
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum OutputCompare {
+				[CCode(cname = "_BV(FOC3A)")]
+				OVERLOW
+			}
 			[CCode(cname = "TCCR3A = TIMER_MODE")]
-			public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b, CounterMode compare_c);
+			public void set_mode(bool wgm_0, bool wgm_1, CounterMode compare_a, CounterMode compare_b, CounterMode compare_c);
 
 			[CCode(cname = "TCCR3B")]
 			public Control control;
@@ -585,27 +883,189 @@ namespace Posix {
 			public Interrupt interrupt_enable;
 			[CCode(cname = "TIFR3")]
 			public Interrupt interrupt_flag;
+			[CCode(cname = "TCCR3C")]
+			public OutputCompare output_compare;
 		}
 		/**
 		 * Ten bit counter
 		 */
 		namespace four {
-				[CCode(cname = "TCCR4A = TIMER_MODE")]
-				public void set_mode(bool single_slope, bool user_defined_top, CounterMode compare_a, CounterMode compare_b, /*TODO*/ void*x = null);
-				[CCode(cname = "TCCR4B")]
-				public Control control;
-				[CCode(cname = "OCR4A")]
-				public uint16 compare_a;
-				[CCode(cname = "OCR4B")]
-				public uint16 compare_b;
-				[CCode(cname = "OCR4C")]
-				public uint16 compare_c;
-				[CCode(cname = "TCNT4")]
-				public uint16 counter;
-				[CCode(cname = "TIMSK4")]
-				public Interrupt interrupt_enable;
-				[CCode(cname = "TIFR4")]
-				public Interrupt interrupt_flag;
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum ControlA {
+				[CCode(cname = "0")]
+				NORMAL_A,
+				[CCode(cname = "_BV(COM4A0)")]
+				TOGGLE_ON_MATCH_A,
+				[CCode(cname = "_BV(COM4A1)")]
+				CLEAR_ON_MATCH_A,
+				[CCode(cname = "(_BV(COM4A1) | _BV(COM4A0))")]
+				SET_ON_MATCH_A,
+				[CCode(cname = "0")]
+				NORMAL_B,
+				[CCode(cname = "_BV(COM4B0)")]
+				TOGGLE_ON_MATCH_B,
+				[CCode(cname = "_BV(COM4B1)")]
+				CLEAR_ON_MATCH_B,
+				[CCode(cname = "(_BV(COM4B1) | _BV(COM4B0))")]
+				SET_ON_MATCH_B,
+				[CCode(cname = "_BV(FOC4A)")]
+				FORCE_OUTPUT_COMPARE_MATCH_A,
+				[CCode(cname = "_BV(FOC4B)")]
+				FORCE_OUTPUT_COMPARE_MATCH_B,
+				[CCode(cname = "_BV(PWM4A)")]
+				PWM_A_ENABLE,
+				[CCode(cname = "_BV(PWM4B)")]
+				PWM_B_ENABLE
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum ControlB {
+				[CCode(cname = "_BV(PWM4X)")]
+				PWM_INVERSION,
+				[CCode(cname = "_BV(PSR4)")]
+				PRESCALER_RESET,
+				[CCode(cname = "0")]
+				PRESCALER_DIV_BY_1,
+				[CCode(cname = "_BV(DTPS40)")]
+				PRESCALER_DIV_BY_2,
+				[CCode(cname = "_BV(DTPS41)")]
+				PRESCALER_DIV_BY_4,
+				[CCode(cname = "(_BV(DTPS41) | _BV(DTPS40))")]
+				PRESCALER_DIV_BY_8,
+				[CCode(cname = "0")]
+				CLOCK_STOP,
+				[CCode(cname = "_BV(CS40)")]
+				CLOCK_OVER_1,
+				[CCode(cname = "_BV(CS41)")]
+				CLOCK_OVER_2,
+				[CCode(cname = "(_BV(CS41) | _BV(CS40))")]
+				CLOCK_OVER_4,
+				[CCode(cname = "_BV(CS42)")]
+				CLOCK_OVER_8,
+				[CCode(cname = "(_BV(CS42) | _BV(CS40))")]
+				CLOCK_OVER_16,
+				[CCode(cname = "(_BV(CS42) | _BV(CS41))")]
+				CLOCK_OVER_32,
+				[CCode(cname = "(_BV(CS42) | _BV(CS41) | _BV(CS40))")]
+				CLOCK_OVER_64,
+				[CCode(cname = "_BV(CS43)")]
+				CLOCK_OVER_128,
+				[CCode(cname = "(_BV(CS43) | _BV(CS40))")]
+				CLOCK_OVER_256,
+				[CCode(cname = "(_BV(CS43) | _BV(CS41))")]
+				CLOCK_OVER_512,
+				[CCode(cname = "(_BV(CS43) | _BV(CS41) | _BV(CS40))")]
+				CLOCK_OVER_1024,
+				[CCode(cname = "(_BV(CS43) | _BV(CS412)")]
+				CLOCK_OVER_2048,
+				[CCode(cname = "(_BV(CS43) | _BV(CS42) | _BV(CS40))")]
+				CLOCK_OVER_4096,
+				[CCode(cname = "(_BV(CS43) | _BV(CS42) | _BV(CS41))")]
+				CLOCK_OVER_8192,
+				[CCode(cname = "(_BV(CS43) | _BV(CS42) | _BV(CS41) | _BV(CS40))")]
+				CLOCK_OVER_16384
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum ControlC {
+				[CCode(cname = "_BV(COM4A1S)")]
+				COMA1_SHADOW,
+				[CCode(cname = "_BV(COM4A0S)")]
+				COMA0_SHADOW,
+				[CCode(cname = "_BV(COM4B1S)")]
+				COMB1_SHADOW,
+				[CCode(cname = "_BV(COM4B0S)")]
+				COMB0_SHADOW,
+				[CCode(cname = "_BV(COM4A1S)")]
+				COMD1_SHADOW,
+				[CCode(cname = "_BV(COM4D0S)")]
+				COMD0_SHADOW,
+				[CCode(cname = "_BV(FOC4D)")]
+				FORCE_OUTPUT_COMPARE_MATCH_D,
+				[CCode(cname = "_BV(COM4D0S)")]
+				PWM_D_ENABLE
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum ControlD {
+				[CCode(cname = "_BV(FPIE4)")]
+				FAULT_PROTECTION_INTERRUPT_ENABLE,
+				[CCode(cname = "_BV(FPEN4)")]
+				FAULT_PROTECTION_ENABLE,
+				[CCode(cname = "_BV(FPNC4)")]
+				FAULT_PROTECTION_NOISE_CANCEL,
+				[CCode(cname = "_BV(FPEX4)")]
+				FAULT_PROTECTION_EDGE_SELECT,
+				[CCode(cname = "_BV(FPAC4)")]
+				FAULT_PROTECTION_ANALOG_COMPARATOR_ENABLE,
+				[CCode(cname = "_BV(FPF4)")]
+				FAULT_PROTECTION_INTERRUPT_FLAG,
+				[CCode(cname = "0")]
+				FAST_PWM,
+				[CCode(cname = "_BV(WGM40)")]
+				PHASE_FREQ_CORRECT_PWM,
+				[CCode(cname = "_BV(WGM41)")]
+				SINGLE_SLOPE_PWM6,
+				[CCode(cname = "(_BV(WGM40) | _BV(WGM41))")]
+				DUAL_SLOPE_PWM6,
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum ControlE {
+				[CCode(cname = "_BV(TLOCK4)")]
+				REGISTER_UPDATE_LOCK,
+				[CCode(cname = "_BV(ENHC4)")]
+				ENHANCE_COMPARE_MODE,
+				[CCode(cname = "_BV(OC4OE5)")]
+				OUTPUT_COMPARE_OVERRIDE_5,
+				[CCode(cname = "_BV(OC4OE4)")]
+				OUTPUT_COMPARE_OVERRIDE_4,
+				[CCode(cname = "_BV(OC4OE3)")]
+				OUTPUT_COMPARE_OVERRIDE_3,
+				[CCode(cname = "_BV(OC4OE2)")]
+				OUTPUT_COMPARE_OVERRIDE_2,
+				[CCode(cname = "_BV(OC4OE1)")]
+				OUTPUT_COMPARE_OVERRIDE_1,
+				[CCode(cname = "_BV(OC4OE0)")]
+				OUTPUT_COMPARE_OVERRIDE_0
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Interrupt {
+				[CCode(cname = "_BV(TOIE4)")]
+				OVERLOW,
+				[CCode(cname = "_BV(OCIE1A)")]
+				COMPARE_A,
+				[CCode(cname = "_BV(OCIE1B)")]
+				COMPARE_B,
+				[CCode(cname = "_BV(OCIE1D)")]
+				COMPARE_D,
+				[CCode(cname = "_BV(ICIE1)")]
+				CAPTURE
+			}
+			[CCode(cname = "TCCR4A")]
+			public ControlA control_a;
+			[CCode(cname = "TCCR4B")]
+			public ControlB control_b;
+			[CCode(cname = "TCCR4C")]
+			public ControlC control_c;
+			[CCode(cname = "OCR4A")]
+			public uint8 compare_a;
+			[CCode(cname = "OCR4B")]
+			public uint8 compare_b;
+			[CCode(cname = "OCR4C")]
+			public uint8 compare_c;
+			[CCode(cname = "OCR4D")]
+			public uint8 compare_d;
+			[CCode(cname = "TCNT4")]
+			public uint8 counter;
+			[CCode(cname = "TIMSK4")]
+			public Interrupt interrupt_enable;
+			[CCode(cname = "TIFR4")]
+			public Interrupt interrupt_flag;
+			[CCode(cname = "DT4")]
+			public uint8 dead_time;
 		}
 	}
 	namespace Twi {
@@ -734,6 +1194,192 @@ namespace Posix {
 		public uint8 data1;
 	}
 	namespace Usb {
+		namespace Bus {
+			[CCode(cname = "uint8_t")]
+			public enum Control {
+				[CCode(cname = "_BV(VBUSTE)")]
+				VBUS_TRANSITION_INTERRUPT,
+				[CCode(cname = "_BV(OTGPADE)")]
+				VBUS_PAD,
+				[CCode(cname = "_BV(FRZCLK)")]
+				FREEZE_CLOCK,
+				[CCode(cname = "_BV(USBE)")]
+				ENABLE
+			}
+			[CCode(cname = "uint8_t")]
+			public enum Status {
+				[CCode(cname = "_BV(VBUS)")]
+				VBUS
+			}
+			[CCode(cname = "USBCON")]
+			public Control control;
+			[CCode(cname = "USBSTA")]
+			public Status status;
+			[CCode(cname = "UHWCON")]
+			public bool pad_regulator_enable;
+			[CCode(cname = "USBINT")]
+			public bool vbus_transition;
+		}
+		namespace Endpoint {
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Config {
+				/**
+				 * Configure an in direction. Otherwies, output.
+				 */
+				[CCode(cname = "_BV(EPDIR)")]
+				INPUT,
+				[CCode(cname = "0")]
+				CONTROL,
+				[CCode(cname = "_BV(ETYPE1)")]
+				BULK,
+				[CCode(cname = "_BV(ETYPE0)")]
+				ISOCHRONOUS,
+				[CCode(cname = "(_BV(ETYPE1) | _BV(ETYPE0))")]
+				INTERRUPT
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Interrupt {
+				/**
+				 * Enable an interrupt when {@link Status.TX_IN} is set.
+				 */
+				[CCode(cname = "_BV(TXINE)")]
+				TX_IN,
+				/**
+				 * Enable an interrupt when {@link Status.STALLED} is set.
+				 */
+				[CCode(cname = "_BV(STALLEDE)")]
+				STALLED,
+				/**
+				 * Enable an interrupt when {@link Status.RX_OUT} is set.
+				 */
+				[CCode(cname = "_BV(RXOUTE)")]
+				RX_OUT,
+				/**
+				 * Enable an interrupt when {@link Status.RX_SETUP} is set.
+				 */
+				[CCode(cname = "_BV(RXSTPE)")]
+				RX_SETUP,
+				/**
+				 * Enable an interrupt when {@link Status.NAK_OUT} is set.
+				 */
+				[CCode(cname = "_BV(NAKOUTE)")]
+				NAK_OUT,
+				/**
+				 * Enable an interrupt when {@link Status.NAK_IN} is set.
+				 */
+				[CCode(cname = "_BV(NAKINE)")]
+				NAK_IN,
+				/**
+				 * Enable an interrupt when {@link Status.ISO_UNDERFLOW} or {@link Status.ISO_OVERFLOW} is set.
+				 */
+				[CCode(cname = "_BV(FLERRE)")]
+				FLOW_ERROR
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Setup {
+				/**
+				 * Allocate memory for the endpoint.
+				 *
+				 * Clear to free the memory.
+				 */
+				[CCode(cname = "_BV(ALLOC)")]
+				ALLOC,
+				[CCode(cname = "_BV(EPBK0)")]
+				DOUBLE_BANK,
+				[CCode(cname = "0")]
+				SIZE8,
+				[CCode(cname = "_BV(EPSIZE0)")]
+				SIZE16,
+				[CCode(cname = "_BV(EPSIZE1)")]
+				SIZE32,
+				[CCode(cname = "(_BV(EPSIZE1) | _BV(EPSIZE0))")]
+				SIZE64,
+				[CCode(cname = "_BV(EPSIZE2)")]
+				SIZE128,
+				[CCode(cname = "(_BV(EPSIZE2) | _BV(EPSIZE0))")]
+				SIZE256
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Status {
+				/**
+				 * Set by the hardware when the endpoint size and bank parameter in
+				 * {@link endpoint_setup} are correct.
+				 *
+				 * This is updated when {@link EndpointSetup.ALLOC} is set. If this bit
+				 * is cleared, {@link endpoint_setup} should be reprogrammed with the
+				 * correct size and bank.
+				 */
+				[CCode(cname = "_BV(CFGOK)")]
+				CONFIG_OK,
+				/**
+				 * Set by the hardware when underflow occurs in an isochronous endpoint.
+				 */
+				[CCode(cname = "_BV(UNDERFI)")]
+				ISO_UNDERFLOW,
+				/**
+				 * Set by the hardware when overflow occurs in an isochronous endpoint.
+				 */
+				[CCode(cname = "_BV(OVERFI)")]
+				ISO_OVERFLOW,
+				/**
+				 * Set by the hardware to indicate the PID of the current is Data1.
+				 *
+				 * For out transfer, this value indicates the last data toggle received
+				 * on the current bank.  For in transfer, this value indicates the toggle
+				 * that will be used for the next packet sent. This is not relative to
+				 * the current bank.
+				 */
+				[CCode(cname = "_BV(DTSEQ0)")]
+				DATA1,
+				/**
+				 * Set by the hardware to indicate the number of busy bank.
+				 *
+				 * For in endpoint, it indicates sthe number of busy banks, filled by the
+				 * user, ready for in transfer. For out endpoint, it indicates the number
+				 * of busy banks filled by out transaction from the host.
+				 */
+				[CCode(cname = "0")]
+				ZERO_BANKS_BUSY,
+				[CCode(cname = "_BV(NBUSYBK0)")]
+				ONE_BANK_BUSY,
+				[CCode(cname = "_BV(NBUSYBK1)")]
+				TWO_BANKS_BUSY
+			}
+			[CCode(cname = "uint8_t")]
+			[Flags]
+			public enum Status2 {
+				/**
+				 * Set by hardware after a setup packet and gives the direction of the following packet.
+				 */
+				[CCode(cname = "CTRLDIR")]
+				INPUT,
+				/**
+				 * Set by hardware to indicate the number of the current bank.
+				 */
+				[CCode(cname = "_BV(CURRBK0)")]
+				BANK1
+			}
+			[CCode(cname = "UENUM")]
+			public uint8 number;
+			[CCode(cname = "UECFG0X")]
+			public Config endpont_config;
+			[CCode(cname = "UECFG1X")]
+			public Setup setup;
+			[CCode(cname = "UESTA0X")]
+			public Status status;
+			[CCode(cname = "UESTA1X")]
+			public Status2 status2;
+			[CCode(cname = "UEIENX")]
+			public Interrupt enable;
+			[CCode(cname = "UEINT")]
+			public uint8 interrupts;
+			[CCode(cname = "UERST")]
+			public uint8 fifo_reset;
+		}
 		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum Connection {
@@ -756,162 +1402,49 @@ namespace Posix {
 			 * wait that the bit is cleared. Clearing by software as no effect.
 			 */
 			[CCode(cname = "_BV(RSTDT)")]
-			RSTDT,
+			CLEAR_TOGGLE,
 			/**
 			 * Disable the stall mechanism.
 			 *
 			 * Cleared by hardware immediately after the set. Clearing by software as no effect.
 			 */
 			[CCode(cname = "_BV(STALLRQC)")]
-			STALLRQC,
+			STALL_DISABLE,
 			/**
 			 * Request a stall answer to the host for the next handshake.
 			 *
 			 * Cleared when a new setup is received. Clearing by software as no effect.
 			 */
 			[CCode(cname = "_BV(STALLRQ)")]
-			STALLRQ
+			STALL_REQUEST
 		}
 		[CCode(cname = "uint8_t")]
 		[Flags]
-		public enum EndpointConfig {
-			/**
-			 * Configure an in direction. Otherwies, output.
-			 */
-			[CCode(cname = "_BV(EPDIR)")]
-			INPUT,
-			[CCode(cname = "0")]
-			CONTROL,
-			[CCode(cname = "_BV(ETYPE1)")]
-			BULK,
-			[CCode(cname = "_BV(ETYPE0)")]
-			ISOCHRONOUS,
-			[CCode(cname = "(_BV(ETYPE1) | _BV(ETYPE0))")]
-			INTERRUPT
-		}
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointSetup {
-			/**
-			 * Allocate memory for the endpoint.
-			 *
-			 * Clear to free the memory.
-			 */
-			[CCode(cname = "ALLOC")]
-			ALLOC,
-			[CCode(cname = "_BV(EPBK0)")]
-			DOUBLE_BANK,
-			[CCode(cname = "0")]
-			SIZE8,
-			[CCode(cname = "_BV(EPSIZE0)")]
-			SIZE16,
-			[CCode(cname = "_BV(EPSIZE1)")]
-			SIZE32,
-			[CCode(cname = "(_BV(EPSIZE1) | _BV(EPSIZE0))")]
-			SIZE64,
-			[CCode(cname = "_BV(EPSIZE2)")]
-			SIZE128,
-			[CCode(cname = "(_BV(EPSIZE2) | _BV(EPSIZE0))")]
-			SIZE256
-		}		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointStatus {
-			/**
-			 * Set by the hardware when the endpoint size and bank parameter in
-			 * {@link endpoint_setup} are correct.
-			 *
-			 * This is updated when {@link EndpointSetup.ALLOC} is set. If this bit
-			 * is cleared, {@link endpoint_setup} should be reprogrammed with the
-			 * correct size and bank.
-			 */
-			[CCode(cname = "_BV(CFGOK)")]
-			CFGOK,
-			/**
-			 * Set by the hardware when underflow occurs in an isochronous endpoint.
-			 */
-			[CCode(cname = "_BV(UNDERFI)")]
-			UNDERFI,
-			/**
-			 * Set by the hardware when overflow occurs in an isochronous endpoint.
-			 */
-			[CCode(cname = "_BV(OVERFI)")]
-			OVERFI,
-			/**
-			 * Set by the hardware to indicate the PID of the current is Data1.
-			 *
-			 * For out transfer, this value indicates the last data toggle received
-			 * on the current bank.  For in transfer, this value indicates the toggle
-			 * that will be used for the next packet sent. This is not relative to
-			 * the current bank.
-			 */
-			[CCode(cname = "_BV(DTSEQ0)")]
-			DATA1,
-			/**
-			 * Set by the hardware to indicate the number of busy bank.
-			 *
-			 * For in endpoint, it indicates sthe number of busy banks, filled by the
-			 * user, ready for in transfer. For out endpoint, it indicates the number
-			 * of busy banks filled by out transaction from the host.
-			 */
-			[CCode(cname = "0")]
-			ZERO_BANKS_BUSY,
-			[CCode(cname = "_BV(NBUSYBK0)")]
-			ONE_BANK_BUSY,
-			[CCode(cname = "_BV(NBUSYBK1)")]
-			TWO_BANKS_BUSY
+		public enum Control {
+			[CCode(cname = "_BV(DETACH)")]
+			DETACH,
+			[CCode(cname = "_BV(RMWKUP)")]
+			REMOTE_WAKE_UP,
+			[CCode(cname = "_BV(LSM)")]
+			LOW_SPEED_MODE,
+			[CCode(cname = "_BV(RSTCPU)")]
+			RESET_CPU
 		}
 		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum Interrupt {
-			/**
-			 * Enable an interrupt when {@link Status.TX_IN} is set.
-			 */
-			[CCode(cname = "_BV(TXINE)")]
-			TX_IN,
-			/**
-			 * Enable an interrupt when {@link Status.STALLED} is set.
-			 */
-			[CCode(cname = "_BV(STALLEDE)")]
-			STALLED,
-			/**
-			 * Enable an interrupt when {@link Status.RX_OUT} is set.
-			 */
-			[CCode(cname = "_BV(RXOUTE)")]
-			RX_OUT,
-			/**
-			 * Enable an interrupt when {@link Status.RX_SETUP} is set.
-			 */
-			[CCode(cname = "_BV(RXSTPE)")]
-			RX_SETUP,
-			/**
-			 * Enable an interrupt when {@link Status.NAK_OUT} is set.
-			 */
-			[CCode(cname = "_BV(NAKOUTE)")]
-			NAK_OUT,
-			/**
-			 * Enable an interrupt when {@link Status.NAK_IN} is set.
-			 */
-			[CCode(cname = "_BV(NAKINE)")]
-			NAK_IN,
-			/**
-			 * Enable an interrupt when {@link Status.OVERFI} or {@link Status.UNDERFI} is set.
-			 */
-			[CCode(cname = "_BV(FLERRE)")]
-			FL_ERR
-		}
-		[CCode(cname = "uint8_t")]
-		[Flags]
-		public enum EndpointStatus2 {
-			/**
-			 * Set by hardware after a setup packet and gives the direction of the following packet.
-			 */
-			[CCode(cname = "CTRLDIR")]
-			INPUT,
-			/**
-			 * Set by hardware to indicate the number of the current bank.
-			 */
-			[CCode(cname = "_BV(CURRBK0)")]
-			BANK1
+			[CCode(cname = "_BV(SUSPI)")]
+			SUSPEND,
+			[CCode(cname = "_BV(SOFI)")]
+			START_OF_FRAME,
+			[CCode(cname = "_BV(EORSTI)")]
+			END_OF_RESET,
+			[CCode(cname = "_BV(WAKEUPI)")]
+			WAKEUP_CPU,
+			[CCode(cname = "_BV(EORSMI)")]
+			END_OF_RESUME,
+			[CCode(cname = "_BV(UPRSMI)")]
+			UPSTREAM_RESUME
 		}
 		[CCode(cname = "uint8_t")]
 		[Flags]
@@ -990,36 +1523,26 @@ namespace Posix {
 			 * Clear to send the FIFO data and switch the bank. Setting by software has no effect.
 			 */
 			[CCode(cname = "_BV(FIFOCON)")]
-			FIFOCON
+			FIFO_CONTROL
 		}
-		[CCode(cname = "UEBCX")]
-		public uint16 byte_count;
+		[CCode(cname = "UDADDR")]
+		public uint8 address;
 		[CCode(cname = "UECONX")]
 		public Connection connection;
 		[CCode(cname = "UEDATX")]
 		public uint8 data;
-		[CCode(cname = "UENUM")]
-		public uint8 endpoint;
-		[CCode(cname = "UECFG0X")]
-		public EndpointConfig endpont_config;
-		[CCode(cname = "UECFG1X")]
-		public EndpointSetup endpoint_setup;
-		[CCode(cname = "UESTA0X")]
-		public EndpointStatus endpoint_status;
-		[CCode(cname = "UESTA1X")]
-		public EndpointStatus2 endpoint_status2;
-		[CCode(cname = "UEIENX")]
+		[CCode(cname = "UDCON")]
+		public Control control;
+		[CCode(cname = "UDFNUM")]
+		public uint16 frame_number;
+		[CCode(cname = "UDMFN")]
+		public bool frame_number_crc_error;
+		[CCode(cname = "UDINT")]
+		public Interrupt interrupt_flag;
+		[CCode(cname = "UDIEN")]
 		public Interrupt interrupt_enable;
-		[CCode(cname = "UEINT")]
-		public uint8 interrupt_endpoint;
-		[CCode(cname = "UERST")]
-		public uint8 endpoint_fifo;
 		[CCode(cname = "UEINTX")]
 		public Status status;
-	public uint8 UPERRX;
-	public uint8 UPBCLX;
-	public uint8 UPBCHX;
-	public uint8 UPINT;
 	}
 	namespace WatchDog {
 		[CCode(cname = "uint8_t")]
@@ -1056,448 +1579,38 @@ namespace Posix {
 
 	[CCode(cname = "OCDR")]
 	public uint8 debug_data;
+	[CCode(cname = "GPIOR0")]
+	public uint8 gpio_0;
+	[CCode(cname = "GPIOR1")]
+	public uint8 gpio_1;
+	[CCode(cname = "GPIOR2")]
+	public uint8 gpio_2;
 
-	public uint8 TIFR2;
-	public const uint8 TOV2;
-	public const uint8 OCF2A;
-	public const uint8 OCF2B;
+	[CCode(cname = "SPM_PAGESIZE")]
+	public const size_t SPM_PAGESIZE;
+	[CCode(cname = "RAMSTART")]
+	public const size_t RAM_START;
+	[CCode(cname = "RAMSIZE")]
+	public const size_t RAM_SIZE;
+	[CCode(cname = "RAMEND")]
+	public const size_t RAM_END;
+	[CCode(cname = "XRAMSTART")]
+	public const size_t XRAM_START;
+	[CCode(cname = "XRAMSIZE")]
+	public const size_t XRAM_SIZE;
+	[CCode(cname = "XRAMEND")]
+	public const size_t XRAM_END;
+	[CCode(cname = "E2END")]
+	public const size_t E2_END;
+	[CCode(cname = "E2PAGESIZE")]
+	public const size_t E2_PAGESIZE;
+	[CCode(cname = "FLASHEND")]
+	public const size_t FLASH_END;
 
-	public uint8 TIFR4;
-	public const uint8 TOV4;
-	public const uint8 OCF4B;
-	public const uint8 OCF4A;
-	public const uint8 OCF4D;
-
-	public uint8 TIFR5;
-
-
-	public uint8 GPIOR0;
-	public const uint8 GPIOR00;
-	public const uint8 GPIOR01;
-	public const uint8 GPIOR02;
-	public const uint8 GPIOR03;
-	public const uint8 GPIOR04;
-	public const uint8 GPIOR05;
-	public const uint8 GPIOR06;
-	public const uint8 GPIOR07;
-
-	public uint8 GTCCR;
-	public const uint8 PSRSYNC;
-	public const uint8 PSRASY;
-	public const uint8 TSM;
-
-	public uint8 PLLCSR;
-	public const uint8 PLOCK;
-	public const uint8 PLLE;
-	public const uint8 PINDIV;
-
-	public uint8 GPIOR1;
-	public const uint8 GPIOR10;
-	public const uint8 GPIOR11;
-	public const uint8 GPIOR12;
-	public const uint8 GPIOR13;
-	public const uint8 GPIOR14;
-	public const uint8 GPIOR15;
-	public const uint8 GPIOR16;
-	public const uint8 GPIOR17;
-
-	public uint8 GPIOR2;
-	public const uint8 GPIOR20;
-	public const uint8 GPIOR21;
-	public const uint8 GPIOR22;
-	public const uint8 GPIOR23;
-	public const uint8 GPIOR24;
-	public const uint8 GPIOR25;
-	public const uint8 GPIOR26;
-	public const uint8 GPIOR27;
-
-
-	public uint8 PLLFRQ;
-	public const uint8 PDIV0;
-	public const uint8 PDIV1;
-	public const uint8 PDIV2;
-	public const uint8 PDIV3;
-	public const uint8 PLLTM0;
-	public const uint8 PLLTM1;
-	public const uint8 PLLUSB;
-	public const uint8 PINMUX;
-
-	public uint8 SMCR;
-	public const uint8 SE;
-	public const uint8 SM0;
-	public const uint8 SM1;
-	public const uint8 SM2;
-
-	public uint8 MCUSR;
-	public const uint8 PORF;
-	public const uint8 EXTRF;
-	public const uint8 BORF;
-	public const uint8 WDRF;
-	public const uint8 JTRF;
-
-	public uint8 MCUCR;
-	public const uint8 IVCE;
-	public const uint8 IVSEL;
-	public const uint8 PUD;
-	public const uint8 JTD;
-
-	public uint8 EIND;
-	public const uint8 EIND0;
-
-
-	public uint8 PRR0;
-	public const uint8 PRADC;
-	public const uint8 PRUSART0;
-	public const uint8 PRSPI;
-	public const uint8 PRTIM1;
-	public const uint8 PRTIM0;
-	public const uint8 PRTIM2;
-	public const uint8 PRTWI;
-
-	public uint8 PRR1;
-	public const uint8 PRUSART1;
-	public const uint8 PRTIM3;
-	public const uint8 PRUSB;
-
-	public uint8 OSCCAL;
-	public const uint8 CAL0;
-	public const uint8 CAL1;
-	public const uint8 CAL2;
-	public const uint8 CAL3;
-	public const uint8 CAL4;
-	public const uint8 CAL5;
-	public const uint8 CAL6;
-	public const uint8 CAL7;
-
-	public uint8 RCCTRL;
-	public const uint8 RCFREQ;
-
-	[CCode(cname = "ICR1")]
-	public uint16 ICR1;
-	public uint16 OCR1A;
-	public uint16 OCR1B;
-	public uint16 OCR1C;
-
-	public uint8 TCCR3B;
-	public const uint8 CS30;
-	public const uint8 CS31;
-	public const uint8 CS32;
-	public const uint8 WGM32;
-	public const uint8 WGM33;
-	public const uint8 ICES3;
-	public const uint8 ICNC3;
-
-	public uint8 TCCR3C;
-	public const uint8 FOC3C;
-	public const uint8 FOC3B;
-	public const uint8 FOC3A;
-
-
-	public uint8 ICR3;
-	public uint8 OCR3A;
-	public uint8 OCR3B;
-	public uint8 OCR3C;
-	public uint8 UHCON;
-	public uint8 UHINT;
-	public uint8 UHIEN;
-	public uint8 UHADDR;
-	public uint8 UHFNUM;
-	public uint8 UHFNUML;
-	public uint8 UHFNUMH;
-	public uint8 UHFLEN;
-	public uint8 UPINRQX;
-	public uint8 UPINTX;
-	public uint8 UPNUM;
-	public uint8 UPRST;
-	public uint8 UPCONX;
-	public uint8 UPCFG0X;
-	public uint8 UPCFG1X;
-	public uint8 UPSTAX;
-	public uint8 UPCFG2X;
-	public uint8 UPIENX;
-	public uint8 UPDATX;
-
-	public uint8 TCCR2A;
-	public const uint8 WGM20;
-	public const uint8 WGM21;
-	public const uint8 COM2B0;
-	public const uint8 COM2B1;
-	public const uint8 COM2A0;
-	public const uint8 COM2A1;
-
-	public uint8 TCCR2B;
-	public const uint8 CS20;
-	public const uint8 CS21;
-	public const uint8 CS22;
-	public const uint8 WGM22;
-	public const uint8 FOC2B;
-	public const uint8 FOC2A;
-
-	public uint8 TCNT2;
-
-	public uint8 OCR2A;
-	public uint8 OCR2B;
-
-	public uint8 TCCR4A;
-	public const uint8 PWM4B;
-	public const uint8 PWM4A;
-	public const uint8 FOC4B;
-	public const uint8 FOC4A;
-	public const uint8 COM4B0;
-	public const uint8 COM4B1;
-	public const uint8 COM4A0;
-	public const uint8 COM4A1;
-
-	public uint8 TCCR4B;
-	public const uint8 CS40;
-	public const uint8 CS41;
-	public const uint8 CS42;
-	public const uint8 CS43;
-	public const uint8 DTPS40;
-	public const uint8 DTPS41;
-	public const uint8 PSR4;
-	public const uint8 PWM4X;
-
-	public uint8 TCCR4C;
-	public const uint8 PWM4D;
-	public const uint8 FOC4D;
-	public const uint8 COM4D0;
-	public const uint8 COM4D1;
-	public const uint8 COM4B0S;
-	public const uint8 COM4B1S;
-	public const uint8 COM4A0S;
-	public const uint8 COM4A1S;
-
-	public uint8 TCCR4D;
-	public const uint8 WGM40;
-	public const uint8 WGM41;
-	public const uint8 FPF4;
-	public const uint8 FPAC4;
-	public const uint8 FPES4;
-	public const uint8 FPNC4;
-	public const uint8 FPEN4;
-	public const uint8 FPIE4;
-
-	public uint8 TCCR4E;
-	public const uint8 OC4OE0;
-	public const uint8 OC4OE1;
-	public const uint8 OC4OE2;
-	public const uint8 OC4OE3;
-	public const uint8 OC4OE4;
-	public const uint8 OC4OE5;
-	public const uint8 ENHC4;
-	public const uint8 TLOCK4;
-
-	public uint8 CLKSEL0;
-	public const uint8 CLKS;
-	public const uint8 EXTE;
-	public const uint8 RCE;
-	public const uint8 EXSUT0;
-	public const uint8 EXSUT1;
-	public const uint8 RCSUT0;
-	public const uint8 RCSUT1;
-
-	public uint8 CLKSEL1;
-	public const uint8 EXCKSEL0;
-	public const uint8 EXCKSEL1;
-	public const uint8 EXCKSEL2;
-	public const uint8 EXCKSEL3;
-	public const uint8 RCCKSEL0;
-	public const uint8 RCCKSEL1;
-	public const uint8 RCCKSEL2;
-	public const uint8 RCCKSEL3;
-
-	public uint8 CLKSTA;
-	public const uint8 EXTON;
-	public const uint8 RCON;
-
-
-	public uint8 OCR4A;
-	public uint8 OCR4B;
-	public uint8 OCR4C;
-	public uint8 OCR4D;
-	public uint8 DT4;
-	public uint8 UHWCON;
-	public const uint8 UVREGE;
-
-	public uint8 USBCON;
-	public const uint8 VBUSTE;
-	public const uint8 OTGPADE;
-	public const uint8 FRZCLK;
-	public const uint8 USBE;
-
-	public uint8 USBSTA;
-	public const uint8 VBUS;
-	public const uint8 SPEED;
-
-	public uint8 USBINT;
-	public const uint8 VBUSTI;
-
-	public uint8 OTGCON;
-
-	public uint8 OTGIEN;
-
-	public uint8 OTGINT;
-
-	public uint8 UDCON;
-	public const uint8 DETACH;
-	public const uint8 RMWKUP;
-	public const uint8 LSM;
-	public const uint8 RSTCPU;
-
-	public uint8 UDINT;
-	public const uint8 SUSPI;
-	public const uint8 SOFI;
-	public const uint8 EORSTI;
-	public const uint8 WAKEUPI;
-	public const uint8 EORSMI;
-	public const uint8 UPRSMI;
-
-	public uint8 UDIEN;
-	public const uint8 SUSPE;
-	public const uint8 SOFE;
-	public const uint8 EORSTE;
-	public const uint8 WAKEUPE;
-	public const uint8 EORSME;
-	public const uint8 UPRSME;
-
-	public uint8 UDADDR;
-	public const uint8 UADD0;
-	public const uint8 UADD1;
-	public const uint8 UADD2;
-	public const uint8 UADD3;
-	public const uint8 UADD4;
-	public const uint8 UADD5;
-	public const uint8 UADD6;
-	public const uint8 ADDEN;
-
-	public uint8 UDFNUM;
-
-	public uint8 UDFNUML;
-	public const uint8 FNUM0;
-	public const uint8 FNUM1;
-	public const uint8 FNUM2;
-	public const uint8 FNUM3;
-	public const uint8 FNUM4;
-	public const uint8 FNUM5;
-	public const uint8 FNUM6;
-	public const uint8 FNUM7;
-
-	public uint8 UDFNUMH;
-	public const uint8 FNUM8;
-	public const uint8 FNUM9;
-	public const uint8 FNUM10;
-
-	public uint8 UDMFN;
-	public const uint8 FNCERR;
-
-	public uint8 UDTST;
-
-
-	public uint8 OTGTCON;
-	public const int SPM_PAGESIZE;
-	public const size_t RAMSTART;
-	public const size_t RAMSIZE;
-	public const size_t RAMEND;
-	public const size_t XRAMSTART;
-	public const size_t XRAMSIZE;
-	public const size_t XRAMEND;
-	public const size_t E2END;
-	public const size_t E2PAGESIZE;
-	public const size_t FLASHEND;
-
-	/**
-	 * Fuses
-	 */
-	public const uint8 FUSE_MEMORY_SIZE;
-
-	/**
-	 * Low Fuse Byte - Select Clock Source
-	 */
-	public const uint8 FUSE_CKSEL0;
-	/**
-	 * Low Fuse Byte - Select Clock Source
-	 */
-	public const uint8 FUSE_CKSEL1;
-	/**
-	 * Low Fuse Byte - Select Clock Source
-	 */
-	public const uint8 FUSE_CKSEL2;
-	/**
-	 * Low Fuse Byte - Select Clock Source
-	 */
-	public const uint8 FUSE_CKSEL3;
-	/**
-	 * Low Fuse Byte - Select start-up time
-	 */
-	public const uint8 FUSE_SUT0;
-	/**
-	 * Low Fuse Byte - Select start-up time
-	 */
-	public const uint8 FUSE_SUT1;
-	/**
-	 * Low Fuse Byte - Oscillator options
-	 */
-	public const uint8 FUSE_CKOUT;
-	/**
-	 * Low Fuse Byte - Divide clock by 8
-	 */
-	public const uint8 FUSE_CKDIV8;
-	public const uint8 LFUSE_DEFAULT;
-
-	/**
-	 * High Fuse Byte - Select Reset Vector
-	 */
-	public const uint8 FUSE_BOOTRST;
-	/**
-	 * High Fuse Byte - Select Boot Size
-	 */
-	public const uint8 FUSE_BOOTSZ0;
-	/**
-	 * High Fuse Byte - Select Boot Size
-	 */
-	public const uint8 FUSE_BOOTSZ1;
-	/**
-	 * High Fuse Byte - EEPROM memory is preserved through chip erase
-	 */
-	public const uint8 FUSE_EESAVE;
-	/**
-	 * High Fuse Byte - Watchdog timer always on
-	 */
-	public const uint8 FUSE_WDTON;
-	/**
-	 * High Fuse Byte - Enable Serial programming and Data Downloading
-	 */
-	public const uint8 FUSE_SPIEN;
-	/**
-	 * High Fuse Byte - Enable JTAG
-	 */
-	public const uint8 FUSE_JTAGEN;
-	/**
-	 * High Fuse Byte - Enable OCD
-	 */
-	public const uint8 FUSE_OCDEN;
-	public const uint8 HFUSE_DEFAULT;
-
-	/**
-	 * Extended Fuse Byte - Brown-out Detector trigger level
-	 */
-	public const uint8 FUSE_BODLEVEL0;
-	/**
-	 * Extended Fuse Byte - Brown-out Detector trigger level
-	 */
-	public const uint8 FUSE_BODLEVEL1;
-	/**
-	 * Extended Fuse Byte - Brown-out Detector trigger level
-	 */
-	public const uint8 FUSE_BODLEVEL2;
-	/**
-	 * Extended Fuse Byte - Hardware Boot Enable
-	 */
-	public const uint8 FUSE_HWBE;
-	public const uint8 EFUSE_DEFAULT;
-
+	[CCode(cname = "SIGNATURE_0")]
 	public const uint8 SIGNATURE_0;
+	[CCode(cname = "SIGNATURE_1")]
 	public const uint8 SIGNATURE_1;
+	[CCode(cname = "SIGNATURE_2")]
 	public const uint8 SIGNATURE_2;
 }
