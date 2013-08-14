@@ -70,6 +70,5 @@ EXTRA_DIST = \
 	$(NULL)
 
 CLEANFILES = \
-	$(avr_valac_VALASOURCES:.vala=.c) \
 	$(NULL)
 
