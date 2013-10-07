@@ -13,6 +13,10 @@ AM_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PATH_PROG(VALAC, valac, valac)
 AC_SUBST(VALAC)
+AC_PATH_PROG(AVR_GCC, avr-gcc, avr-gcc)
+AC_SUBST(VALAC)
+AC_PATH_PROG(AVR_AR, avr-ar, avr-ar)
+AC_SUBST(VALAC)
 
 AC_SUBST(VALAFLAGS)
 AC_SUBST(CFLAGS)
@@ -36,5 +40,31 @@ AC_CONFIG_FILES([
 	aavr-semaphore.pc
 	avr.pc
 	gio-2.0.pc
+	libtmpl/Makefile
 ])
+
+for platform in  \
+	avr2 \
+	avr2 \
+	avr25 \
+	avr25 \
+	avr3 \
+	avr31 \
+	avr35 \
+	avr4 \
+	avr5 \
+	avr51 \
+	avr6 \
+	avrxmega2 \
+	avrxmega4 \
+	avrxmega5 \
+	avrxmega6 \
+	avrxmega7 \
+	avrtiny10
+do
+	test -d lib_$platform || mkdir lib_$platform
+	sed -e s/@PLATFORM@/$platform/g libtmpl/Makefile.tmpl > lib_$platform/Makefile
+	LIB_SUBDIRS="$LIB_SUBDIRS lib_$platform"
+done
+AC_SUBST(LIB_SUBDIRS)
 AC_OUTPUT

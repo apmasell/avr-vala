@@ -32,6 +32,7 @@ debian/tmp
 depcomp
 doc/
 install-sh
+lib_*
 libtool
 ltmain.sh
 m4/*lt*

@@ -1,6 +1,8 @@
 NULL =
 ACLOCAL_AMFLAGS = -I m4
 
+SUBDIRS = $(LIB_SUBDIRS)
+
 bin_PROGRAMS = \
 	avr-valac \
 	$(NULL)
@@ -25,12 +27,6 @@ dist_avrinclude_HEADERS = \
 	aavr.h \
 	aavr-interrupt.h \
 	aavr-semaphore.h \
-	$(NULL)
-
-dist_avrlib_DATA = \
-	aavr.c \
-	aavr-interrupt.c \
-	aavr-semaphore.c \
 	$(NULL)
 
 dist_avrpkgconfig_DATA = \
