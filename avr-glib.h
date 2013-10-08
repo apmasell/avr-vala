@@ -42,7 +42,7 @@ static inline int g_atomic_int_dec_and_test(
 #        define BIT_COND(reg, bit) reg = (reg & ~_BV(bit)) | _BV(bit) & -!!
 #        define BIT_MASKED_SET(reg, mask) reg = (reg & ~(mask)) |
 
-#        define TIMER0_MODE(slope, top, modea, modeb, modec) TIMER_MODE(slope, top, modea, modeb, 0)
+#        define TIMER0_MODE(slope, top, modea, modeb) TIMER_MODE(slope, top, modea, modeb, 0)
 #        define TIMER_MODE(slope, top, modea, modeb, modec) ((slope ? _BV(WGM00) : 0) | (top ? _BV(WGM01) : 0) | ((modea & 0x3) << 6) | ((modeb & 0x3) << 4) | ((modec & 0x3) << 2))
 #        define ADC_SELECT(value) (ADMUX = (ADMUX & (_BV(REFS1) | _BV(REFS0) | _BV(ADLAR))) | (value & (_BV(MUX4) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0)))), (ADCSRB = (ADCSRB & ~_BV(MUX5)) | (value & _BV(MUX5)))
 #endif
