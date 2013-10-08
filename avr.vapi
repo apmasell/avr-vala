@@ -1045,7 +1045,7 @@ namespace Posix {
 			[CCode(cname = "_BV(EEMPE)")]
 			MASTER_PROGRAM_ENABLE,
 			[CCode(cname = "_BV(EEIE)")]
-			READY_INTERRUPT_ENABLE
+			READY_INTERRUPT_ENABLE,
 			[CCode(cname = "0")]
 			WRITE_AND_ERASE,
 			[CCode(cname = "_BV(EEPM0)")]
@@ -1761,7 +1761,7 @@ namespace Posix {
 	 * ''MT'' is the master transmitter, ''MR'' is the master receiver, ''ST'' is the slave transmitter, and ''SR'' is the slave receiver.
  */
 	[CCode(cname = "int", cheader_filename = "avr/twi.h", cprefix = "TW_")]
-	public enum Twi {
+	public enum TwiStatus {
 		/**
 		 * Start condition transmitted
 		 */
@@ -1877,7 +1877,7 @@ namespace Posix {
 		[CCode(cname = "TW_READ & TWSR", cheader_filename = "util/twi.h")]
 		public const bool IS_READ;
 		[CCode(cname = "TW_STATUS", cheader_filename = "util/twi.h")]
-		public const Twi REGISTER;
+		public const TwiStatus REGISTER;
 	}
 	[CCode(cheader_filename = "stdio.h", cname = "int", cprefix = "_FDEV_SETUP_")]
 	public enum FileMode {

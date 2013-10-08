@@ -1068,7 +1068,7 @@ namespace Posix {
 			public uint8 dead_time;
 		}
 	}
-	namespace Twi {
+	namespace I2C {
 		[CCode(cname = "uint8_t")]
 		[Flags]
 		public enum Prescaler {
