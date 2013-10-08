@@ -819,6 +819,7 @@ class Avr.Compiler {
 	static bool version;
 
 	private CodeContext context;
+	private string avr_arch = "${AVR_ARCH}";
 
 	const OptionEntry[] options = {
 		{ "allow-async", 'a', 0, OptionArg.NONE, ref allow_async, "Allow generation of asynchronous methods.", null },
@@ -857,6 +858,42 @@ class Avr.Compiler {
 		{ "", 0, 0, OptionArg.FILENAME_ARRAY, ref sources, null, "FILE..." },
 		{ null }
 	};
+
+	bool package_exists(string package_name) {
+		return run_pkg_config("--exists " + Shell.quote(package_name));
+	}
+	bool run_pkg_config(string command, out string? standard_output = null) {
+		int exit_status;
+		string pc = @"pkg-config --define-variable AVR_ARCH=$(Shell.quote(avr_arch)) --define-variable AVR_MCU=$(Shell.quote(mcu)) $(command)";
+
+		try {
+			Process.spawn_command_line_sync (pc, out standard_output, null, out exit_status);
+			return (0 == exit_status);
+		} catch (SpawnError e) {
+			Report.error (null, e.message);
+			return false;
+		}
+	}
+
+	private string? get_mcu_architecture() {
+		try {
+			int exit_value = 0;
+			string? standard_output;
+			if (Process.spawn_sync(null, new string [] { cc_command, "-dM", "-E", @"-mmcu=$(mcu)", "-" }, null, SpawnFlags.SEARCH_PATH, null, out standard_output, null, out exit_value) && exit_value == 0) {
+				foreach (var line in standard_output.split("\n")) {
+					if ("__AVR_ARCH__" in line) {
+						var parts = line.split(" ");
+						return parts[2];
+					}
+				}
+			} else {
+				error("failed to run pkg-config: exited %d", exit_value);
+			}
+		} catch (SpawnError e) {
+			error(e.message);
+		}
+		return null;
+	}
 
 	private int quit () {
 		if (context.report.get_errors () == 0 && context.report.get_warnings () == 0) {
@@ -1020,20 +1057,89 @@ class Avr.Compiler {
 		}
 
 		if (!ccode_only) {
-			var ccompiler = new CCodeCompiler ();
+			var compiler_call = new StringBuilder();
 			if (cc_command == null && Environment.get_variable ("CC") != null) {
 				cc_command = Environment.get_variable ("CC");
 			}
-			context.thread = false;
-			var options = cc_options ?? new string[] { };
-			options += @"-mmcu=$(mcu)";
-			options += "--std=c99";
-			options += "-O2";
+			if (cc_command == null)
+				cc_command = "avr-gcc";
+
+			compiler_call.printf ("%s -mmcu=%s --std=c99 -O2", cc_command, mcu);
 			if (f_cpu > 0)
-				options += @"-DF_CPU=$(f_cpu)";
+				compiler_call.append_printf (" -DF_CPU=%d", f_cpu);
+			foreach (unowned string option in cc_options) {
+				compiler_call.append_printf (" %s", Shell.quote(option));
+			}
+			var architecture = get_mcu_architecture ();
+			if (architecture == null) {
+				return quit ();
+			}
+			avr_arch = architecture;
+
 			unowned string? pkg_config = Environment.get_variable("AVR_PKG_CONFIG_PATH");
 			Environment.set_variable("PKG_CONFIG_PATH", pkg_config == null ? Package.PKG_CONFIG_DIR : @"$(pkg_config):$(Package.PKG_CONFIG_DIR)", true);
-			ccompiler.compile (context, cc_command ?? "avr-gcc", options);
+
+			var pkg_config_command = new StringBuilder ();
+			pkg_config_command.append ("--cflags --libs");
+			foreach (var pkg in context.get_packages ()) {
+				if (package_exists (pkg)) {
+					pkg_config_command.append_printf (" %s", Shell.quote(pkg));
+				}
+			}
+			string? pkg_flags;
+			if (!run_pkg_config(pkg_config_command.str, out pkg_flags)) {
+				return quit ();
+			}
+			if (context.debug) {
+				compiler_call.append (" -g");
+			}
+			if (context.compile_only) {
+				compiler_call.append (" -c");
+			} else if (context.output != null) {
+				string output = context.output;
+				if (context.directory != null && context.directory != "" && !Path.is_absolute (context.output)) {
+					output = "%s%c%s".printf (context.directory, Path.DIR_SEPARATOR, context.output);
+				}
+				compiler_call.append_printf (" -o %s", Shell.quote (output));
+			}
+
+			/* we're only interested in non-pkg source files */
+			var source_files = context.get_source_files ();
+			foreach (SourceFile file in source_files) {
+				if (file.file_type == SourceFileType.SOURCE) {
+					compiler_call.append( " " + Shell.quote (file.get_csource_filename ()));
+				}
+			}
+			var c_source_files = context.get_c_source_files ();
+			foreach (string file in c_source_files) {
+				compiler_call.append( " " + Shell.quote (file));
+			}
+
+			compiler_call.append_c (' ');
+			compiler_call.append (pkg_flags.strip());
+
+			if (context.verbose_mode) {
+				stdout.printf ("%s\n", compiler_call.str);
+			}
+
+			try {
+				int exit_status;
+				Process.spawn_command_line_sync (compiler_call.str, null, null, out exit_status);
+				if (exit_status != 0) {
+					Report.error (null, "cc exited with status %d".printf (exit_status));
+				}
+			} catch (SpawnError e) {
+				Report.error (null, e.message);
+			}
+
+			/* remove generated C source and header files */
+			foreach (SourceFile file in source_files) {
+				if (file.file_type == SourceFileType.SOURCE) {
+					if (!context.save_csources) {
+						FileUtils.unlink (file.get_csource_filename ());
+					}
+				}
+			}
 		}
 
 		return quit ();
