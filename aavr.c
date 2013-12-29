@@ -101,6 +101,7 @@ void aavr_wait(
 
 	self->timeout = timeout;
 	self->elapsed = 0;
+	self->status = 0;
 
 	self->callback = callback;
 	self->callback_context = callback_context;
