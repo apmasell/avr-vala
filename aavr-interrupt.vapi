@@ -1,6 +1,5 @@
-[CCode(cheader_filename = "aavr-interrupt.h")]
 namespace AsyncAvr {
-	[CCode(cname = "AavrInterrupt", ref_function = "aavr_interrupt_ref", unref_function = "aavr_interrupt_unref")]
+	[CCode(cname = "AavrInterrupt", ref_function = "aavr_interrupt_ref", unref_function = "aavr_interrupt_unref", cheader_filename = "aavr-interrupt.h")]
 	public class Interrupt {
 		[CCode(cname = "aavr_interrupt_new")]
 		public Interrupt();

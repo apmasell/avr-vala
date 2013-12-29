@@ -1,6 +1,5 @@
-[CCode(cheader_filename = "aavr-semaphore.h")]
 namespace AsyncAvr {
-	[CCode(cname = "AavrSemaphore", ref_function = "aavr_semaphore_ref", unref_function = "aavr_semaphore_unref")]
+	[CCode(cname = "AavrSemaphore", ref_function = "aavr_semaphore_ref", unref_function = "aavr_semaphore_unref", cheader_filename = "aavr-semaphore.h")]
 	public class Semaphore {
 		[CCode(cname = "aavr_semaphore_new")]
 		public Semaphore();
