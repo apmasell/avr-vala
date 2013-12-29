@@ -41,13 +41,10 @@ AC_CONFIG_FILES([
 	aavr-semaphore.pc
 	avr.pc
 	gio-2.0.pc
-	libtmpl/Makefile
 ])
 
 for platform in  \
 	avr2 \
-	avr2 \
-	avr25 \
 	avr25 \
 	avr3 \
 	avr31 \
@@ -64,7 +61,9 @@ for platform in  \
 	avrtiny10
 do
 	test -d lib_$platform || mkdir lib_$platform
-	sed -e s/@PLATFORM@/$platform/g libtmpl/Makefile.tmpl > lib_$platform/Makefile
+	echo PLATFORM = $platform > lib_$platform/Makefile.in
+	cat libtmpl/Makefile.in >> lib_$platform/Makefile.in
+	AC_CONFIG_FILES(lib_${platform}/Makefile)
 	LIB_SUBDIRS="$LIB_SUBDIRS lib_$platform"
 done
 AC_SUBST(LIB_SUBDIRS)

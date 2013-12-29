@@ -18,3 +18,5 @@ libaavr-semaphore.a: ../aavr-semaphore.c
 %.a:
 	$(AVR_GCC) -mmcu=$(PLATFORM) -std=c99 -I$(top_srcdir) $< -c -o $*.o
 	$(AVR_AR) -c -r -s $@ $*.o
+
+CLEANFILES = *.a *.o
