@@ -1,0 +1,15 @@
+Source: avr-vala
+Section: devel
+Priority: extra
+Maintainer: Andre Masella <andre@masella.name>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, valac-0.16, libvala-0.16-dev, gcc-avr, avr-libc
+Standards-Version: 3.9.2
+Homepage: http://github.com/apmasell/avr-valac
+
+Package: avr-vala
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, gcc-avr, pkg-config
+Description: Vala compiler to target AVR microprocessors
+  This modified Vala compiler is meant to provide Vala's rich features, such
+  classes and lambdas on AVR microcontrollers. It also provides an asynchronous
+  coroutine system with minmal overhead.
