@@ -92,6 +92,16 @@ class Avr.CodeGen : CCodeDelegateModule {
 					Report.error(expr.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
 				}
 				int state = -1;
+				if (ma.member_name == "end" && ma.inner.symbol_reference == ma.symbol_reference) {
+					var ccall = new CCodeFunctionCall (new CCodeIdentifier (get_ccode_finish_name (m)));
+
+					var @params = generate_params (expr, ParameterDirection.OUT);
+					var carg_map = generate_arguments(expr, @params, ParameterDirection.OUT);
+
+					generate_call(expr, ccall, carg_map);
+					ccode.add_expression(ccall);
+					return;
+				}
 				if (ma.member_name == "begin" && ma.inner.symbol_reference == ma.symbol_reference || expr.is_yield_expression) {
 					var ccall = new CCodeFunctionCall (new CCodeIdentifier (get_ccode_name (m)));
 
