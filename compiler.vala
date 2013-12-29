@@ -81,6 +81,16 @@ class Avr.CodeGen : CCodeDelegateModule {
 		}
 	}
 
+	public override void visit_member_access (MemberAccess expr) {
+		if (expr.member_name == "begin" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
+			set_cvalue(expr,	new CCodeIdentifier(get_ccode_name(((MethodType)expr.value_type).method_symbol)));
+		} else if (expr.member_name == "end" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
+			set_cvalue(expr,	new CCodeIdentifier(get_ccode_finish_name(((MethodType)expr.value_type).method_symbol)));
+		} else {
+			base.visit_member_access(expr);
+		}
+	}
+
 	public override void visit_method_call (MethodCall expr) {
 		var ma = expr.call as MemberAccess;
 		var itype = expr.call.value_type;
