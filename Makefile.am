@@ -15,6 +15,8 @@ avrpkgconfigdir = $(avrlibdir)/pkgconfig
 dist_avrvapi_DATA = \
 	aavr-interrupt.deps \
 	aavr-interrupt.vapi \
+	aavr-parallel.deps \
+	aavr-parallel.vapi \
 	aavr-semaphore.deps \
 	aavr-semaphore.vapi \
 	avr.vapi \
@@ -26,11 +28,13 @@ dist_avrinclude_HEADERS = \
 	avr-glib.h \
 	aavr.h \
 	aavr-interrupt.h \
+	aavr-parallel.h \
 	aavr-semaphore.h \
 	$(NULL)
 
 dist_avrpkgconfig_DATA = \
 	aavr-interrupt.pc \
+	aavr-parallel.pc \
 	aavr-semaphore.pc \
 	avr.pc \
 	gio-2.0.pc \

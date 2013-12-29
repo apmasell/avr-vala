@@ -6,11 +6,13 @@ avrplatformlibdir = $(libdir)/avr/lib/$(PLATFORM)
 avrplatformlib_DATA = \
 	libaavr.a \
 	libaavr-interrupt.a \
+	libaavr-parallel.a \
 	libaavr-semaphore.a \
 	$(NULL)
 
 libaavr.a: ../aavr.c
 libaavr-interrupt.a: ../aavr-interrupt.c
+libaavr-parallel.a: ../aavr-parallel.c
 libaavr-semaphore.a: ../aavr-semaphore.c
 
 %.a:

@@ -1,0 +1,10 @@
+prefix=@prefix@
+libdir=${prefix}/lib/avr/lib/avr${AVR_ARCH}
+includedir=${prefix}/lib/avr/include
+
+Name: Vala Parallel Processing Library
+Description: Library to dispatch asynchronous requests in parallel for Vala on AVR microcontrollers
+Version: 1.0
+Requires: gio-2.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -laavr-parallel
