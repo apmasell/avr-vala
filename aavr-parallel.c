@@ -4,6 +4,7 @@
 struct child_data {
 	AavrBegin begin;
 	AavrEnd end;
+	void *user_data;
 	void *result;
 };
 
@@ -48,6 +49,7 @@ static void parallel_callback(
 size_t aavr_parallel_add(
 	AavrParallel *self,
 	AavrBegin begin,
+	void *begin_target,
 	AavrEnd end) {
 	if (self->child_length == self->child_size) {
 		self->child_size *= 2;
@@ -55,6 +57,7 @@ size_t aavr_parallel_add(
 	}
 	self->child[self->child_length].begin = begin;
 	self->child[self->child_length].end = end;
+	self->child[self->child_length].user_data = begin_target;
 	self->outstanding++;
 	return self->child_length++;
 }
@@ -79,7 +82,7 @@ void aavr_parallel_wait(
 		struct parallel_data *data = g_slice_new0(struct parallel_data);
 		data->self = self;
 		data->id = it;
-		self->child[it].begin(parallel_callback, data);
+		self->child[it].begin(self->child[it].user_data, parallel_callback, data);
 	}
 }
 

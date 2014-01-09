@@ -83,7 +83,10 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 	public override void visit_member_access (MemberAccess expr) {
 		if (expr.member_name == "begin" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
-			set_cvalue(expr,	new CCodeIdentifier(get_ccode_name(((MethodType)expr.value_type).method_symbol)));
+			set_cvalue(expr,new CCodeIdentifier(get_ccode_name(((MethodType)expr.value_type).method_symbol)));
+			if (expr.inner is MemberAccess) {
+				set_delegate_target(expr, get_cvalue(((MemberAccess)expr.inner).inner));
+			}
 		} else if (expr.member_name == "end" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
 			set_cvalue(expr,	new CCodeIdentifier(get_ccode_finish_name(((MethodType)expr.value_type).method_symbol)));
 		} else {

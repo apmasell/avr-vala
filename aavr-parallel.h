@@ -4,6 +4,7 @@
 
 typedef void (
 	*AavrBegin) (
+	void *user_data,
 	AavrAsyncCallback callback,
 	void *callback_data);
 typedef void *(
@@ -17,6 +18,7 @@ AavrParallel *aavr_parallel_new(
 size_t aavr_parallel_add(
 	AavrParallel *self,
 	AavrBegin begin,
+	void *begin_target,
 	AavrEnd end);
 void aavr_parallel_ref(
 	AavrParallel *self);

@@ -42,7 +42,7 @@ namespace AsyncAvr {
 	/**
 	 * The type of a '''.begin''' method.
 	 */
-	[CCode(cname = "AavrBegin", has_target = false, cheader_filename = "aavr-parallel.h")]
+	[CCode(cname = "AavrBegin", instance_pos = 0, cheader_filename = "aavr-parallel.h")]
 	public delegate void Begin(GLib.AsyncReadyCallback cb);
 	/**
 	 * The type of a '''.end''' method.
