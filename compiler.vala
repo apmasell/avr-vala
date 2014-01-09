@@ -26,12 +26,18 @@
 using Vala;
 
 class Avr.CCodeInterrupt : CCodeNode {
-	public string vector { get; private set; }
-	public bool block { get; private set; }
-	public string target { get; private set; }
+	public string vector {
+		get; private set;
+	}
+	public bool block {
+		get; private set;
+	}
+	public string target {
+		get; private set;
+	}
 
-	public CCodeInterrupt(string vector, bool block, string target) {
-		base();
+	public CCodeInterrupt (string vector, bool block, string target) {
+		base ();
 		this.vector = vector;
 		this.block = block;
 		this.target = target;
@@ -59,7 +65,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 			var method = ((MethodType) expression_type).method_symbol;
 			var @delegate = ((DelegateType) target_type).delegate_symbol;
 			string wrapper_name = "_%s_%s".printf (get_ccode_name (method), Symbol.camel_case_to_lower_case (get_ccode_name (@delegate)));
-			stderr.printf("called on %s\n", wrapper_name);
+			stderr.printf ("called on %s\n", wrapper_name);
 			if (add_wrapper (wrapper_name)) {
 				var function = new CCodeFunction (wrapper_name, "bool");
 				function.modifiers = CCodeModifiers.STATIC;
@@ -75,22 +81,22 @@ class Avr.CodeGen : CCodeDelegateModule {
 				cfile.add_function_declaration (function);
 				cfile.add_function (function);
 			}
-			return new CCodeIdentifier(wrapper_name);
+			return new CCodeIdentifier (wrapper_name);
 		} else {
-			return base.get_implicit_cast_expression(source_cexpr, expression_type, target_type, node);
+			return base.get_implicit_cast_expression (source_cexpr, expression_type, target_type, node);
 		}
 	}
 
 	public override void visit_member_access (MemberAccess expr) {
 		if (expr.member_name == "begin" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
-			set_cvalue(expr,new CCodeIdentifier(get_ccode_name(((MethodType)expr.value_type).method_symbol)));
+			set_cvalue (expr, new CCodeIdentifier (get_ccode_name (((MethodType) expr.value_type).method_symbol)));
 			if (expr.inner is MemberAccess) {
-				set_delegate_target(expr, get_cvalue(((MemberAccess)expr.inner).inner));
+				set_delegate_target (expr, get_cvalue (((MemberAccess) expr.inner).inner));
 			}
 		} else if (expr.member_name == "end" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
-			set_cvalue(expr,	new CCodeIdentifier(get_ccode_finish_name(((MethodType)expr.value_type).method_symbol)));
+			set_cvalue (expr,        new CCodeIdentifier (get_ccode_finish_name (((MethodType) expr.value_type).method_symbol)));
 		} else {
-			base.visit_member_access(expr);
+			base.visit_member_access (expr);
 		}
 	}
 
@@ -102,23 +108,23 @@ class Avr.CodeGen : CCodeDelegateModule {
 			var m = ((MethodType) itype).method_symbol;
 			if (m.coroutine) {
 				if (!Compiler.allow_async) {
-					Report.error(expr.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
+					Report.error (expr.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
 				}
 				int state = -1;
 				if (ma.member_name == "end" && ma.inner.symbol_reference == ma.symbol_reference) {
 					var ccall = new CCodeFunctionCall (new CCodeIdentifier (get_ccode_finish_name (m)));
 
 					var @params = generate_params (expr, ParameterDirection.OUT);
-					var carg_map = generate_arguments(expr, @params, ParameterDirection.OUT);
+					var carg_map = generate_arguments (expr, @params, ParameterDirection.OUT);
 
-					generate_call(expr, ccall, carg_map);
-					ccode.add_expression(ccall);
+					generate_call (expr, ccall, carg_map);
+					ccode.add_expression (ccall);
 					return;
 				}
 				if (ma.member_name == "begin" && ma.inner.symbol_reference == ma.symbol_reference || expr.is_yield_expression) {
 					var ccall = new CCodeFunctionCall (new CCodeIdentifier (get_ccode_name (m)));
 
-					var @params = expr.is_yield_expression ? m.get_parameters() : generate_params (expr, ParameterDirection.IN);
+					var @params = expr.is_yield_expression ? m.get_parameters () : generate_params (expr, ParameterDirection.IN);
 					if (!expr.is_yield_expression) {
 						var ns = CodeContext.get ().root.scope.lookup ("GLib");
 						var callback_type = new DelegateType ((Delegate) ns.scope.lookup ("AsyncReadyCallback"));
@@ -130,31 +136,31 @@ class Avr.CodeGen : CCodeDelegateModule {
 						callback_param.initializer.target_type = callback_type.copy ();
 						callback_param.set_attribute_double ("CCode", "pos", -1);
 						callback_param.set_attribute_double ("CCode", "delegate_target_pos", -0.9);
-						@params.add(callback_param);
+						@params.add (callback_param);
 					}
-					var carg_map = generate_arguments(expr, @params, ParameterDirection.IN);
+					var carg_map = generate_arguments (expr, @params, ParameterDirection.IN);
 
-					generate_call(expr, ccall, carg_map);
+					generate_call (expr, ccall, carg_map);
 					if (expr.is_yield_expression) {
-						ccall.add_argument(new CCodeCastExpression(new CCodeIdentifier(ccode.name), "AavrAsyncCallback"));
-						ccall.add_argument(new CCodeIdentifier("_data_"));
+						ccall.add_argument (new CCodeCastExpression (new CCodeIdentifier (ccode.name), "AavrAsyncCallback"));
+						ccall.add_argument (new CCodeIdentifier ("_data_"));
 
 						state = next_coroutine_state++;
 						ccode.add_assignment (new CCodeMemberAccess.pointer (new CCodeIdentifier ("_data_"), "_state_"), new CCodeConstant (state.to_string ()));
-						ccode.add_expression(ccall);
+						ccode.add_expression (ccall);
 					} else {
-						ccode.add_expression(ccall);
+						ccode.add_expression (ccall);
 						return;
 					}
 				}
 				if (expr.is_yield_expression) {
-					ccode.add_expression(new CCodeIdentifier("return"));
+					ccode.add_expression (new CCodeIdentifier ("return"));
 					ccode.add_label ("_state_%d".printf (state));
 				}
 
 				if (ma.member_name == "end" && ma.inner.symbol_reference == ma.symbol_reference || expr.is_yield_expression) {
 					var ccall = new CCodeFunctionCall (new CCodeIdentifier (get_ccode_finish_name (m)));
-					var @params = expr.is_yield_expression ? m.get_parameters() : generate_params (expr, ParameterDirection.OUT);
+					var @params = expr.is_yield_expression ? m.get_parameters () : generate_params (expr, ParameterDirection.OUT);
 					if (!expr.is_yield_expression) {
 						var ns = CodeContext.get ().root.scope.lookup ("GLib");
 						var finish_context_type = new ObjectType ((ObjectTypeSymbol) ns.scope.lookup ("AsyncResult"));
@@ -164,16 +170,16 @@ class Avr.CodeGen : CCodeDelegateModule {
 						finish_context_param.initializer = new NullLiteral (expr.source_reference);
 						finish_context_param.initializer.target_type = finish_context_type.copy ();
 						finish_context_param.set_attribute_double ("CCode", "pos", 0.1);
-						@params.add(finish_context_param);
+						@params.add (finish_context_param);
 					}
-					var carg_map = generate_arguments(expr, @params, ParameterDirection.OUT);
+					var carg_map = generate_arguments (expr, @params, ParameterDirection.OUT);
 
 					if (expr.is_yield_expression) {
 						carg_map.set (get_param_pos (0.1), new CCodeIdentifier ("_finish_context_"));
 					}
 
-					generate_call(expr, ccall, carg_map);
-					set_cvalue(expr, ccall);
+					generate_call (expr, ccall, carg_map);
+					set_cvalue (expr, ccall);
 				}
 				return;
 			}
@@ -185,10 +191,10 @@ class Avr.CodeGen : CCodeDelegateModule {
 		cfile.add_include ("avr-glib.h");
 		if (m.coroutine) {
 			if (!Compiler.allow_async) {
-				Report.error(m.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
+				Report.error (m.source_reference, "Asynchronous methods not enabled. Try --allow-async.");
 			}
 			if (m.is_abstract || m.is_virtual || is_variadic (m) || m is CreationMethod || m is DynamicMethod) {
-				Report.error(m.source_reference, "Asynchronous methods cannot be abstract, virtual, constructor or dynamic methods.");
+				Report.error (m.source_reference, "Asynchronous methods cannot be abstract, virtual, constructor or dynamic methods.");
 				return;
 			}
 
@@ -252,7 +258,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 				while (true) {
 					var parent_closure_block = next_closure_block (closure_block.parent_symbol);
 					if (parent_closure_block == null) {
-						closure_struct.add_field("Block%dData*".printf (block_id), "_data%d_".printf (block_id));
+						closure_struct.add_field ("Block%dData*".printf (block_id), "_data%d_".printf (block_id));
 						break;
 					}
 					int parent_block_id = get_block_id (parent_closure_block);
@@ -287,12 +293,12 @@ class Avr.CodeGen : CCodeDelegateModule {
 			}
 
 			m.body.emit (this);
-			var data_var = new CCodeIdentifier("_data_");
+			var data_var = new CCodeIdentifier ("_data_");
 			var call_parent = new CCodeFunctionCall (new CCodeMemberAccess.pointer (data_var, "_callback_"));
 			call_parent.add_argument (data_var);
 			call_parent.add_argument (new CCodeMemberAccess.pointer (data_var, "_callback_data_"));
-			function.add_expression(call_parent);
-			function.add_return();
+			function.add_expression (call_parent);
+			function.add_return ();
 			pop_function ();
 			cfile.add_function (function);
 			pop_context ();
@@ -307,19 +313,23 @@ class Avr.CodeGen : CCodeDelegateModule {
 			base.visit_method (m);
 			var attr = m.get_attribute ("Interrupt");
 			if (attr != null && !m.external_package) {
-				if (m.binding == MemberBinding.INSTANCE)
+				if (m.binding == MemberBinding.INSTANCE) {
 					Report.error (m.source_reference, "Interrupts cannot be instance methods.");
-				if (!(m.return_type is VoidType))
+				}
+				if (!(m.return_type is VoidType)) {
 					Report.error (m.source_reference, "Interrupts must return void.");
-				if (m.get_parameters ().size > 0)
+				}
+				if (m.get_parameters ().size > 0) {
 					Report.error (m.source_reference, "Interrupts must take no parameters.");
-				if (m.get_error_types ().size > 0)
+				}
+				if (m.get_error_types ().size > 0) {
 					Report.error (m.source_reference, "Interrupts must not throw error domains.");
+				}
 				if (m.access != SymbolAccessibility.PUBLIC) {
 					Report.warning (m.source_reference, "Interrupts should be public.");
 				}
 
-				cfile.add_type_member_definition(new CCodeInterrupt (attr.get_string("vector"), attr.get_bool ("block", true), get_ccode_name (m)));
+				cfile.add_type_member_definition (new CCodeInterrupt (attr.get_string ("vector"), attr.get_bool ("block", true), get_ccode_name (m)));
 			}
 		}
 	}
@@ -354,7 +364,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 		var ma = expr.call as MemberAccess;
 		int i = 1;
 		int arg_pos;
-		var carg_map = new HashMap<int,CCodeExpression> (direct_hash, direct_equal);
+		var carg_map = new HashMap<int, CCodeExpression> (direct_hash, direct_equal);
 
 		var params_it = @params.iterator ();
 		foreach (Expression arg in expr.get_argument_list ()) {
@@ -362,8 +372,9 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 			if (params_it.next ()) {
 				var param = params_it.get ();
-				if (param.direction != dir && param.name != "_finish_context_")
+				if (param.direction != dir && param.name != "_finish_context_") {
 					continue;
+				}
 
 				var unary = arg as UnaryExpression;
 				if (unary == null || unary.operator != UnaryOperator.OUT) {
@@ -454,18 +465,18 @@ class Avr.CodeGen : CCodeDelegateModule {
 				if (get_ccode_type (param) != null) {
 					cexpr = new CCodeCastExpression (cexpr, get_ccode_type (param));
 				}
-			arg_pos = get_param_pos (get_ccode_pos (param), false);
-		} else {
-			// default argument position
-			cexpr = handle_struct_argument (null, arg, cexpr);
-			arg_pos = get_param_pos (i, false);
+				arg_pos = get_param_pos (get_ccode_pos (param), false);
+			} else {
+				// default argument position
+				cexpr = handle_struct_argument (null, arg, cexpr);
+				arg_pos = get_param_pos (i, false);
+			}
+
+			carg_map.set (arg_pos, cexpr);
+
+			i++;
 		}
-
-		carg_map.set (arg_pos, cexpr);
-
-		i++;
-	}
-	return carg_map;
+		return carg_map;
 	}
 
 	void generate_async_function (Method m) {
@@ -473,7 +484,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 		var dataname = Symbol.lower_case_to_camel_case (get_ccode_name (m)) + "Data";
 		var asyncfunc = new CCodeFunction (get_ccode_real_name (m), "void");
-		var cparam_map = new HashMap<int,CCodeParameter> (direct_hash, direct_equal);
+		var cparam_map = new HashMap<int, CCodeParameter> (direct_hash, direct_equal);
 
 		cparam_map.set (get_param_pos (-1), new CCodeParameter ("_callback_", "AavrAsyncCallback"));
 		cparam_map.set (get_param_pos (-0.9), new CCodeParameter ("_callback_data_", "void*"));
@@ -490,8 +501,8 @@ class Avr.CodeGen : CCodeDelegateModule {
 		ccode.add_declaration (dataname + "*", new CCodeVariableDeclarator ("_data_"));
 		ccode.add_assignment (data_var, dataalloc);
 
-		ccode.add_assignment (new CCodeMemberAccess.pointer (data_var, "_callback_"), new CCodeIdentifier("_callback_"));
-		ccode.add_assignment (new CCodeMemberAccess.pointer (data_var, "_callback_data_"), new CCodeIdentifier("_callback_data_"));
+		ccode.add_assignment (new CCodeMemberAccess.pointer (data_var, "_callback_"), new CCodeIdentifier ("_callback_"));
+		ccode.add_assignment (new CCodeMemberAccess.pointer (data_var, "_callback_data_"), new CCodeIdentifier ("_callback_data_"));
 
 		if (m.binding == MemberBinding.INSTANCE) {
 			var this_type = m.this_parameter.variable_type.copy ();
@@ -502,7 +513,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 			if (this_type.is_real_non_null_struct_type ()) {
 				cself = new CCodeUnaryExpression (CCodeUnaryOperator.POINTER_INDIRECTION, cself);
 			}
-			if (requires_copy (this_type))  {
+			if (requires_copy (this_type)) {
 				cself = get_cvalue_ (copy_value (new GLibValue (m.this_parameter.variable_type, cself, true), m.this_parameter));
 			}
 
@@ -522,7 +533,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 					// do not use load_parameter for reference/ownership transfer
 					// otherwise delegate destroy notify will not be moved
 					value = get_parameter_cvalue (param);
-				} else  {
+				} else {
 					value = load_parameter (param);
 				}
 
@@ -557,20 +568,20 @@ class Avr.CodeGen : CCodeDelegateModule {
 		int last_pos;
 		int min_pos;
 
-			last_pos = -1;
-			while (true) {
-				min_pos = -1;
-				foreach (int pos in carg_map.get_keys ()) {
-					if (pos > last_pos && (min_pos == -1 || pos < min_pos)) {
-						min_pos = pos;
-					}
+		last_pos = -1;
+		while (true) {
+			min_pos = -1;
+			foreach (int pos in carg_map.get_keys ()) {
+				if (pos > last_pos && (min_pos == -1 || pos < min_pos)) {
+					min_pos = pos;
 				}
-				if (min_pos == -1) {
-					break;
-				}
-				ccall.add_argument (carg_map.get (min_pos));
-				last_pos = min_pos;
 			}
+			if (min_pos == -1) {
+				break;
+			}
+			ccall.add_argument (carg_map.get (min_pos));
+			last_pos = min_pos;
+		}
 	}
 
 	CCodeStruct generate_data_struct (Method m) {
@@ -652,7 +663,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 		var finishfunc = new CCodeFunction (get_ccode_finish_real_name (m));
 
-		var cparam_map = new HashMap<int,CCodeParameter> (direct_hash, direct_equal);
+		var cparam_map = new HashMap<int, CCodeParameter> (direct_hash, direct_equal);
 
 		cparam_map.set (get_param_pos (0.1), new CCodeParameter ("_res_", "void*"));
 
@@ -671,9 +682,9 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 		var data_var = new CCodeIdentifier ("_data_");
 
-		ccode.add_declaration (dataname + "*", new CCodeVariableDeclarator("_data_"));
+		ccode.add_declaration (dataname + "*", new CCodeVariableDeclarator ("_data_"));
 
-		ccode.add_assignment(data_var, new CCodeCastExpression(new CCodeIdentifier("_res_"), dataname + "*"));
+		ccode.add_assignment (data_var, new CCodeCastExpression (new CCodeIdentifier ("_res_"), dataname + "*"));
 
 		emit_context.push_symbol (m);
 		foreach (var param in m.get_parameters ()) {
@@ -757,16 +768,16 @@ class Avr.CodeGen : CCodeDelegateModule {
 			}
 
 			var asyncfunc = new CCodeFunction (get_ccode_name (m), "void");
-			var cparam_map = new HashMap<int,CCodeParameter> (direct_hash, direct_equal);
-			var carg_map = new HashMap<int,CCodeExpression> (direct_hash, direct_equal);
+			var cparam_map = new HashMap<int, CCodeParameter> (direct_hash, direct_equal);
+			var carg_map = new HashMap<int, CCodeExpression> (direct_hash, direct_equal);
 
 			if (m.is_private_symbol ()) {
 				asyncfunc.modifiers |= CCodeModifiers.STATIC;
 			}
 
 			var finishfunc = new CCodeFunction (get_ccode_finish_name (m));
-			cparam_map = new HashMap<int,CCodeParameter> (direct_hash, direct_equal);
-			carg_map = new HashMap<int,CCodeExpression> (direct_hash, direct_equal);
+			cparam_map = new HashMap<int, CCodeParameter> (direct_hash, direct_equal);
+			carg_map = new HashMap<int, CCodeExpression> (direct_hash, direct_equal);
 
 			if (m.is_private_symbol ()) {
 				finishfunc.modifiers |= CCodeModifiers.STATIC;
@@ -777,14 +788,14 @@ class Avr.CodeGen : CCodeDelegateModule {
 	}
 
 	Vala.List<Vala.Parameter> generate_params (MethodCall expr, ParameterDirection dir) {
-		Vala.List<Vala.Parameter> @params = new Vala.ArrayList<Vala.Parameter>();
+		Vala.List<Vala.Parameter> @params = new Vala.ArrayList<Vala.Parameter> ();
 
 		foreach (var param in expr.call.value_type.get_parameters ()) {
 			if (param.ellipsis || param.params_array) {
 				Report.error (expr.source_reference, "Ellipses cannot be used in asynchronous methods.");
 			}
 			if (param.direction == dir) {
-				@params.add(param);
+				@params.add (param);
 			}
 		}
 		return @params;
@@ -792,8 +803,9 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 	bool is_variadic (Method m) {
 		foreach (var param in m.get_parameters ()) {
-			if (param.ellipsis)
+			if (param.ellipsis) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -882,38 +894,38 @@ class Avr.Compiler {
 		{ null }
 	};
 
-	bool package_exists(string package_name) {
-		return run_pkg_config("--exists " + Shell.quote(package_name));
+	bool package_exists (string package_name) {
+		return run_pkg_config ("--exists " + Shell.quote (package_name));
 	}
-	bool run_pkg_config(string command, out string? standard_output = null) {
+	bool run_pkg_config (string command, out string? standard_output = null) {
 		int exit_status;
 		string pc = @"pkg-config --define-variable AVR_ARCH=$(Shell.quote(avr_arch)) --define-variable AVR_MCU=$(Shell.quote(mcu)) $(command)";
 
 		try {
 			Process.spawn_command_line_sync (pc, out standard_output, null, out exit_status);
-			return (0 == exit_status);
+			return 0 == exit_status;
 		} catch (SpawnError e) {
 			Report.error (null, e.message);
 			return false;
 		}
 	}
 
-	private string? get_mcu_architecture() {
+	private string? get_mcu_architecture () {
 		try {
 			int exit_value = 0;
 			string? standard_output;
-			if (Process.spawn_sync(null, new string [] { cc_command, "-dM", "-E", @"-mmcu=$(mcu)", "-" }, null, SpawnFlags.SEARCH_PATH, null, out standard_output, null, out exit_value) && exit_value == 0) {
-				foreach (var line in standard_output.split("\n")) {
+			if (Process.spawn_sync (null, new string[] { cc_command, "-dM", "-E", @"-mmcu=$(mcu)", "-" }, null, SpawnFlags.SEARCH_PATH, null, out standard_output, null, out exit_value) && exit_value == 0) {
+				foreach (var line in standard_output.split ("\n")) {
 					if ("__AVR_ARCH__" in line) {
-						var parts = line.split(" ");
+						var parts = line.split (" ");
 						return parts[2];
 					}
 				}
 			} else {
-				error("failed to run pkg-config: exited %d", exit_value);
+				error ("failed to run pkg-config: exited %d", exit_value);
 			}
 		} catch (SpawnError e) {
-			error(e.message);
+			error (e.message);
 		}
 		return null;
 	}
@@ -948,7 +960,7 @@ class Avr.Compiler {
 
 		if (mcu == null) {
 			Report.error (null, "A microcontroller architecture must be supplied with --mcu.");
-			return quit();
+			return quit ();
 		}
 
 		context.assert = false;
@@ -982,7 +994,7 @@ class Avr.Compiler {
 		} else {
 			context.directory = context.basedir;
 		}
-		var vapi_dirs = vapi_directories ?? new string[] {};
+		var vapi_dirs = vapi_directories?? new string[] {};
 		vapi_dirs += Package.VAPI_DIR;
 		context.vapi_directories = vapi_dirs;
 		context.debug = debug;
@@ -1005,9 +1017,10 @@ class Avr.Compiler {
 			context.add_define ("VALA_0_%d".printf (i));
 		}
 		context.add_external_package ("avr");
-		context.add_external_package (mcu.down());
-		if (allow_async)
+		context.add_external_package (mcu.down ());
+		if (allow_async) {
 			context.add_external_package ("gio-2.0");
+		}
 
 		if (packages != null) {
 			foreach (string package in packages) {
@@ -1080,18 +1093,20 @@ class Avr.Compiler {
 		}
 
 		if (!ccode_only) {
-			var compiler_call = new StringBuilder();
+			var compiler_call = new StringBuilder ();
 			if (cc_command == null && Environment.get_variable ("CC") != null) {
 				cc_command = Environment.get_variable ("CC");
 			}
-			if (cc_command == null)
+			if (cc_command == null) {
 				cc_command = "avr-gcc";
+			}
 
 			compiler_call.printf ("%s -mmcu=%s --std=c99 -O2", cc_command, mcu);
-			if (f_cpu > 0)
+			if (f_cpu > 0) {
 				compiler_call.append_printf (" -DF_CPU=%d", f_cpu);
+			}
 			foreach (unowned string option in cc_options) {
-				compiler_call.append_printf (" %s", Shell.quote(option));
+				compiler_call.append_printf (" %s", Shell.quote (option));
 			}
 			var architecture = get_mcu_architecture ();
 			if (architecture == null) {
@@ -1099,18 +1114,18 @@ class Avr.Compiler {
 			}
 			avr_arch = architecture;
 
-			unowned string? pkg_config = Environment.get_variable("AVR_PKG_CONFIG_PATH");
-			Environment.set_variable("PKG_CONFIG_PATH", pkg_config == null ? Package.PKG_CONFIG_DIR : @"$(pkg_config):$(Package.PKG_CONFIG_DIR)", true);
+			unowned string? pkg_config = Environment.get_variable ("AVR_PKG_CONFIG_PATH");
+			Environment.set_variable ("PKG_CONFIG_PATH", pkg_config == null ? Package.PKG_CONFIG_DIR : @"$(pkg_config):$(Package.PKG_CONFIG_DIR)", true);
 
 			var pkg_config_command = new StringBuilder ();
 			pkg_config_command.append ("--cflags --libs");
 			foreach (var pkg in context.get_packages ()) {
 				if (package_exists (pkg)) {
-					pkg_config_command.append_printf (" %s", Shell.quote(pkg));
+					pkg_config_command.append_printf (" %s", Shell.quote (pkg));
 				}
 			}
 			string? pkg_flags;
-			if (!run_pkg_config(pkg_config_command.str, out pkg_flags)) {
+			if (!run_pkg_config (pkg_config_command.str, out pkg_flags)) {
 				return quit ();
 			}
 			if (context.debug) {
@@ -1130,16 +1145,16 @@ class Avr.Compiler {
 			var source_files = context.get_source_files ();
 			foreach (SourceFile file in source_files) {
 				if (file.file_type == SourceFileType.SOURCE) {
-					compiler_call.append( " " + Shell.quote (file.get_csource_filename ()));
+					compiler_call.append (" " + Shell.quote (file.get_csource_filename ()));
 				}
 			}
 			var c_source_files = context.get_c_source_files ();
 			foreach (string file in c_source_files) {
-				compiler_call.append( " " + Shell.quote (file));
+				compiler_call.append (" " + Shell.quote (file));
 			}
 
 			compiler_call.append_c (' ');
-			compiler_call.append (pkg_flags.strip());
+			compiler_call.append (pkg_flags.strip ());
 
 			if (context.verbose_mode) {
 				stdout.printf ("%s\n", compiler_call.str);
