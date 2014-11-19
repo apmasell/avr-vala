@@ -294,7 +294,8 @@ class Avr.CodeGen : CCodeDelegateModule {
 
 			m.body.emit (this);
 			var data_var = new CCodeIdentifier ("_data_");
-			var call_parent = new CCodeFunctionCall (new CCodeMemberAccess.pointer (data_var, "_callback_"));
+			var call_parent = new CCodeFunctionCall (new CCodeIdentifier ("aavr_trampoline"));
+			call_parent.add_argument (new CCodeMemberAccess.pointer (data_var, "_callback_"));
 			call_parent.add_argument (data_var);
 			call_parent.add_argument (new CCodeMemberAccess.pointer (data_var, "_callback_data_"));
 			function.add_expression (call_parent);

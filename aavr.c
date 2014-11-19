@@ -23,6 +23,43 @@ static AavrMonitor to_poll = NULL;
 static volatile bool quit = false;
 static bool in_main_loop = false;
 
+static struct idle_todo_data {
+	AavrAsyncCallback callback;
+	void *result;
+	void *callback_data;
+} idle_todo[20];
+
+static size_t idle_todo_length = 0;
+
+void run_idle_procs(
+	void) {
+	while (idle_todo_length > 0) {
+		struct idle_todo_data data;
+
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+			data = idle_todo[--idle_todo_length];
+		}
+		data.callback(data.result, data.callback_data);
+	}
+}
+
+void aavr_trampoline(
+	AavrAsyncCallback callback,
+	void *result,
+	void *callback_data) {
+	if (idle_todo_length < sizeof(idle_todo) / sizeof(idle_todo[0])) {
+		ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+			idle_todo[idle_todo_length].callback = callback;
+			idle_todo[idle_todo_length].result = result;
+			idle_todo[idle_todo_length].callback_data = callback_data;
+			idle_todo_length++;
+		}
+	} else {
+		/* We are out of memory, so we're going to run this now and hope we don't blow the stack. */
+		callback(result, callback_data);
+	}
+}
+
 void aavr_quit(
 	void) {
 	quit = true;
@@ -67,7 +104,9 @@ void aavr_run(
 				dequeue->callback(dequeue, dequeue->callback_context);
 			}
 		}
+		run_idle_procs();
 	}
+	run_idle_procs();
 	in_main_loop = false;
 }
 

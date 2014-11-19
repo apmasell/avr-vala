@@ -42,6 +42,24 @@ void aavr_run(
 	AavrPoll idle,
 	void *idle_context);
 /**
+ * Return to an asynchronous method's caller at a later time.
+ *
+ * An asynchronous method can't return directly by calling it's parents
+ * callback function since this could happen many times, overruning the stack.
+ * When a function wishes to return, it passes its parent's callback (and
+ * callback data) along with its own return code to this function, which stores
+ * it an executes it in the main loop when appropriate.
+ *
+ * There is little reason to call this function directly. The compiler needs it.
+ *
+ * @callback: (closure callback_context): the continuation to return to when the event is done.
+ * @result: (transfer full): the asynchronous result to be passed to the finish function.
+ */
+void aavr_trampoline(
+	AavrAsyncCallback callback,
+	void *result,
+	void *callback_data);
+/**
  * Update the clock.
  *
  * This function should be called from an interrupt to increment the elapsed
