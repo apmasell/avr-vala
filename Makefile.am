@@ -41,6 +41,7 @@ dist_avrpkgconfig_DATA = \
 	$(NULL)
 
 avr_valac_VALAFLAGS = \
+	--vapidir $(COMPILER_VAPI_DIR) \
 	--pkg libvala-$(VALA_VER) \
 	$(NULL)
 
