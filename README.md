@@ -37,11 +37,12 @@ In each asynchronous method, calling `AsyncAvr.wait` will appear to block until 
     }
     void main() {
         disable_interrupts();
-        DDR.d[6] = true;
+	      Direction.d[6] = true;
     
-        Posix.TCCR0A = (1<<WGM01);
-        Posix.TCCR0B = (1<<CS01);
-        Posix.TIMSK0[OCIE0A] = true;
+	      Timer.zero.set_mode (false, true, Timer.CounterMode.NORMAL, Timer.CounterMode.NORMAL);
+	      Timer.zero.control = Timer.zero.Control.SOURCE_IO_DIV_8;
+
+	      Timer.zero.interrupt_enable = Timer.zero.Interrupt.COMPARE_A;
         enable_interrupts();
 
         blinky.begin((f) => blinky.end((owned)f));
@@ -52,3 +53,12 @@ In each asynchronous method, calling `AsyncAvr.wait` will appear to block until 
         AsyncAvr.tick();
     }
 
+Missing Features
+----------------
+
+The following features of the Vala language don't work (but could be added):
+
+ - Exceptions
+ - Classes, and therefore inheritance (structs work)
+ - Signals (it would be ideal to build this in a way that interfaces with `errno`)
+ - Locking
