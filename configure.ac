@@ -57,8 +57,7 @@ for platform in  \
 	avrxmega4 \
 	avrxmega5 \
 	avrxmega6 \
-	avrxmega7 \
-	avrtiny10
+	avrxmega7
 do
 	test -d lib_$platform || mkdir lib_$platform
 	echo PLATFORM = $platform > lib_$platform/Makefile.in
