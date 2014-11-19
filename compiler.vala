@@ -94,7 +94,7 @@ class Avr.CodeGen : CCodeDelegateModule {
 				set_delegate_target (expr, get_cvalue (((MemberAccess) expr.inner).inner));
 			}
 		} else if (expr.member_name == "end" && expr.inner.symbol_reference == expr.symbol_reference && expr.value_type is MethodType) {
-			set_cvalue (expr,        new CCodeIdentifier (get_ccode_finish_name (((MethodType) expr.value_type).method_symbol)));
+			set_cvalue (expr, new CCodeIdentifier (get_ccode_finish_name (((MethodType) expr.value_type).method_symbol)));
 		} else {
 			base.visit_member_access (expr);
 		}

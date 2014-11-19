@@ -19,9 +19,9 @@ struct aavr_monitor {
 	AavrMonitor next;
 };
 
-AavrMonitor to_poll = NULL;
-volatile bool quit = false;
-bool in_main_loop = false;
+static AavrMonitor to_poll = NULL;
+static volatile bool quit = false;
+static bool in_main_loop = false;
 
 void aavr_quit(
 	void) {
