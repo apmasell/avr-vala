@@ -716,7 +716,7 @@ namespace Posix {
 			[Flags]
 			public enum Interrupt {
 				[CCode (cname = "_BV(TOIE0)")]
-				OVERLOW,
+				OVERFLOW,
 				[CCode (cname = "_BV(OCIE0A)")]
 				COMPARE_A,
 				[CCode (cname = "_BV(OCIE0B)")]
@@ -774,7 +774,7 @@ namespace Posix {
 			[Flags]
 			public enum Interrupt {
 				[CCode (cname = "_BV(TOIE1)")]
-				OVERLOW,
+				OVERFLOW,
 				[CCode (cname = "_BV(OCIE1A)")]
 				COMPARE_A,
 				[CCode (cname = "_BV(OCIE1B)")]
@@ -788,7 +788,7 @@ namespace Posix {
 			[Flags]
 			public enum OutputCompare {
 				[CCode (cname = "_BV(FOC1A)")]
-				OVERLOW,
+				OVERFLOW,
 				[CCode (cname = "_BV(FOC1B)")]
 				COMPARE_A,
 				[CCode (cname = "_BV(FOC1C)")]
@@ -850,7 +850,7 @@ namespace Posix {
 			[Flags]
 			public enum Interrupt {
 				[CCode (cname = "_BV(TOIE3)")]
-				OVERLOW,
+				OVERFLOW,
 				[CCode (cname = "_BV(OCIE3A)")]
 				COMPARE_A,
 				[CCode (cname = "_BV(OCIE3B)")]
@@ -864,7 +864,7 @@ namespace Posix {
 			[Flags]
 			public enum OutputCompare {
 				[CCode (cname = "_BV(FOC3A)")]
-				OVERLOW
+				OVERFLOW
 			}
 			[CCode (cname = "TCCR3A = TIMER_MODE")]
 			public void set_mode (bool wgm_0, bool wgm_1, CounterMode compare_a, CounterMode compare_b, CounterMode compare_c);
@@ -1034,7 +1034,7 @@ namespace Posix {
 			[Flags]
 			public enum Interrupt {
 				[CCode (cname = "_BV(TOIE4)")]
-				OVERLOW,
+				OVERFLOW,
 				[CCode (cname = "_BV(OCIE1A)")]
 				COMPARE_A,
 				[CCode (cname = "_BV(OCIE1B)")]
