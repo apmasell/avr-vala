@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: Andre Masella <andre@masella.name>
 Build-Depends: debhelper (>= 8.0.0), autotools-dev, valac-0.16, libvala-0.16-dev, gcc-avr, avr-libc
-Standards-Version: 3.9.2
+Standards-Version: 3.9.5
 Homepage: http://github.com/apmasell/avr-valac
 
 Package: avr-vala

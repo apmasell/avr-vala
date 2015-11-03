@@ -1,5 +1,5 @@
-avr-vala (0.1) unstable; urgency=low
+avr-vala (0.1~ppa0) trusty; urgency=medium
 
   * Initial Release.
 
- -- Andre Masella <andre@masella.name>  Sat, 28 Dec 2013 18:49:06 -0800
+ -- Andre Masella <andre@masella.name>  Mon, 02 Nov 2015 19:12:15 -0500
