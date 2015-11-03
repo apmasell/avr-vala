@@ -8,7 +8,7 @@ Homepage: http://github.com/apmasell/avr-valac
 
 Package: avr-vala
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, gcc-avr, pkg-config
+Depends: ${shlibs:Depends}, ${misc:Depends}, avr-libc, gcc-avr, pkg-config
 Description: Vala compiler to target AVR microprocessors
   This modified Vala compiler is meant to provide Vala's rich features, such
   classes and lambdas on AVR microcontrollers. It also provides an asynchronous
